@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yu.mapper.SysMenuMapper">
+
+    <resultMap id="BaseResultMap" type="com.yu.model.entry.SysMenu">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+        <result property="treePath" column="tree_path" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="TINYINT"/>
+        <result property="path" column="path" jdbcType="VARCHAR"/>
+        <result property="component" column="component" jdbcType="VARCHAR"/>
+        <result property="perm" column="perm" jdbcType="VARCHAR"/>
+        <result property="visible" column="visible" jdbcType="TINYINT"/>
+        <result property="sort" column="sort" jdbcType="INTEGER"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="redirect" column="redirect" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,parent_id,tree_path,
+        name,type,path,
+        component,perm,visible,
+        sort,icon,redirect,
+        create_time,update_time
+    </sql>
+    <select id="listRolePerms" resultType="java.lang.String">
+        select distinct m.perm
+        from sys_menu m
+        inner join sys_role_menu rm on m.id = rm.menu_id
+        inner join sys_role r on r.id = rm.role_id
+        where m.type = '${@com.yu.common.enums.MenuTypeEnum@BUTTON.getValue()}'
+        and m.perm is not null
+        <choose>
+            <when test="roles!=null and roles.size()>0">
+                and r.code in
+                <foreach collection="roles" item="role" open="(" close=")" separator=",">
+                    #{role}
+                </foreach>
+            </when>
+            <otherwise>
+                and m.id = -1
+            </otherwise>
+        </choose>
+    </select>
+</mapper>
