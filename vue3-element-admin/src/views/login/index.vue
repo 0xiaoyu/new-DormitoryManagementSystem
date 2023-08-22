@@ -1,97 +1,99 @@
 <template>
   <div class="login-container">
-    <el-form
-      ref="loginFormRef"
-      :model="loginData"
-      :rules="loginRules"
-      class="login-form"
-    >
-      <div class="flex text-white items-center py-4 title-wrap">
-        <span class="text-2xl flex-1 text-center title">
-          {{ $t("login.title") }}
-        </span>
-        <lang-select class="text-white! cursor-pointer" />
-      </div>
-
-      <el-form-item prop="username">
-        <div class="p-2 text-white">
-          <svg-icon icon-class="user" />
-        </div>
-        <el-input
-          ref="username"
-          v-model="loginData.username"
-          class="flex-1"
-          size="large"
-          :placeholder="$t('login.username')"
-          name="username"
-        />
-      </el-form-item>
-
-      <el-tooltip
-        :disabled="isCapslock === false"
-        content="Caps lock is On"
-        placement="right"
+    <el-card class="el-card">
+      <el-form
+        ref="loginFormRef"
+        :model="loginData"
+        :rules="loginRules"
+        class="login-form"
       >
-        <el-form-item prop="password">
+        <div class="flex text-white items-center py-4 title-wrap">
+          <span class="text-2xl flex-1 text-center title">
+            {{ $t("login.title") }}
+          </span>
+          <lang-select class="text-white! cursor-pointer" />
+        </div>
+
+        <el-form-item prop="username">
+          <div class="p-2 text-white">
+            <svg-icon icon-class="user" />
+          </div>
+          <el-input
+            ref="username"
+            v-model="loginData.username"
+            :placeholder="$t('login.username')"
+            class="flex-1"
+            name="username"
+            size="large"
+          />
+        </el-form-item>
+
+        <el-tooltip
+          :disabled="isCapslock === false"
+          content="Caps lock is On"
+          placement="right"
+        >
+          <el-form-item prop="password">
+            <span class="p-2 text-white">
+              <svg-icon icon-class="password" />
+            </span>
+            <el-input
+              v-model="loginData.password"
+              :type="passwordVisible === false ? 'password' : 'input'"
+              class="flex-1"
+              name="password"
+              placeholder="密码"
+              size="large"
+              @keyup="checkCapslock"
+              @keyup.enter="handleLogin"
+            />
+            <span class="mr-2" @click="passwordVisible = !passwordVisible">
+              <svg-icon
+                :icon-class="!passwordVisible ? 'eye' : 'eye-open'"
+                class="text-white cursor-pointer"
+              />
+            </span>
+          </el-form-item>
+        </el-tooltip>
+
+        <!-- 验证码 -->
+        <el-form-item prop="verifyCode">
           <span class="p-2 text-white">
-            <svg-icon icon-class="password" />
+            <svg-icon icon-class="verify_code" />
           </span>
           <el-input
-            v-model="loginData.password"
-            class="flex-1"
-            placeholder="密码"
-            :type="passwordVisible === false ? 'password' : 'input'"
-            size="large"
-            name="password"
-            @keyup="checkCapslock"
+            v-model="loginData.verifyCode"
+            :placeholder="$t('login.verifyCode')"
+            auto-complete="off"
+            class="w-[60%]"
             @keyup.enter="handleLogin"
           />
-          <span class="mr-2" @click="passwordVisible = !passwordVisible">
-            <svg-icon
-              :icon-class="!passwordVisible ? 'eye' : 'eye-open'"
-              class="text-white cursor-pointer"
-            />
-          </span>
+
+          <div class="captcha">
+            <img :src="captchaBase64" @click="getCaptcha" />
+          </div>
         </el-form-item>
-      </el-tooltip>
 
-      <!-- 验证码 -->
-      <el-form-item prop="verifyCode">
-        <span class="p-2 text-white">
-          <svg-icon icon-class="verify_code" />
-        </span>
-        <el-input
-          v-model="loginData.verifyCode"
-          auto-complete="off"
-          :placeholder="$t('login.verifyCode')"
-          class="w-[60%]"
-          @keyup.enter="handleLogin"
-        />
+        <el-button
+          :loading="loading"
+          class="w-full"
+          size="default"
+          type="primary"
+          @click.prevent="handleLogin"
+          >{{ $t("login.login") }}
+        </el-button>
 
-        <div class="captcha">
-          <img :src="captchaBase64" @click="getCaptcha" />
+        <!-- 账号密码提示 -->
+        <div class="mt-4 text-white text-sm">
+          <span>{{ $t("login.username") }}: admin</span>
+          <span class="ml-4"> {{ $t("login.password") }}: 123456</span>
         </div>
-      </el-form-item>
-
-      <el-button
-        size="default"
-        :loading="loading"
-        type="primary"
-        class="w-full"
-        @click.prevent="handleLogin"
-        >{{ $t("login.login") }}
-      </el-button>
-
-      <!-- 账号密码提示 -->
-      <div class="mt-4 text-white text-sm">
-        <span>{{ $t("login.username") }}: admin</span>
-        <span class="ml-4"> {{ $t("login.password") }}: 123456</span>
-      </div>
-    </el-form>
+      </el-form>
+    </el-card>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import router from "@/router";
 import LangSelect from "@/components/LangSelect/index.vue";
 import SvgIcon from "@/components/SvgIcon/index.vue";
@@ -219,6 +221,12 @@ onMounted(() => {
   overflow: hidden;
   background-color: #2d3a4b;
 
+  .el-card {
+    margin: 10% 15%;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
   .title-wrap {
     filter: contrast(30);
 
@@ -241,7 +249,7 @@ onMounted(() => {
   .login-form {
     width: 520px;
     max-width: 100%;
-    padding: 160px 35px 0;
+    padding: 10% 35px 8%;
     margin: 0 auto;
     overflow: hidden;
 
