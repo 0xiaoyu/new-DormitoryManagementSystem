@@ -2,7 +2,7 @@ package com.yu.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yu.mapper.SysMenuMapper;
-import com.yu.model.entry.SysMenu;
+import com.yu.model.entity.SysMenu;
 import com.yu.service.SysMenuService;
 import org.springframework.stereotype.Service;
 

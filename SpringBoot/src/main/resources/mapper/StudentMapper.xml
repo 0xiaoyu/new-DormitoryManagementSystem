@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yu.mapper.StudentMapper">
+
+    <resultMap id="BaseResultMap" type="com.yu.model.entity.Student">
+            <id property="id" column="id" jdbcType="CHAR"/>
+            <result property="studentName" column="student_name" jdbcType="VARCHAR"/>
+            <result property="gender" column="gender" jdbcType="TINYINT"/>
+            <result property="age" column="age" jdbcType="TINYINT"/>
+            <result property="phone" column="phone" jdbcType="CHAR"/>
+            <result property="dormitoryId" column="dormitory_id" jdbcType="INTEGER"/>
+            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+            <result property="classId" column="class_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,student_name,gender,
+        age,phone,dormitory_id,
+        deleted,class_id
+    </sql>
+</mapper>

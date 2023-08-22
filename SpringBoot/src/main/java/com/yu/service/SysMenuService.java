@@ -1,6 +1,6 @@
 package com.yu.service;
 
-import com.yu.model.entry.SysMenu;
+import com.yu.model.entity.SysMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.Set;
