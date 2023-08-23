@@ -6,10 +6,12 @@ import java.util.Set;
 
 @Data
 public class UserAuthInfo {
+    // ID
+    private Long id;
     // 用户ID
     private Long userId;
     // 用户名
-    private String username;
+    private String name;
     // 密码
     private String password;
     // 状态

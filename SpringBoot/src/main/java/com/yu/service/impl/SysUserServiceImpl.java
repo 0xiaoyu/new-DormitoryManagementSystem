@@ -10,6 +10,7 @@ import com.yu.model.entity.SysUser;
 import com.yu.service.SysMenuService;
 import com.yu.service.SysUserService;
 import jakarta.annotation.Resource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -49,11 +50,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
     public UserAuthInfo getUserLoginInfo() {
         SysUser user = this.getOne(new LambdaQueryWrapper<SysUser>()
                 .eq(SysUser::getName, Objects.requireNonNull(SecurityUtils.getUser()).getUsername())
-                .select(
-                        SysUser::getId,
-                        SysUser::getAvatar
-                )
-        );
+                .select(SysUser::getId, SysUser::getAvatar));
+        UserAuthInfo info = new UserAuthInfo();
+        BeanUtils.copyProperties(user, info);
+        info.setRoles(SecurityUtils.getRoles());
+//        info.setPerms((Set<String>) redis.opsForValue().get(SecurityConstants.USER_PERMS_CACHE_PREFIX+ user.getId()));
         return null;
     }
 }

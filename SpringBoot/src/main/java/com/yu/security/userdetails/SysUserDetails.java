@@ -18,11 +18,17 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class SysUserDetails implements UserDetails {
 
+    // 用户id
     private Long userId;
+    // 用户名称
     private String username;
+    // 用户密码
     private String password;
+    // 是否启用
     private Boolean enabled;
+    // 权限和角色集合
     private Collection<SimpleGrantedAuthority> authorities;
+    // 数据权限
     private Set<String> perms;
 
     public SysUserDetails(UserAuthInfo user) {
@@ -35,7 +41,7 @@ public class SysUserDetails implements UserDetails {
         } else {
             this.authorities = Collections.EMPTY_SET;
         }
-        this.username = user.getUsername();
+        this.username = user.getName();
         this.password = user.getPassword();
         this.enabled = ObjectUtil.equal(user.getStatus(), 1);
         this.perms = user.getPerms();
