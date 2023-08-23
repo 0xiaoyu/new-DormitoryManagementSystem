@@ -1,6 +1,14 @@
 import request from "@/utils/request";
 import { AxiosPromise } from "axios";
-import { UserForm, UserInfo, UserPageVO, UserQuery } from "./types";
+import {
+  RegistrationData,
+  UserForm,
+  UserInfo,
+  UserPageVO,
+  UserQuery,
+} from "./types";
+
+const baseUrl = "/users/";
 
 /**
  * 登录成功后获取用户信息（昵称、头像、权限集合和角色集合）
@@ -150,5 +158,22 @@ export function importUser(deptId: number, file: File) {
     headers: {
       "Content-Type": "multipart/form-data",
     },
+  });
+}
+
+export function getEmailCode(email: string) {
+  return request({
+    url: baseUrl + "getEmailVerifyCode",
+    method: "get",
+    params: { email: email },
+  });
+}
+
+export function saveStudent(student: RegistrationData, emailCode: string) {
+  return request({
+    url: baseUrl + "saveStudent",
+    method: "post",
+    params: { emailCode: emailCode },
+    data: student,
   });
 }

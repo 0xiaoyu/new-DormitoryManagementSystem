@@ -21,6 +21,8 @@ public class EmailUtils {
 
     private static String from;
 
+    public static final Long ttl = 2*60L;
+
     @Value("${spring.mail.username}")
     public void setFrom(String froms) {
         from = froms;
@@ -36,7 +38,7 @@ public class EmailUtils {
         log.info(from);
         simpleMailMessage.setTo(to);
         simpleMailMessage.setSubject("xxx宿舍管理系统注册验证码");
-        simpleMailMessage.setText("您好，本次验证码为：%s,有效时间2分钟,请勿泄露给他人。".formatted(code));
+        simpleMailMessage.setText("您好，本次验证码为：%s,有效时间%d分钟,请勿泄露给他人。".formatted(code,ttl/60));
         try {
             mailSender.send(simpleMailMessage);
             return true;

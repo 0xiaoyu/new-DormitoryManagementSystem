@@ -45,7 +45,7 @@
             </div>
             <el-input
               ref="username"
-              v-model="registerData.sudentId"
+              v-model="registerData.userId"
               v-shake
               class="flex-1"
               name="username"
@@ -98,7 +98,7 @@
             />
 
             <div class="captcha">
-              <img :src="captchaBase64" @click="getCaptcha" />
+              <img :src="captchaBase64" @click="getCaptcha" alt="" />
             </div>
           </el-form-item>
         </template>
@@ -132,7 +132,9 @@ import { useUserStore } from "@/store/modules/user";
 // API依赖
 import { LocationQuery, LocationQueryValue, useRoute } from "vue-router";
 import { getCaptchaApi } from "@/api/auth";
-import { LoginData, RegistrationData } from "@/api/auth/types";
+import { LoginData } from "@/api/auth/types";
+import { RegistrationData } from "@/api/user/types";
+import { getEmailCode } from "@/api/user";
 
 const userStore = useUserStore();
 const route = useRoute();
@@ -160,6 +162,7 @@ const captchaBase64 = ref();
  */
 const loginFormRef = ref(ElForm);
 const registerData = ref<RegistrationData>({
+  /** 学生姓名*/
   sName: "",
   /** 用户名 */
   name: "",
@@ -198,7 +201,7 @@ function passwordValidator(rule: any, value: any, callback: any) {
 }
 
 function emailValidator(rule: any, value: any, callback: any) {
-  const regEmail =  /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,5})$/;
+  const regEmail = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,5})$/;
   if (!regEmail.test(value)) {
     callback(new Error("电子邮件格式不正确"));
   } else {
@@ -259,6 +262,18 @@ function handleLogin() {
           loading.value = false;
         });
     }
+  });
+}
+
+function getEmail() {
+  const email = registerData.value.email;
+  const regEmail = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,5})$/;
+  if (!regEmail.test(email)) {
+    ElMessage.error("电子邮件格式不正确");
+    return;
+  }
+  getEmailCode(email).then(() => {
+    ElMessage.success("验证码已发送");
   });
 }
 

@@ -1,7 +1,9 @@
 package com.yu.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yu.common.util.SecurityUtils;
 import com.yu.mapper.SysUserMapper;
 import com.yu.model.dto.UserAuthInfo;
 import com.yu.model.entity.SysUser;
@@ -10,6 +12,7 @@ import com.yu.service.SysUserService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -40,6 +43,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
             }
         }
         return userAuthInfo;
+    }
+
+    @Override
+    public UserAuthInfo getUserLoginInfo() {
+        SysUser user = this.getOne(new LambdaQueryWrapper<SysUser>()
+                .eq(SysUser::getName, Objects.requireNonNull(SecurityUtils.getUser()).getUsername())
+                .select(
+                        SysUser::getId,
+                        SysUser::getAvatar
+                )
+        );
+        return null;
     }
 }
 

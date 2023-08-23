@@ -25,4 +25,6 @@ public interface SysUserService extends IService<SysUser> {
      * @return 用户认证信息
      */
     UserAuthInfo getUserAuthInfo(String usernameOrEmail);
+
+    UserAuthInfo getUserLoginInfo();
 }

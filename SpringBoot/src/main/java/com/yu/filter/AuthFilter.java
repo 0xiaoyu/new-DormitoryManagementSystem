@@ -34,6 +34,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
     public static final String VERIFY_CODE_PARAM_KEY = "verifyCode";
     public static final String VERIFY_CODE_KEY_PARAM_KEY = "verifyCodeKey";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         if (LOGIN_PATH_REQUEST_MATCHER.matches(request)) {
@@ -42,18 +43,18 @@ public class AuthFilter extends OncePerRequestFilter {
 
             // 由于这个不是bean，不能通过注入的方式获取，所以通过SpringUtil工具类获取
             RedisTemplate redisTemplate = SpringUtil.getBean("redisTemplate", RedisTemplate.class);
-            String cacheCode =  Convert.toStr(redisTemplate.opsForValue().get(SecurityConstants.VERIFY_CODE_CACHE_PREFIX + verifyCodeKey));
+            String cacheCode = Convert.toStr(redisTemplate.opsForValue().get(SecurityConstants.VERIFY_CODE_CACHE_PREFIX + verifyCodeKey));
             if (cacheCode == null) {
                 // 验证码过期
                 ResponseUtils.writeErrMsg(response, ResultCode.VERIFY_CODE_TIMEOUT);
                 return;
             }
-            if (!StrUtil.equals(cacheCode,code)) {
+            if (!StrUtil.equals(cacheCode, code)) {
                 // 验证码错误
                 ResponseUtils.writeErrMsg(response, ResultCode.VERIFY_CODE_ERROR);
                 return;
             }
-        }else{
+        } else {
             String jwt = RequestUtils.resolveToken(request);
             if (StringUtils.hasText(jwt) && SecurityContextHolder.getContext().getAuthentication() == null) {
                 try {

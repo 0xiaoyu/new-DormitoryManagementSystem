@@ -37,7 +37,7 @@ service.interceptors.response.use(
     ElMessage.error(msg || "系统出错");
     return Promise.reject(new Error(msg || "Error"));
   },
-  (error: any) => {
+  (error: any) => {console.log(error)
     if (error.response.data) {
       const { code, msg } = error.response.data;
       // token 过期,重新登录

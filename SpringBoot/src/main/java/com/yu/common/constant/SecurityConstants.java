@@ -19,6 +19,9 @@ public interface SecurityConstants {
     // 验证码缓存前缀
     String VERIFY_CODE_CACHE_PREFIX = "AUTH:VERIFY_CODE:";
 
+    // 邮箱缓存前缀
+    String EMAIL_CODE_CACHE_PREFIX = "AUTH:EMAIL_CODE:";
+
     // 用户权限集合缓存前缀
     String USER_PERMS_CACHE_PREFIX = "AUTH:USER_PERMS:";
 

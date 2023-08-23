@@ -22,8 +22,8 @@ export const useUserStore = defineStore("user", () => {
   /**
    * 登录调用
    *
-   * @param {LoginData}
    * @returns
+   * @param loginData
    */
   function login(loginData: LoginData) {
     return new Promise<void>((resolve, reject) => {
