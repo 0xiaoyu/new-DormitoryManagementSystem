@@ -57,3 +57,21 @@ export interface CaptchaResult {
    */
   verifyCodeBase64: string;
 }
+
+// 注册
+export interface RegistrationData {
+  /** 学生姓名 */
+  sName: string;
+  /** 用户名 */
+  name: string;
+  /** 密码 */
+  password: string;
+  /** 邮箱 */
+  email: string;
+  /** 头像地址 */
+  avatar: string;
+  /** 用户id */
+  userId: string;
+  /** 手机号 */
+  phone: string;
+}

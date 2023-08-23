@@ -29,8 +29,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
     }
 
     @Override
-    public UserAuthInfo getUserAuthInfo(String username) {
-        UserAuthInfo userAuthInfo = this.baseMapper.getUserAuthInfo(username);
+    public UserAuthInfo getUserAuthInfo(String usernameOrEmail) {
+        boolean b = usernameOrEmail.indexOf('@') == -1;
+        UserAuthInfo userAuthInfo = this.baseMapper.getUserAuthInfo(b?usernameOrEmail:null,b?null:usernameOrEmail);
         if (userAuthInfo != null) {
             Set<String> roles = userAuthInfo.getRoles();
             if (CollectionUtil.isNotEmpty(roles)) {

@@ -74,7 +74,6 @@ public class SecurityConfig {
     // 密码编码器
     @Bean
     public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
         return new BCryptPasswordEncoder();
     }
 

@@ -5,75 +5,103 @@
         ref="loginFormRef"
         :model="loginData"
         :rules="loginRules"
-        class="login-form"
+        :class="{ 'login-form': isLogin, 'register-form': !isLogin }"
       >
         <div class="flex text-white items-center py-4 title-wrap">
-          <span class="text-2xl flex-1 text-center title">
-            {{ $t("login.title") }}
+          <span v-if="isLogin" class="text-2xl flex-1 text-center title">
+            欢迎登录
+          </span>
+          <span v-else class="text-2xl flex-1 text-center title">
+            欢迎注册
+          </span>
+          <span
+            class="text-white text-sm cursor-pointer"
+            @click="isLogin = !isLogin"
+          >
+            {{ isLogin ? "没有账号?去注册" : "已有账号?去登录" }}
           </span>
           <lang-select class="text-white! cursor-pointer" />
         </div>
 
-        <el-form-item prop="username">
-          <div class="p-2 text-white">
-            <svg-icon icon-class="user" />
-          </div>
-          <el-input
-            ref="username"
-            v-model="loginData.username"
-            :placeholder="$t('login.username')"
-            class="flex-1"
-            name="username"
-            size="large"
-          />
-        </el-form-item>
+        <template v-if="isLogin">
+          <el-form-item prop="username">
+            <div class="p-2 text-white">
+              <svg-icon icon-class="user" />
+            </div>
+            <el-input
+              ref="username"
+              v-model="loginData.username"
+              v-shake
+              :placeholder="isLogin ? '用户名/邮箱' : '用户名'"
+              class="flex-1"
+              name="username"
+              size="large"
+            />
+          </el-form-item>
 
-        <el-tooltip
-          :disabled="isCapslock === false"
-          content="Caps lock is On"
-          placement="right"
-        >
-          <el-form-item prop="password">
+          <el-form-item v-if="!isLogin" prop="studentId">
+            <div class="p-2 text-white">
+              <svg-icon icon-class="user" />
+            </div>
+            <el-input
+              ref="username"
+              v-model="registerData.sudentId"
+              v-shake
+              class="flex-1"
+              name="username"
+              placeholder="请输入学号"
+              size="large"
+            />
+          </el-form-item>
+
+          <el-tooltip
+            :disabled="isCapslock === false"
+            content="Caps lock is On"
+            placement="right"
+          >
+            <el-form-item prop="password">
+              <span class="p-2 text-white">
+                <svg-icon icon-class="password" />
+              </span>
+              <el-input
+                v-model="loginData.password"
+                v-shake
+                :type="passwordVisible === false ? 'password' : 'input'"
+                class="flex-1"
+                name="password"
+                placeholder="密码"
+                size="large"
+                @keyup="checkCapslock"
+                @keyup.enter="handleLogin"
+              />
+              <span class="mr-2" @click="passwordVisible = !passwordVisible">
+                <svg-icon
+                  :icon-class="!passwordVisible ? 'eye' : 'eye-open'"
+                  class="text-white cursor-pointer"
+                />
+              </span>
+            </el-form-item>
+          </el-tooltip>
+
+          <!-- 验证码 -->
+          <el-form-item prop="verifyCode">
             <span class="p-2 text-white">
-              <svg-icon icon-class="password" />
+              <svg-icon icon-class="verify_code" />
             </span>
             <el-input
-              v-model="loginData.password"
-              :type="passwordVisible === false ? 'password' : 'input'"
-              class="flex-1"
-              name="password"
-              placeholder="密码"
-              size="large"
-              @keyup="checkCapslock"
+              v-model="loginData.verifyCode"
+              v-shake
+              :placeholder="'请输入邮箱'"
+              auto-complete="off"
+              class="w-[60%]"
               @keyup.enter="handleLogin"
             />
-            <span class="mr-2" @click="passwordVisible = !passwordVisible">
-              <svg-icon
-                :icon-class="!passwordVisible ? 'eye' : 'eye-open'"
-                class="text-white cursor-pointer"
-              />
-            </span>
+
+            <div class="captcha">
+              <img :src="captchaBase64" @click="getCaptcha" />
+            </div>
           </el-form-item>
-        </el-tooltip>
-
-        <!-- 验证码 -->
-        <el-form-item prop="verifyCode">
-          <span class="p-2 text-white">
-            <svg-icon icon-class="verify_code" />
-          </span>
-          <el-input
-            v-model="loginData.verifyCode"
-            :placeholder="$t('login.verifyCode')"
-            auto-complete="off"
-            class="w-[60%]"
-            @keyup.enter="handleLogin"
-          />
-
-          <div class="captcha">
-            <img :src="captchaBase64" @click="getCaptcha" />
-          </div>
-        </el-form-item>
-
+        </template>
         <el-button
           :loading="loading"
           class="w-full"
@@ -104,11 +132,12 @@ import { useUserStore } from "@/store/modules/user";
 // API依赖
 import { LocationQuery, LocationQueryValue, useRoute } from "vue-router";
 import { getCaptchaApi } from "@/api/auth";
-import { LoginData } from "@/api/auth/types";
+import { LoginData, RegistrationData } from "@/api/auth/types";
 
 const userStore = useUserStore();
 const route = useRoute();
 
+const isLogin = ref(true);
 /**
  * 按钮loading
  */
@@ -130,15 +159,30 @@ const captchaBase64 = ref();
  * 登录表单引用
  */
 const loginFormRef = ref(ElForm);
-
+const registerData = ref<RegistrationData>({
+  sName: "",
+  /** 用户名 */
+  name: "",
+  /** 密码 */
+  password: "",
+  /** 邮箱 */
+  email: "",
+  /** 头像地址 */
+  avatar: "",
+  /** 用户id */
+  userId: "",
+  /** 手机号 */
+  phone: "",
+});
 const loginData = ref<LoginData>({
-  username: "admin",
-  password: "123456",
+  username: "",
+  password: "",
 });
 
 const loginRules = {
   username: [{ required: true, trigger: "blur" }],
   password: [{ required: true, trigger: "blur", validator: passwordValidator }],
+  email: [{ required: true, trigger: "blur", validator: emailValidator }],
   verifyCode: [{ required: true, trigger: "blur" }],
 };
 
@@ -148,6 +192,15 @@ const loginRules = {
 function passwordValidator(rule: any, value: any, callback: any) {
   if (value.length < 6) {
     callback(new Error("The password can not be less than 6 digits"));
+  } else {
+    callback();
+  }
+}
+
+function emailValidator(rule: any, value: any, callback: any) {
+  const regEmail =  /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,5})$/;
+  if (!regEmail.test(value)) {
+    callback(new Error("电子邮件格式不正确"));
   } else {
     callback();
   }
@@ -215,6 +268,24 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+/*
+  进入和离开动画可以使用不同
+  持续时间和速度曲线。
+*/
+.slide-fade-enter-active {
+  transition: all 0.8s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+
 .login-container {
   width: 100%;
   min-height: 100%;
@@ -247,13 +318,14 @@ onMounted(() => {
   }
 
   .login-form {
-    width: 520px;
+    width: 510px;
     max-width: 100%;
     padding: 10% 35px 8%;
     margin: 0 auto;
     overflow: hidden;
 
     .captcha {
+      height: 100%;
       position: absolute;
       top: 0;
       right: 0;
@@ -264,6 +336,13 @@ onMounted(() => {
         cursor: pointer;
       }
     }
+  }
+  .register-form {
+    width: 510px;
+    max-width: 100%;
+    padding: 0 35px 8%;
+    margin: 0 auto;
+    overflow: hidden;
   }
 }
 

@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
-    UserAuthInfo getUserAuthInfo(String username);
+    UserAuthInfo getUserAuthInfo(String username,String email);
 }
 
 

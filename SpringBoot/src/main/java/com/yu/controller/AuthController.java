@@ -41,7 +41,7 @@ public class AuthController {
     @Operation(summary = "登录")
     @PostMapping("/login")
     public Result<LoginResult> login(
-            @Parameter(description = "用户名", example = "admin") @RequestParam String username,
+            @Parameter(description = "用户名/邮箱", example = "admin/zh@qq.com") @RequestParam String username,
             @Parameter(description = "密码", example = "123456") @RequestParam String password
     ) {
         // 存储username和password

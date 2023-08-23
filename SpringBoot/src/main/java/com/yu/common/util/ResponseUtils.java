@@ -1,6 +1,6 @@
 package com.yu.common.util;
 
-import cn.hutool.json.JSONUtil;
+import cn.hutool.json.JSONObject;
 import com.yu.common.result.Result;
 import com.yu.common.result.ResultCode;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,6 +26,8 @@ public class ResponseUtils {
         response.setStatus(status);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().print(JSONUtil.toJsonStr(Result.failed(resultCode)));
+        Result<Object> failed = Result.failed(resultCode);
+        JSONObject responseData = new JSONObject().putOnce("data", failed.data()).putOnce("code", failed.code()).putOnce("msg", failed.msg());
+        response.getWriter().print(responseData);
     }
 }

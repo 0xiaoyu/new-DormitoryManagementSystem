@@ -15,6 +15,7 @@ import i18n from "@/lang/index";
 // 样式
 import "element-plus/theme-chalk/dark/css-vars.css";
 import "@/styles/index.scss";
+import "@/styles/v-shake.scss";
 import "uno.css";
 
 const app = createApp(App);
@@ -24,3 +25,12 @@ setupDirective(app);
 setupStore(app);
 
 app.use(router).use(i18n).mount("#app");
+
+app.directive("shake", (el, vnode, preVnode) => {
+  el.addEventListener("click", () => {
+    el.style.animation = "shake 0.51s cubic-bezier(.36,.07,.19,.97) both";
+    el.addEventListener("animationend", () => {
+      el.style.animation = "";
+    });
+  });
+});
