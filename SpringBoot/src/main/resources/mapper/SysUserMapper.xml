@@ -20,16 +20,16 @@
     <!-- 用户认证信息映射 -->
     <resultMap id="UserAuthMap" type="com.yu.model.dto.UserAuthInfo">
         <id property="userId" column="userId" jdbcType="BIGINT"/>
-        <result property="name" column="username" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
         <result property="status" column="status" jdbcType="BOOLEAN"/>
         <collection property="roles" ofType="string" javaType="java.util.Set">
-            <result column="code"/>
+            <result column="code"></result>
         </collection>
     </resultMap>
-    <select id="getUserAuthInfo" resultType="com.yu.model.dto.UserAuthInfo">
+    <select id="getUserAuthInfo" resultMap="UserAuthMap">
         select u.id userId,
-        u.name username,
+        u.name,
         u.password,
         u.avatar,
         u.email,

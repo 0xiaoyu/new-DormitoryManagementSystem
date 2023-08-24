@@ -47,4 +47,41 @@
             </otherwise>
         </choose>
     </select>
+    <!-- 菜单路由映射 -->
+    <resultMap id="RouteMap" type="com.yu.model.bo.RouteBO">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+        <result property="path" column="path" jdbcType="VARCHAR"/>
+        <result property="component" column="component" jdbcType="VARCHAR"/>
+        <result property="redirect" column="redirect" jdbcType="VARCHAR"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="sort" column="sort" jdbcType="INTEGER"/>
+        <result property="visible" column="visible" jdbcType="BOOLEAN"/>
+        <result property="type" column="type" jdbcType="OTHER"/>
+        <collection property="roles" ofType="string" javaType="list">
+            <result column="code"/>
+        </collection>
+    </resultMap>
+
+    <!-- 获取路由列表 -->
+    <select id="listRoutes" resultMap="RouteMap">
+        SELECT menu.id,
+               menu.name,
+               menu.parent_id,
+               menu.path,
+               menu.component,
+               menu.icon,
+               menu.sort,
+               menu.visible,
+               menu.redirect,
+               menu.type,
+               r.code
+        FROM sys_menu menu
+                 LEFT JOIN sys_role_menu r_m ON menu.id = r_m.menu_id
+                 LEFT JOIN sys_role r ON r_m.role_id = r.id
+        WHERE menu.type != '${@com.yu.common.enums.MenuTypeEnum@BUTTON.getValue()}'
+        ORDER BY menu.sort
+    </select>
+
 </mapper>

@@ -2,7 +2,9 @@ package com.yu.service;
 
 import com.yu.model.entity.SysMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yu.model.vo.RouteVO;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,4 +16,6 @@ public interface SysMenuService extends IService<SysMenu> {
 
 
     Set<String> listRolePerms(Set<String> roles);
+
+    List<RouteVO> listRoutes();
 }

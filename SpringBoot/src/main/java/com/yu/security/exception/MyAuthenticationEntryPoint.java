@@ -22,6 +22,10 @@ import java.io.IOException;
 public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        if (authException.getMessage().equals("Full authentication is required to access this resource")) {
+            ResponseUtils.writeErrMsg(response, ResultCode.RESOURCE_NOT_FOUND);
+            return;
+        }
         ResponseUtils.writeErrMsg(response, ResultCode.TOKEN_INVALID);
     }
 }

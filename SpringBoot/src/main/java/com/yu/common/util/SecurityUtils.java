@@ -1,6 +1,8 @@
 package com.yu.common.util;
 
 import cn.hutool.core.util.StrUtil;
+import com.yu.common.constant.SecurityConstants;
+import com.yu.common.constant.SystemConstants;
 import com.yu.security.userdetails.SysUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,5 +45,16 @@ public class SecurityUtils {
             }
         }
         return Set.of();
+    }
+
+    public static boolean isRoot() {
+        Set<String> roles = getRoles();
+        if (roles.contains(SystemConstants.ROOT_ROLE_CODE))
+            return true;
+        return false;
+    }
+
+    public static Long getUserId() {
+        return Objects.requireNonNull(getUser()).getUserId();
     }
 }

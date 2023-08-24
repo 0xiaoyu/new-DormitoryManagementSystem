@@ -1,8 +1,11 @@
 package com.yu.mapper;
 
+import com.yu.model.bo.RouteBO;
 import com.yu.model.entity.SysMenu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yu.service.impl.SysMenuServiceImpl;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,6 +17,8 @@ import java.util.Set;
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
     Set<String> listRolePerms(Set<String> roles);
+
+    List<RouteBO> listRoutes();
 }
 
 

@@ -1,16 +1,20 @@
 package com.yu.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.system.UserInfo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yu.common.constant.SecurityConstants;
 import com.yu.common.util.SecurityUtils;
 import com.yu.mapper.SysUserMapper;
 import com.yu.model.dto.UserAuthInfo;
 import com.yu.model.entity.SysUser;
+import com.yu.model.vo.UserInfoVO;
 import com.yu.service.SysMenuService;
 import com.yu.service.SysUserService;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -26,11 +30,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
     implements SysUserService{
 
     @Resource
+    private RedisTemplate<String, Set<String>> redisTemplate;
+    @Resource
     private SysMenuService menuService;
-    @Override
-    public boolean saveUser(SysUser user) {
-        return false;
-    }
 
     @Override
     public UserAuthInfo getUserAuthInfo(String usernameOrEmail) {
@@ -47,15 +49,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
     }
 
     @Override
-    public UserAuthInfo getUserLoginInfo() {
+    public UserInfoVO getUserLoginInfo() {
         SysUser user = this.getOne(new LambdaQueryWrapper<SysUser>()
                 .eq(SysUser::getName, Objects.requireNonNull(SecurityUtils.getUser()).getUsername())
                 .select(SysUser::getId, SysUser::getAvatar));
-        UserAuthInfo info = new UserAuthInfo();
+        UserInfoVO info = new UserInfoVO();
         BeanUtils.copyProperties(user, info);
         info.setRoles(SecurityUtils.getRoles());
-//        info.setPerms((Set<String>) redis.opsForValue().get(SecurityConstants.USER_PERMS_CACHE_PREFIX+ user.getId()));
-        return null;
+        info.setPerms(redisTemplate.opsForValue().get(SecurityConstants.USER_PERMS_CACHE_PREFIX+ user.getId()));
+        return info;
     }
 }
 

@@ -1,17 +1,22 @@
 package com.yu.UtilsTest;
 
 import cn.hutool.core.util.RandomUtil;
+import com.yu.common.enums.EmailType;
 import com.yu.common.util.EmailUtils;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.web.PortResolverImpl;
 
 @SpringBootTest
 public class EmailUtilTest {
 
+    @Autowired
+    private EmailUtils emailUtils;
     @Test
     public void sendOne(){
-        boolean b = EmailUtils.sendMailCode("zay1647022985@foxmail.com", "123456");
+        boolean b = emailUtils.sendMailCode("zay1647022985@foxmail.com","123", EmailType.REGISTER);
         assert b;
     }
     @Test
