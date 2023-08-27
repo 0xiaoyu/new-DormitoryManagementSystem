@@ -1,7 +1,10 @@
 package com.yu.service;
 
-import com.yu.model.entity.SysMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yu.common.model.Option;
+import com.yu.model.entity.SysMenu;
+import com.yu.model.form.MenuForm;
+import com.yu.model.vo.MenuVO;
 import com.yu.model.vo.RouteVO;
 
 import java.util.List;
@@ -18,4 +21,25 @@ public interface SysMenuService extends IService<SysMenu> {
     Set<String> listRolePerms(Set<String> roles);
 
     List<RouteVO> listRoutes();
+
+    /**
+     * 获取菜单表格列表
+     *
+     * @return 菜单表格列表
+     */
+    List<MenuVO> listMenus(String keywords,Integer status);
+
+    /**
+     * 新增菜单
+     *
+     * @param menu
+     * @return
+     */
+    boolean saveMenu(MenuForm menu);
+    /**
+     * 获取菜单下拉列表
+     *
+     * @return
+     */
+    List<Option> listMenuOptions();
 }

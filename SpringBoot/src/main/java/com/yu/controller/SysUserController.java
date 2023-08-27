@@ -1,35 +1,44 @@
 package com.yu.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yu.common.constant.UserRoleConstants;
 import com.yu.common.enums.EmailType;
 import com.yu.common.result.PageResult;
 import com.yu.common.result.Result;
+import com.yu.common.util.CommonUtil;
 import com.yu.common.util.EmailUtils;
+import com.yu.listener.easyexcel.UserImportListener;
 import com.yu.model.entity.Student;
 import com.yu.model.entity.SysUser;
 import com.yu.model.entity.SysUserRole;
+import com.yu.model.query.UserPageQuery;
+import com.yu.model.vo.UserImportVO;
 import com.yu.model.vo.UserInfoVO;
+import com.yu.model.vo.UserPageVO;
 import com.yu.service.StudentService;
 import com.yu.service.SysUserRoleService;
 import com.yu.service.SysUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Objects;
 
 @Tag(name = "02.系统用户接口")
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 public class SysUserController {
 
     @Resource
@@ -85,13 +94,11 @@ public class SysUserController {
         return b ? Result.success() : Result.failed("注册失败");
     }
 
-    @GetMapping("page/{current}/{size}")
-    @Operation(description = "分页查询用户")
-    public PageResult<SysUser> getPageUser(@PathVariable("current") Integer current,
-                                           @PathVariable("size") Integer size, SysUser user) {
-        Page<SysUser> page = new Page<>(current, size);
-        Page<SysUser> userPage = userService.page(page, Wrappers.lambdaQuery(user));
-        return PageResult.success(userPage);
+    @GetMapping("page")
+    @Operation(summary = "用户分页列表", security = {@SecurityRequirement(name = "Authorization")})
+    public PageResult<UserPageVO> page(@ParameterObject UserPageQuery queryParams) {
+        IPage<UserPageVO> result  = userService.getUserPage(queryParams);
+        return PageResult.success(result);
     }
 
     @PatchMapping("resetPassword")
@@ -130,6 +137,13 @@ public class SysUserController {
         return Result.success(info);
     }
 
+    @Operation(summary = "导入用户", security = {@SecurityRequirement(name = "Authorization")})
+    @PostMapping("/_import")
+    public Result<String> importUsers(MultipartFile file) throws IOException {
+        UserImportListener listener = new UserImportListener();
+        String msg = CommonUtil.importExcel(file.getInputStream(), UserImportVO.class, listener);
+        return Result.success(msg);
+    }
 
     @Schema(description = "注册学生用户")
     public record StudentUser(

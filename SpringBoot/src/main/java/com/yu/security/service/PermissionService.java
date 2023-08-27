@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.yu.common.constant.SecurityConstants;
 import com.yu.common.util.SecurityUtils;
-import lombok.RequiredArgsConstructor;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -19,11 +19,11 @@ import java.util.Set;
  * @since 2022/2/22
  */
 @Component("security")
-@RequiredArgsConstructor
 @Slf4j
 public class PermissionService {
 
-    private final RedisTemplate<String,Set<String>> redisTemplate;
+    @Resource
+    private RedisTemplate<String,Set<String>> redisTemplate;
 
     /**
      * 判断当前登录用户是否拥有操作权限

@@ -41,13 +41,14 @@ interface DefaultSettings {
   language: string;
 }
 
+
 const defaultSettings: DefaultSettings = {
   title: "vue3-element-admin",
   showSettings: true,
   tagsView: true,
   fixedHeader: false,
   sidebarLogo: true,
-  layout: "left",
+  layout: "mix",
   /**
    *  主题模式
    *

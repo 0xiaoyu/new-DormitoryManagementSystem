@@ -1,5 +1,6 @@
 package com.yu.model.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -15,8 +16,8 @@ public class Student implements Serializable {
     /**
      * 学生ID
      */
-    @TableId(value = "id")
-    private String id;
+    @TableId(value = "id",type = IdType.AUTO)
+    private Long id;
 
     /**
      * 学生名字
@@ -46,7 +47,7 @@ public class Student implements Serializable {
      * 宿舍号，外键
      */
     @TableField(value = "dormitory_id")
-    private Integer dormitoryId;
+    private Long dormitoryId;
 
     /**
      * 逻辑删除标识(0-未删除；1-已删除)

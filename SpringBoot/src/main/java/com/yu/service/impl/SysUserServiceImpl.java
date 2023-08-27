@@ -1,15 +1,18 @@
 package com.yu.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.system.UserInfo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yu.common.constant.SecurityConstants;
 import com.yu.common.util.SecurityUtils;
 import com.yu.mapper.SysUserMapper;
 import com.yu.model.dto.UserAuthInfo;
 import com.yu.model.entity.SysUser;
+import com.yu.model.query.UserPageQuery;
 import com.yu.model.vo.UserInfoVO;
+import com.yu.model.vo.UserPageVO;
 import com.yu.service.SysMenuService;
 import com.yu.service.SysUserService;
 import jakarta.annotation.Resource;
@@ -58,6 +61,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
         info.setRoles(SecurityUtils.getRoles());
         info.setPerms(redisTemplate.opsForValue().get(SecurityConstants.USER_PERMS_CACHE_PREFIX+ user.getId()));
         return info;
+    }
+
+    @Override
+    public IPage<UserPageVO> getUserPage(UserPageQuery queryParams) {
+        Page<UserPageVO> page = new Page<>(queryParams.getPageNum(), queryParams.getPageSize());
+        return this.baseMapper.getUserPage(page, queryParams);
     }
 }
 

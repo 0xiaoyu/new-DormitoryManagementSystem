@@ -8,7 +8,7 @@ package com.yu.common.constant;
 public interface SecurityConstants {
 
     // 登录接口路径
-    String LOGIN_PATH = "/auth/login";
+    String LOGIN_PATH = "/api/v1/auth/login";
 
     // Token 前缀
     String TOKEN_PREFIX = "Bearer ";

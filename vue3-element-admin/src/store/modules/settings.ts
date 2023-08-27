@@ -9,7 +9,6 @@ export const useSettingsStore = defineStore("setting", () => {
   const showSettings = ref<boolean>(defaultSettings.showSettings);
   const fixedHeader = ref<boolean>(defaultSettings.fixedHeader);
   const sidebarLogo = ref<boolean>(defaultSettings.sidebarLogo);
-
   const layout = useStorage<string>("layout", defaultSettings.layout);
 
   // actions

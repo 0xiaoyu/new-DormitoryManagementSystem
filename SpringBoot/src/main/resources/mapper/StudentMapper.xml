@@ -15,9 +15,38 @@
             <result property="classId" column="class_id" jdbcType="INTEGER"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id,student_name,gender,
-        age,phone,dormitory_id,
-        deleted,class_id
-    </sql>
+    <select id="getPage" resultType="com.yu.model.vo.StudentPageVo">
+        select s.id,
+        s.id,
+        student_name,
+        gender,
+        age,
+        phone,
+        class_id,
+        b.build_name,
+        d.dormitory_number
+        from tb_student s
+        left join tb_dormitory d on s.dormitory_id = d.id
+        left join d_building b on d.building_id = b.id
+        <where>
+            <if test="queryParams.id != null and queryParams.id != ''">
+                and s.id = #{queryParams.id}
+            </if>
+
+            <if test='queryParams.name != null and queryParams.name.trim() neq ""'>
+                and s.student_name like concat('%', #{queryParams.name}, '%')
+            </if>
+            <if test="queryParams.classId != null and queryParams.classId != ''">
+                and s.class_id like #{queryParams.classId}
+            </if>
+            <if test="queryParams.gender!=null and queryParams.gender != ''">
+                and s.gender = #{queryParams.gender}
+            </if>
+
+            <if test="queryParams.dormitoryId != null and queryParams.dormitoryId != ''">
+                and s.dormitory_id in (#{queryParams.dormitoryId})
+            </if>
+        </where>
+        order by s.id
+    </select>
 </mapper>

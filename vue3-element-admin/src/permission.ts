@@ -23,6 +23,7 @@ router.beforeEach(async (to, from, next) => {
     } else {
       const userStore = useUserStoreHook();
       const hasRoles = userStore.roles && userStore.roles.length > 0;
+
       if (hasRoles) {
         // 未匹配到任何路由，跳转404
         if (to.matched.length === 0) {
@@ -38,7 +39,9 @@ router.beforeEach(async (to, from, next) => {
             router.addRoute(route);
           });
           next({ ...to, replace: true });
+
         } catch (error) {
+          console.log(error);
           // 移除 token 并跳转登录页
           await userStore.resetToken();
           next(`/login?redirect=${to.path}`);

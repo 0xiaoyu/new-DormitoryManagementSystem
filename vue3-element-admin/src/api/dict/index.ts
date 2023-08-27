@@ -9,6 +9,8 @@ import {
   DictPageResult,
 } from "./types";
 
+const baseUrl = "/api/v1/dict";
+
 /**
  * 字典类型分页列表
  *
@@ -18,7 +20,7 @@ export function getDictTypePage(
   queryParams: DictTypeQuery
 ): AxiosPromise<DictTypePageResult> {
   return request({
-    url: "/api/v1/dict/types/page",
+    url: baseUrl + "/types/page",
     method: "get",
     params: queryParams,
   });
@@ -31,7 +33,7 @@ export function getDictTypePage(
  */
 export function getDictTypeForm(id: number): AxiosPromise<DictTypeForm> {
   return request({
-    url: "/api/v1/dict/types/" + id + "/form",
+    url: baseUrl + "/types/" + id + "/form",
     method: "get",
   });
 }
@@ -43,7 +45,7 @@ export function getDictTypeForm(id: number): AxiosPromise<DictTypeForm> {
  */
 export function addDictType(data: DictTypeForm) {
   return request({
-    url: "/api/v1/dict/types",
+    url: baseUrl + "/types",
     method: "post",
     data: data,
   });
@@ -57,7 +59,7 @@ export function addDictType(data: DictTypeForm) {
  */
 export function updateDictType(id: number, data: DictTypeForm) {
   return request({
-    url: "/api/v1/dict/types/" + id,
+    url: baseUrl + "/types/" + id,
     method: "put",
     data: data,
   });
@@ -68,7 +70,7 @@ export function updateDictType(id: number, data: DictTypeForm) {
  */
 export function deleteDictTypes(ids: string) {
   return request({
-    url: "/api/v1/dict/types/" + ids,
+    url: baseUrl + "/types/" + ids,
     method: "delete",
   });
 }
@@ -80,7 +82,7 @@ export function deleteDictTypes(ids: string) {
  */
 export function getDictOptions(typeCode: string): AxiosPromise<OptionType[]> {
   return request({
-    url: "/api/v1/dict/" + typeCode + "/options",
+    url: baseUrl + "/" + typeCode + "/options",
     method: "get",
   });
 }
@@ -92,7 +94,7 @@ export function getDictPage(
   queryParams: DictQuery
 ): AxiosPromise<DictPageResult> {
   return request({
-    url: "/api/v1/dict/page",
+    url: baseUrl + "/page",
     method: "get",
     params: queryParams,
   });
@@ -105,7 +107,7 @@ export function getDictPage(
  */
 export function getDictFormData(id: number): AxiosPromise<DictForm> {
   return request({
-    url: "/api/v1/dict/" + id + "/form",
+    url: baseUrl + "/" + id + "/form",
     method: "get",
   });
 }
@@ -117,7 +119,7 @@ export function getDictFormData(id: number): AxiosPromise<DictForm> {
  */
 export function addDict(data: DictForm) {
   return request({
-    url: "/api/v1/dict",
+    url: baseUrl + "",
     method: "post",
     data: data,
   });
@@ -131,7 +133,7 @@ export function addDict(data: DictForm) {
  */
 export function updateDict(id: number, data: DictForm) {
   return request({
-    url: "/api/v1/dict/" + id,
+    url: baseUrl + "/" + id,
     method: "put",
     data: data,
   });
@@ -144,7 +146,7 @@ export function updateDict(id: number, data: DictForm) {
  */
 export function deleteDict(ids: string) {
   return request({
-    url: "/api/v1/dict/" + ids,
+    url: baseUrl + "/" + ids,
     method: "delete",
   });
 }

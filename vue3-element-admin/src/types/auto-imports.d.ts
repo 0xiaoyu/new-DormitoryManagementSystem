@@ -59,6 +59,7 @@ declare global {
   const onKeyStroke: typeof import("@vueuse/core")["onKeyStroke"];
   const onLongPress: typeof import("@vueuse/core")["onLongPress"];
   const onMounted: typeof import("vue")["onMounted"];
+
   const onRenderTracked: typeof import("vue")["onRenderTracked"];
   const onRenderTriggered: typeof import("vue")["onRenderTriggered"];
   const onScopeDispose: typeof import("vue")["onScopeDispose"];

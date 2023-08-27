@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yu.mapper.BuildingMapper">
+
+    <resultMap id="BaseResultMap" type="com.yu.model.entity.Building">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="buildName" column="build_name" jdbcType="VARCHAR"/>
+            <result property="latitude" column="latitude" jdbcType="DOUBLE"/>
+            <result property="longitude" column="longitude" jdbcType="DOUBLE"/>
+            <result property="maxroom" column="maxroom" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,build_name,latitude,
+        longitude,maxroom
+    </sql>
+</mapper>

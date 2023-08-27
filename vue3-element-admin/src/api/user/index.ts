@@ -8,7 +8,7 @@ import {
   UserQuery,
 } from "./types";
 
-const baseUrl = "/users/";
+const baseUrl = "/api/v1/users/";
 
 /**
  * 登录成功后获取用户信息（昵称、头像、权限集合和角色集合）

@@ -2,7 +2,7 @@ import request from "@/utils/request";
 import { AxiosPromise } from "axios";
 import { CaptchaResult, LoginData, LoginResult } from "./types";
 
-const baseUrl: String = "/auth/";
+const baseUrl: String = "/api/v1/auth/";
 
 /**
  * 登录API

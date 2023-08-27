@@ -62,7 +62,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers(
-                        "/auth/captcha",
+                        "/api/v1/auth/captcha",
                         "/webjars/**",
                         "/doc.html",
                         "/swagger-resources/**",

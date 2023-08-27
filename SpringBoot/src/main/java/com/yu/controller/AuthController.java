@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 @Tag(name = "01-认证中心")
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {

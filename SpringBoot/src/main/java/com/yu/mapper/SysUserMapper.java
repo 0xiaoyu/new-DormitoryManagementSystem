@@ -1,8 +1,12 @@
 package com.yu.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yu.model.dto.UserAuthInfo;
 import com.yu.model.entity.SysUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yu.model.query.UserPageQuery;
+import com.yu.model.vo.UserPageVO;
 
 /**
 * @author za'y
@@ -13,6 +17,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
     UserAuthInfo getUserAuthInfo(String username,String email);
+
+    IPage<UserPageVO> getUserPage(Page<UserPageVO> page, UserPageQuery queryParams);
 }
 
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yu.mapper.DormitoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.yu.model.entity.Dormitory">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="buildingId" column="building_id" jdbcType="INTEGER"/>
+            <result property="dormitoryNumber" column="dormitory_number" jdbcType="INTEGER"/>
+            <result property="capacity" column="capacity" jdbcType="TINYINT"/>
+            <result property="electricity" column="electricity" jdbcType="DOUBLE"/>
+            <result property="water" column="water" jdbcType="DOUBLE"/>
+            <result property="eStatus" column="e_status" jdbcType="TINYINT"/>
+            <result property="wStatus" column="w_status" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,building_id,dormitory_number,
+        capacity,electricity,water,
+        e_status,w_status
+    </sql>
+</mapper>

@@ -2,6 +2,7 @@ import request from "@/utils/request";
 import { AxiosPromise } from "axios";
 import { DeptForm, DeptQuery, DeptVO } from "./types";
 
+const baseUrl = "/api/v1/dept";
 /**
  * 部门树形表格
  *
@@ -9,7 +10,7 @@ import { DeptForm, DeptQuery, DeptVO } from "./types";
  */
 export function listDepts(queryParams?: DeptQuery): AxiosPromise<DeptVO[]> {
   return request({
-    url: "/api/v1/dept",
+    url: baseUrl,
     method: "get",
     params: queryParams,
   });
@@ -20,7 +21,7 @@ export function listDepts(queryParams?: DeptQuery): AxiosPromise<DeptVO[]> {
  */
 export function listDeptOptions(): AxiosPromise<[]> {
   return request({
-    url: "/api/v1/dept/options",
+    url: baseUrl + "/options",
     method: "get",
   });
 }
@@ -32,7 +33,7 @@ export function listDeptOptions(): AxiosPromise<[]> {
  */
 export function getDeptForm(id: number): AxiosPromise<DeptForm> {
   return request({
-    url: "/api/v1/dept/" + id + "/form",
+    url: baseUrl + "/" + id + "/form",
     method: "get",
   });
 }
@@ -44,7 +45,7 @@ export function getDeptForm(id: number): AxiosPromise<DeptForm> {
  */
 export function addDept(data: DeptForm) {
   return request({
-    url: "/api/v1/dept",
+    url: baseUrl,
     method: "post",
     data: data,
   });
@@ -58,7 +59,7 @@ export function addDept(data: DeptForm) {
  */
 export function updateDept(id: number, data: DeptForm) {
   return request({
-    url: "/api/v1/dept/" + id,
+    url: baseUrl + "/" + id,
     method: "put",
     data: data,
   });
@@ -71,7 +72,7 @@ export function updateDept(id: number, data: DeptForm) {
  */
 export function deleteDept(ids: string) {
   return request({
-    url: "/api/v1/dept/" + ids,
+    url: baseUrl + "/" + ids,
     method: "delete",
   });
 }
