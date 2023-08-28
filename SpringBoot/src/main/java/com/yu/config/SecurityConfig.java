@@ -68,6 +68,7 @@ public class SecurityConfig {
                         "/api/v1/users/saveStudent",
                         "/webjars/**",
                         "/doc.html",
+                        "/v3/api-docs/**",
                         "/swagger-resources/**",
                         "/swagger-ui/**",
                         "/ws/**"

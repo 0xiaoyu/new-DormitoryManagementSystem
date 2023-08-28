@@ -1,6 +1,5 @@
 package com.yu.controller;
 
-import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yu.common.constant.UserRoleConstants;
@@ -10,14 +9,12 @@ import com.yu.common.result.Result;
 import com.yu.common.util.CommonUtil;
 import com.yu.common.util.EmailUtils;
 import com.yu.listener.easyexcel.UserImportListener;
-import com.yu.model.entity.Student;
 import com.yu.model.entity.SysUser;
 import com.yu.model.entity.SysUserRole;
 import com.yu.model.query.UserPageQuery;
 import com.yu.model.vo.UserImportVO;
 import com.yu.model.vo.UserInfoVO;
 import com.yu.model.vo.UserPageVO;
-import com.yu.service.StudentService;
 import com.yu.service.SysUserRoleService;
 import com.yu.service.SysUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,6 +28,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -85,14 +83,23 @@ public class SysUserController {
     @PostMapping()
     @Operation(description = "注册用户")
     @PreAuthorize("@security.hasPerm('sys:user:add')")
-    public Result<Object> saveUser(@RequestBody SysUser user) {
-        if (user.getPassword() == null)
+    public Result<Object> saveUser(@RequestBody SysUserForm userForm) {
+        SysUser user = new SysUser();
+        BeanUtils.copyProperties(userForm, user);
+        if (StringUtils.hasText(userForm.password))
             user.setPassword("123456");
         // 密码加密
         String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
         boolean b = userService.save(user);
-        return b ? Result.success() : Result.failed("注册失败");
+        if (b) {
+            List<Long> roleIds = userForm.roleIds;
+            if (roleIds != null && !roleIds.isEmpty()) {
+                roleIds.forEach(roleId -> userRoleService.save(new SysUserRole(user.getId(), roleId)));
+            }
+            return Result.success();
+        } else
+            return Result.failed("注册失败");
     }
 
     @GetMapping("page")
@@ -170,5 +177,19 @@ public class SysUserController {
             @Schema(description = "学生邮箱", example = "zhay@outlook.com") String email,
             @Schema(description = "学号", example = "2023050111") Long userId
     ) {
+    }
+
+    @Schema(description = "用户表单")
+    public record SysUserForm(
+            @Schema(description = "用户id") Long id,
+            @Schema(description = "用户名", example = "张三") String name,
+            @Schema(description = "密码,最多只能 30 字符", example = "123") String password,
+            @Schema(description = "用户头像", example = "") String avatar,
+            @Schema(description = "邮箱", example = "") String email,
+            @Schema(description = "用户状态(1:正常;0:禁用)", example = "1") Integer status,
+            @Schema(description = "绑定id", example = "1") Long userId,
+            @Schema(description = "绑定角色ID" ,example = "[1,2,3]") List<Long> roleIds
+
+    ){
     }
 }

@@ -513,7 +513,7 @@ onMounted(() => {
         </el-form-item>
 
         <el-form-item label="角色" prop="roleIds">
-          <el-select v-model="formData.roleIds" multiple placeholder="请选择">
+          <el-select v-model="formData.roleIds" filterable multiple placeholder="请选择">
             <el-option
               v-for="item in roleList"
               :key="item.value"
@@ -524,12 +524,7 @@ onMounted(() => {
         </el-form-item>
 
         <el-form-item label="密码" prop="password">
-          <el-input
-              show-password
-              v-model="formData.password"
-          >
-
-          </el-input>
+          <el-input show-password v-model="formData.password" placeholder="默认密码123456" />
         </el-form-item>
 
         <el-form-item label="邮箱" prop="email">
