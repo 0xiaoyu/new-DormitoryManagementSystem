@@ -63,6 +63,9 @@ public class SecurityConfig {
         return (web) -> web.ignoring()
                 .requestMatchers(
                         "/api/v1/auth/captcha",
+                        "/api/v1/student/verify",
+                        "/api/v1/users/getEmailVerifyCode",
+                        "/api/v1/users/saveStudent",
                         "/webjars/**",
                         "/doc.html",
                         "/swagger-resources/**",

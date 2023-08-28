@@ -20,7 +20,7 @@ public interface SecurityConstants {
     String VERIFY_CODE_CACHE_PREFIX = "AUTH:VERIFY_CODE:";
 
     // 邮箱缓存前缀
-    String EMAIL_CODE_CACHE_PREFIX = "AUTH:EMAIL_CODE:";
+    String EMAIL_CODE_CACHE_PREFIX = "AUTH:EMAIL_CODE:%s:";
 
     // 用户权限集合缓存前缀
     String USER_PERMS_CACHE_PREFIX = "AUTH:USER_PERMS:";

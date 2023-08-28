@@ -1,6 +1,7 @@
 package com.yu.UtilsTest;
 
 import cn.hutool.core.util.RandomUtil;
+import com.yu.common.constant.SecurityConstants;
 import com.yu.common.enums.EmailType;
 import com.yu.common.util.EmailUtils;
 import jakarta.annotation.Resource;
@@ -24,5 +25,10 @@ public class EmailUtilTest {
         System.out.println(RandomUtil.randomString(8));
         System.out.println(RandomUtil.randomString(9));
         System.out.println(RandomUtil.randomString(10));
+    }
+
+    @Test
+    public void formatTest(){
+        System.out.println(SecurityConstants.EMAIL_CODE_CACHE_PREFIX.formatted(EmailType.FAIL));
     }
 }

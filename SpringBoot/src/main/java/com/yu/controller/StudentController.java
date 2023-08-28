@@ -2,11 +2,13 @@ package com.yu.controller;
 
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yu.common.annotation.PreventDuplicateSubmit;
 import com.yu.common.result.PageResult;
 import com.yu.common.result.Result;
 import com.yu.common.util.CommonUtil;
 import com.yu.listener.easyexcel.UserImportListener;
+import com.yu.model.entity.Student;
 import com.yu.model.query.StudentPageQuery;
 import com.yu.model.vo.StudentImportVO;
 import com.yu.model.vo.StudentPageVo;
@@ -58,7 +60,14 @@ public class StudentController {
         return Result.success(msg);
     }
 
-
-
+    // todo 此处应该返回一个code，先简单做了
+    @Operation(summary = "验证学生身份")
+    @PostMapping("/verify")
+    public Result<Boolean> verifyStudent(@RequestBody Student student){
+        Student one = studentService.getOne(Wrappers.lambdaQuery(student));
+        if (one == null)
+            return Result.failed("学生身份验证失败");
+        return Result.success(true);
+    }
 
 }

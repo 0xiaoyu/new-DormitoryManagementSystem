@@ -7,15 +7,16 @@ import {
   UserPageVO,
   UserQuery,
 } from "./types";
+import { LoginData } from "@/api/auth/types";
 
-const baseUrl = "/api/v1/users/";
+const baseUrl = "/api/v1/users";
 
 /**
  * 登录成功后获取用户信息（昵称、头像、权限集合和角色集合）
  */
 export function getUserInfo(): AxiosPromise<UserInfo> {
   return request({
-    url: baseUrl + "me",
+    url: baseUrl + "/me",
     method: "get",
   });
 }
@@ -29,7 +30,7 @@ export function getUserPage(
   queryParams: UserQuery
 ): AxiosPromise<PageResult<UserPageVO[]>> {
   return request({
-    url: baseUrl + "page",
+    url: baseUrl + "/page",
     method: "get",
     params: queryParams,
   });
@@ -42,7 +43,7 @@ export function getUserPage(
  */
 export function getUserForm(userId: number): AxiosPromise<UserForm> {
   return request({
-    url: baseUrl + userId + "/form",
+    url: baseUrl+`/${userId}/form`,
     method: "get",
   });
 }
@@ -54,7 +55,7 @@ export function getUserForm(userId: number): AxiosPromise<UserForm> {
  */
 export function addUser(data: any) {
   return request({
-    url: "/api/v1/users",
+    url: baseUrl,
     method: "post",
     data: data,
   });
@@ -68,7 +69,7 @@ export function addUser(data: any) {
  */
 export function updateUser(id: number, data: UserForm) {
   return request({
-    url: baseUrl + "" + id,
+    url: baseUrl + `/${id}`,
     method: "put",
     data: data,
   });
@@ -82,7 +83,7 @@ export function updateUser(id: number, data: UserForm) {
  */
 export function updateUserStatus(id: number, status: number) {
   return request({
-    url: baseUrl + "" + id + "/status",
+    url: baseUrl + `/${id}/status`,
     method: "patch",
     params: { status: status },
   });
@@ -96,7 +97,7 @@ export function updateUserStatus(id: number, status: number) {
  */
 export function updateUserPassword(id: number, password: string) {
   return request({
-    url: baseUrl + "" + id + "/password",
+    url: baseUrl + "/" + id + "/password",
     method: "patch",
     params: { password: password },
   });
@@ -109,7 +110,7 @@ export function updateUserPassword(id: number, password: string) {
  */
 export function deleteUsers(ids: string) {
   return request({
-    url: baseUrl + "" + ids,
+    url: baseUrl + "/" + ids,
     method: "delete",
   });
 }
@@ -121,7 +122,7 @@ export function deleteUsers(ids: string) {
  */
 export function downloadTemplateApi() {
   return request({
-    url: baseUrl + "template",
+    url: baseUrl + "/template",
     method: "get",
     responseType: "arraybuffer",
   });
@@ -135,7 +136,7 @@ export function downloadTemplateApi() {
  */
 export function exportUser(queryParams: UserQuery) {
   return request({
-    url: baseUrl + "_export",
+    url: baseUrl + "/_export",
     method: "get",
     params: queryParams,
     responseType: "arraybuffer",
@@ -147,13 +148,12 @@ export function exportUser(queryParams: UserQuery) {
  *
  * @param file
  */
-export function importUser(deptId: number, file: File) {
+export function importUser(file: File) {
   const formData = new FormData();
   formData.append("file", file);
   return request({
-    url: baseUrl + "_import",
+    url: baseUrl + "/_import",
     method: "post",
-    params: { deptId: deptId },
     data: formData,
     headers: {
       "Content-Type": "multipart/form-data",
@@ -163,17 +163,25 @@ export function importUser(deptId: number, file: File) {
 
 export function getEmailCode(email: string) {
   return request({
-    url: baseUrl + "getEmailVerifyCode",
+    url: baseUrl + "/getEmailVerifyCode",
     method: "get",
-    params: { email: email },
+    params: { email: email, type: "REGISTER" },
   });
 }
 
-export function saveStudent(student: RegistrationData, emailCode: string) {
+export function saveStudent(student: LoginData, emailCode: string) {
   return request({
-    url: baseUrl + "saveStudent",
+    url: baseUrl + "/saveStudent",
     method: "post",
     params: { emailCode: emailCode },
     data: student,
+  });
+}
+
+export function getByName(name: String) {
+  return request({
+    url: baseUrl + "/getByName",
+    method: "get",
+    params: { name: name },
   });
 }

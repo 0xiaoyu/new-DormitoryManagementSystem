@@ -69,9 +69,11 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="downloadTemplate">
-                    <i-ep-download />下载模板</el-dropdown-item>
+                    <i-ep-download />下载模板</el-dropdown-item
+                  >
                   <el-dropdown-item @click="openImportDialog">
-                    <i-ep-top />导入数据</el-dropdown-item>
+                    <i-ep-top />导入数据</el-dropdown-item
+                  >
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -206,8 +208,7 @@
 
 <script setup lang="ts">
 import { Student, StudentQuery } from "@/api/student/types";
-import { addOrUpdateStudent, addStudent, getStudentPage } from "@/api/student";
-import { filter } from "lodash";
+import { addOrUpdateStudent, getStudentPage } from "@/api/student";
 
 const queryFormRef = ref(ElForm);
 const dataFormRef = ref(ElForm);
@@ -264,7 +265,6 @@ function handleQuery() {
 function resetQuery() {
   queryFormRef.value.resetFields();
   queryParams.pageNum = 1;
-  queryParams.deptId = undefined;
   handleQuery();
 }
 

@@ -3,9 +3,9 @@
     <el-card class="el-card">
       <el-form
         ref="loginFormRef"
+        :class="{ 'login-form': isLogin, 'register-form': !isLogin }"
         :model="loginData"
         :rules="loginRules"
-        :class="{ 'login-form': isLogin, 'register-form': !isLogin }"
       >
         <div class="flex text-white items-center py-4 title-wrap">
           <span v-if="isLogin" class="text-2xl flex-1 text-center title">
@@ -15,91 +15,103 @@
             欢迎注册
           </span>
           <span
+            v-show="isLogin"
             class="text-white text-sm cursor-pointer"
-            @click="isLogin = !isLogin"
+            @click="openVerifyDialog"
           >
-            {{ isLogin ? "没有账号?去注册" : "已有账号?去登录" }}
+            学生注册
           </span>
           <lang-select class="text-white! cursor-pointer" />
         </div>
-
-        <template v-if="isLogin">
-          <el-form-item prop="username">
-            <div class="p-2 text-white">
-              <svg-icon icon-class="user" />
-            </div>
+        <el-form-item prop="username">
+          <div class="p-2 text-white">
+            <svg-icon icon-class="user" />
+          </div>
+          <el-input
+            ref="username"
+            v-model="loginData.username"
+            v-shake
+            :placeholder="isLogin ? '用户名/邮箱' : '用户名'"
+            class="flex-1"
+            name="username"
+            size="large"
+            @blur="checkName"
+          />
+        </el-form-item>
+        <el-tooltip
+          :disabled="isCapslock === false"
+          content="Caps lock is On"
+          placement="right"
+        >
+          <el-form-item prop="password">
+            <span class="p-2 text-white">
+              <svg-icon icon-class="password" />
+            </span>
             <el-input
-              ref="username"
-              v-model="loginData.username"
+              v-model="loginData.password"
               v-shake
-              :placeholder="isLogin ? '用户名/邮箱' : '用户名'"
+              :type="passwordVisible === false ? 'password' : 'input'"
               class="flex-1"
-              name="username"
+              name="password"
+              placeholder="密码"
               size="large"
+              @keyup="checkCapslock"
+              @keyup.enter="handleLogin"
             />
-          </el-form-item>
-
-          <el-form-item v-if="!isLogin" prop="studentId">
-            <div class="p-2 text-white">
-              <svg-icon icon-class="user" />
-            </div>
-            <el-input
-              ref="username"
-              v-model="registerData.userId"
-              v-shake
-              class="flex-1"
-              name="username"
-              placeholder="请输入学号"
-              size="large"
-            />
-          </el-form-item>
-
-          <el-tooltip
-            :disabled="isCapslock === false"
-            content="Caps lock is On"
-            placement="right"
-          >
-            <el-form-item prop="password">
-              <span class="p-2 text-white">
-                <svg-icon icon-class="password" />
-              </span>
-              <el-input
-                v-model="loginData.password"
-                v-shake
-                :type="passwordVisible === false ? 'password' : 'input'"
-                class="flex-1"
-                name="password"
-                placeholder="密码"
-                size="large"
-                @keyup="checkCapslock"
-                @keyup.enter="handleLogin"
+            <span class="mr-2" @click="passwordVisible = !passwordVisible">
+              <svg-icon
+                :icon-class="!passwordVisible ? 'eye' : 'eye-open'"
+                class="text-white cursor-pointer"
               />
-              <span class="mr-2" @click="passwordVisible = !passwordVisible">
-                <svg-icon
-                  :icon-class="!passwordVisible ? 'eye' : 'eye-open'"
-                  class="text-white cursor-pointer"
-                />
-              </span>
-            </el-form-item>
-          </el-tooltip>
+            </span>
+          </el-form-item>
+        </el-tooltip>
 
-          <!-- 验证码 -->
-          <el-form-item prop="verifyCode">
+        <!-- 验证码 -->
+        <el-form-item prop="verifyCode" v-if="isLogin">
+          <span class="p-2 text-white">
+            <svg-icon icon-class="verify_code" />
+          </span>
+          <el-input
+            v-model="loginData.verifyCode"
+            v-shake
+            :placeholder="'请输入验证码'"
+            auto-complete="off"
+            class="w-[60%]"
+            @keyup.enter="handleLogin"
+          />
+
+          <div class="captcha">
+            <img :src="captchaBase64" alt="" @click="getCaptcha" />
+          </div>
+        </el-form-item>
+        <template v-else>
+          <el-form-item prop="email">
             <span class="p-2 text-white">
               <svg-icon icon-class="verify_code" />
             </span>
             <el-input
-              v-model="loginData.verifyCode"
+              v-model="loginData.email"
               v-shake
               :placeholder="'请输入邮箱'"
               auto-complete="off"
               class="w-[60%]"
               @keyup.enter="handleLogin"
             />
-
-            <div class="captcha">
-              <img :src="captchaBase64" @click="getCaptcha" alt="" />
-            </div>
+            <el-button :disabled="isDisposed" type="primary" @click="getEmail">
+              {{ isDisposed ? `${emailTime}s后重新获取` : "获取验证码" }}
+            </el-button>
+          </el-form-item>
+          <el-form-item prop="verifyCode">
+            <el-input
+              ref="verifyCode"
+              v-model="loginData.verifyCode"
+              v-shake
+              placeholder="输入验证码"
+              class="flex-1"
+              name="emailCode"
+              size="large"
+            />
           </el-form-item>
         </template>
         <el-button
@@ -108,16 +120,56 @@
           size="default"
           type="primary"
           @click.prevent="handleLogin"
-          >{{ $t("login.login") }}
+          >{{ isLogin ? "登录" : "注册" }}
         </el-button>
-
-        <!-- 账号密码提示 -->
-        <div class="mt-4 text-white text-sm">
-          <span>{{ $t("login.username") }}: admin</span>
-          <span class="ml-4"> {{ $t("login.password") }}: 123456</span>
-        </div>
       </el-form>
     </el-card>
+
+    <el-dialog
+      v-model="verifyDialog.visible"
+      :title="verifyDialog.title"
+      append-to-body
+      width="600px"
+      @close="closeVerifyDialog"
+    >
+      <el-form
+        ref="studentVerifyFormRef"
+        :model="studentVerifyForm"
+        :rules="studentVerifyRules"
+        label-width="80px"
+      >
+        <el-form-item label="学号" prop="id">
+          <el-input
+            v-model.number="studentVerifyForm.id"
+            placeholder="请输入学号"
+          />
+        </el-form-item>
+        <el-form-item label="学生姓名" prop="studentName">
+          <el-input
+            v-model="studentVerifyForm.studentName"
+            placeholder="请输入学生姓名"
+          />
+        </el-form-item>
+        <el-form-item label="手机号" prop="phone">
+          <el-input
+            v-model.number="studentVerifyForm.phone"
+            placeholder="请输入学生手机号"
+          />
+        </el-form-item>
+        <el-form-item label="年龄" prop="age">
+          <el-input
+            v-model.number="studentVerifyForm.age"
+            placeholder="请输入学生年龄"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="verify">验 证</el-button>
+          <el-button @click="closeVerifyDialog">取 消</el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -133,8 +185,9 @@ import { useUserStore } from "@/store/modules/user";
 import { LocationQuery, LocationQueryValue, useRoute } from "vue-router";
 import { getCaptchaApi } from "@/api/auth";
 import { LoginData } from "@/api/auth/types";
-import { RegistrationData } from "@/api/user/types";
-import { getEmailCode } from "@/api/user";
+import { getByName, getEmailCode, saveStudent } from "@/api/user";
+import { Student } from "@/api/student/types";
+import { verifyStudent } from "@/api/student";
 
 const userStore = useUserStore();
 const route = useRoute();
@@ -161,33 +214,119 @@ const captchaBase64 = ref();
  * 登录表单引用
  */
 const loginFormRef = ref(ElForm);
-const registerData = ref<RegistrationData>({
-  /** 学生姓名*/
-  sName: "",
-  /** 用户名 */
-  name: "",
-  /** 密码 */
-  password: "",
-  /** 邮箱 */
-  email: "",
-  /** 头像地址 */
-  avatar: "",
-  /** 用户id */
-  userId: "",
-  /** 手机号 */
-  phone: "",
-});
+
 const loginData = ref<LoginData>({
-  username: "",
-  password: "",
+  username: "aaa",
+  password: "123456",
 });
 
+const studentVerifyFormRef = ref(ElForm); // 用户表单
+const studentVerifyForm = reactive<Student>({});
+const verifyDialog = reactive<DialogOption>({
+  title: "学生认证",
+  visible: false,
+});
+const studentVerifyRules = reactive({
+  id: [
+    { required: true, trigger: "blur", message: "请输入学号" },
+    { type: "number", trigger: "change", message: "请输入数字" },
+  ],
+  studentName: [{ required: true, trigger: "blur", message: "请输入学生姓名" }],
+  phone: [
+    { required: true, trigger: "blur", message: "请输入学生手机号" },
+    {
+      pattern: /^1[3456789][0-9]\d{8}$/,
+      type: "number",
+      trigger: "change",
+      message: "请输入正确的手机号",
+    },
+  ],
+  age: [
+    { required: true, trigger: "blur", message: "请输入学生年龄" },
+    { type: "number", trigger: "change", message: "请输入数字" },
+    { pattern: /^[12][0-9]$/, trigger: "blur", message: "请输入正常的年龄" },
+  ],
+});
 const loginRules = {
-  username: [{ required: true, trigger: "blur" }],
-  password: [{ required: true, trigger: "blur", validator: passwordValidator }],
-  email: [{ required: true, trigger: "blur", validator: emailValidator }],
-  verifyCode: [{ required: true, trigger: "blur" }],
+  username: [{ required: true, trigger: "blur", message: "请输入用户名" }],
+  password: [
+    {
+      required: true,
+      trigger: "blur",
+      validator: passwordValidator,
+      message: "请输入密码",
+    },
+  ],
+  email: [
+    {
+      required: true,
+      trigger: "blur",
+      validator: emailValidator,
+      message: "请输入邮箱",
+    },
+  ],
+  verifyCode: [{ required: true, trigger: "blur", message: "请输入验证码" }],
 };
+const handleTimeChange = () => {
+  if (emailTime.value <= 0) {
+    isDisposed.value = false;
+    emailTime.value = 60;
+    sessionStorage.removeItem("startTimeLogin");
+  } else {
+    setTimeout(() => {
+      emailTime.value--;
+      handleTimeChange();
+    }, 1000);
+  }
+};
+
+const emailTime = ref(60);
+const isDisposed = ref(false);
+
+function openVerifyDialog() {
+  verifyDialog.visible = true;
+}
+
+function resetVerifyForm() {
+  studentVerifyFormRef.value.resetFields();
+  studentVerifyFormRef.value.clearValidate();
+}
+function closeVerifyDialog() {
+  verifyDialog.visible = false;
+  resetVerifyForm();
+}
+
+function checkName() {
+  if (isLogin) return;
+  getByName(loginData.value.username).then(({ data }) => {
+    if (data) {
+      ElMessage.error("用户名已存在");
+    }
+  });
+}
+function verify() {
+  studentVerifyFormRef.value.validate((valid: boolean) => {
+    if (valid) {
+      const loading = ElLoading.service({
+        lock: true,
+        text: "Loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+      verifyStudent(studentVerifyForm)
+        .then(({ data }) => {
+          if (data) {
+            ElMessage.success("认证成功,请输入你的账号信息");
+            isLogin.value = false;
+            loginData.value.userId = studentVerifyForm.id;
+          }
+        })
+        .finally(() => {
+          verifyDialog.visible = false;
+          loading.close();
+        });
+    }
+  });
+}
 
 /**
  * 密码校验器
@@ -200,8 +339,12 @@ function passwordValidator(rule: any, value: any, callback: any) {
   }
 }
 
+/**
+ * 邮箱验证器
+ */
 function emailValidator(rule: any, value: any, callback: any) {
-  const regEmail = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,5})$/;
+  console.log(value);
+  const regEmail = /[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+/;
   if (!regEmail.test(value)) {
     callback(new Error("电子邮件格式不正确"));
   } else {
@@ -228,6 +371,13 @@ function getCaptcha() {
   });
 }
 
+function register() {
+  saveStudent(loginData.value, <string>loginData.value.verifyCode).then(() => {
+    ElMessage.success("注册成功");
+    isLogin.value = true;
+  });
+}
+
 /**
  * 登录
  */
@@ -235,6 +385,10 @@ function handleLogin() {
   loginFormRef.value.validate((valid: boolean) => {
     if (valid) {
       loading.value = true;
+      if (!isLogin.value) {
+        register();
+        return;
+      }
       userStore
         .login(loginData.value)
         .then(() => {
@@ -265,19 +419,46 @@ function handleLogin() {
   });
 }
 
+function startTime() {
+  const startTime = Number(sessionStorage.getItem("startTimeLogin"));
+  const nowTime = new Date().getTime();
+  if (startTime) {
+    const time = 60 - (nowTime - startTime) / 1000;
+    if (time < 0) {
+      isDisposed.value = false;
+      emailTime.value = 60;
+      sessionStorage.removeItem("startTimeLogin");
+    } else {
+      emailTime.value = Number(time.toFixed(0));
+      isDisposed.value = true;
+    }
+  } else {
+    emailTime.value = 60;
+    isDisposed.value = false;
+  }
+}
+
 function getEmail() {
-  const email = registerData.value.email;
-  const regEmail = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,5})$/;
+  const email = loginData.value.email || "";
+  const regEmail = /[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+/;
   if (!regEmail.test(email)) {
     ElMessage.error("电子邮件格式不正确");
     return;
   }
+  startTime();
+  if (isDisposed.value) {
+    return;
+  }
   getEmailCode(email).then(() => {
     ElMessage.success("验证码已发送");
+    isDisposed.value = true;
+    handleTimeChange();
   });
 }
 
 onMounted(() => {
+  startTime();
+  handleTimeChange();
   getCaptcha();
 });
 </script>
@@ -352,6 +533,7 @@ onMounted(() => {
       }
     }
   }
+
   .register-form {
     width: 510px;
     max-width: 100%;

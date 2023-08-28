@@ -27,7 +27,7 @@
         <easy-captcha.version>1.6.2</easy-captcha.version>
         <nashorn.version>15.4</nashorn.version>
         <redisson.version>3.21.0</redisson.version>
-        <knife4j.version>4.0.0</knife4j.version>
+        <knife4j.version>4.1.0</knife4j.version>
     </properties>
     <dependencies>
         <dependency>

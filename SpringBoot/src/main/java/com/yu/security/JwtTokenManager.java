@@ -56,7 +56,7 @@ public class JwtTokenManager {
     private byte[] secretKeyBytes;
 
     @Resource
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String,Set<String>> redisTemplate;
 
     /**
      * 创建token

@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final EasyCaptchaService easyCaptchaService;
     private final JwtTokenManager jwtTokenManager;
-    private final RedisTemplate redisTemplate;
+    private final RedisTemplate<String,String> redisTemplate;
 
     @Operation(summary = "登录")
     @PostMapping("/login")

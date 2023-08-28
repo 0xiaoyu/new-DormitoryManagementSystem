@@ -4,7 +4,7 @@ export interface StudentQuery extends PageQuery {
   /** 学生id */
   id?: number;
   /**班级*/
-  class?: string;
+  classId?: string;
   /*宿舍id*/
   dormitoryId?: number;
   /** 性别 */

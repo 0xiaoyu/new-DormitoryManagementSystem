@@ -36,8 +36,14 @@ public class EmailUtils {
     private RedisTemplate<String, String> redisTemplate;
 
 
-    public EmailType verify(String email,String emailCode){
-        String s = redisTemplate.opsForValue().get(SecurityConstants.EMAIL_CODE_CACHE_PREFIX + email);
+    /**
+     * 验证邮箱验证码是否正确
+     * @param email
+     * @param emailCode
+     * @return
+     */
+    public EmailType verify(String email,String emailCode,EmailType type){
+        String s = redisTemplate.opsForValue().get(SecurityConstants.EMAIL_CODE_CACHE_PREFIX.formatted(type) + email);
         if (s == null) return EmailType.OVERDUE;
         if (StrUtil.equals(s, emailCode)) {
             redisTemplate.delete(email);
@@ -47,11 +53,16 @@ public class EmailUtils {
             return EmailType.FAIL;
     }
 
+    /**
+     * 发送邮箱验证码
+     * @param email 邮箱
+     * @param type 邮件类型
+     */
     public void sendMailCode(String email,EmailType type){
-        String s = redisTemplate.opsForValue().get(SecurityConstants.EMAIL_CODE_CACHE_PREFIX + email);
+        String s = redisTemplate.opsForValue().get(SecurityConstants.EMAIL_CODE_CACHE_PREFIX.formatted(type) + email);
         if (s != null) return;
         String code = RandomUtil.randomString(8);
-        redisTemplate.opsForValue().set(SecurityConstants.EMAIL_CODE_CACHE_PREFIX + email, code
+        redisTemplate.opsForValue().set(SecurityConstants.EMAIL_CODE_CACHE_PREFIX.formatted(type) + email, code
                 , ttl, TimeUnit.SECONDS);
         sendMailCode(email,code,type);
     }

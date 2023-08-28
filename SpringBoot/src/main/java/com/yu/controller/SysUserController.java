@@ -1,5 +1,6 @@
 package com.yu.controller;
 
+import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yu.common.constant.UserRoleConstants;
@@ -56,19 +57,18 @@ public class SysUserController {
     @PostMapping("saveStudent")
     @Operation(description = "注册学生用户")
     @Transactional
-    public Result<Object> saveStudent(@RequestBody StudentUser studentUser,
-                                      @Parameter(description = "邮箱验证码", example = "admin/zh@qq.com") @RequestParam("emailCode") String emailCode) {
-        switch (emailUtils.verify(studentUser.email,emailCode)){
+    public Result<Object> saveStudent(@Parameter(description = "邮箱验证码", example = "admin/zh@qq.com") @RequestParam("emailCode") String emailCode,
+                                      @RequestBody StudentUser studentUser) {
+        var s =switch (emailUtils.verify(studentUser.email,emailCode, EmailType.REGISTER)){
             case FAIL -> Result.failed("邮箱验证码错误");
             case OVERDUE -> Result.failed("邮箱验证码已过期");
-        }
-        Student one = studentService.getOne(Wrappers.lambdaQuery(Student.class)
-                .eq(Student::getId, studentUser.userId)
-                .eq(Student::getPhone, studentUser.phone)
-                .eq(Student::getStudentName, studentUser.sName));
-        if (Objects.isNull(one)) return Result.failed("学生信息不匹配");
+            default -> null;
+        };
+        if (s!=null)
+            return s;
         SysUser student = new SysUser();
         BeanUtils.copyProperties(studentUser, student);
+        student.setName(studentUser.username);
         String password = passwordEncoder.encode(studentUser.password);
         student.setPassword(password);
         boolean save = userService.save(student);
@@ -101,15 +101,26 @@ public class SysUserController {
         return PageResult.success(result);
     }
 
+    @GetMapping("getByName")
+    @Operation(description = "根据用户名获取用户")
+    public Result<Boolean> getByName(@Parameter(description = "用户名", example = "admin") @RequestParam("name") String name) {
+        SysUser user = userService.getOne(Wrappers.lambdaQuery(SysUser.class).select(SysUser::getId).eq(SysUser::getName, name));
+        return Result.success(user==null);
+    }
+
     @PatchMapping("resetPassword")
     @Operation(description = "重置密码")
     public Result<String> resetPassword(@Parameter(description = "email", example = "1647@qq.com") String email,
                                         @Parameter(description = "邮箱验证码", example = "123asd") String code,
                                         @Parameter(description = "新密码", example = "123456") String password) {
-        switch (emailUtils.verify(email, code)){
+        Result<String> s = switch (emailUtils.verify(email, code, EmailType.RESET_PASSWORD)){
             case FAIL -> Result.failed("邮箱验证码错误");
             case OVERDUE -> Result.failed("邮箱验证码已过期");
-        }
+            default -> null;
+        };
+        if (s!=null)
+            return s;
+
         SysUser user = userService.getOne(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getEmail, email));
         if (Objects.isNull(user)) return Result.failed("用户不存在");
         String encode = passwordEncoder.encode(password);
@@ -121,7 +132,7 @@ public class SysUserController {
     @Operation(description = "获取邮箱验证码验证")
     @GetMapping("getEmailVerifyCode")
     public Result<String> getEmailVerifyCode(@Parameter(description = "注册的邮箱", example = "164702@qq.com") String email,
-                                             @Parameter(description = "发送邮箱的类型",example = "REGISTER") EmailType type){
+                                             @Parameter(description = "发送邮箱的类型",example = "REGISTER")@RequestParam("type") EmailType type){
         try {
             emailUtils.sendMailCode(email,type);
             return Result.success();
@@ -147,13 +158,10 @@ public class SysUserController {
 
     @Schema(description = "注册学生用户")
     public record StudentUser(
-            @Schema(description = "学生姓名", example = "张三") String sName,
-            @Schema(description = "用户名", example = "张三") String name,
+            @Schema(description = "用户名", example = "张三") String username,
             @Schema(description = "密码", example = "123") String password,
             @Schema(description = "学生邮箱", example = "zhay@outlook.com") String email,
-            @Schema(description = "头像", example = "/static/a.gif") String avatar,
-            @Schema(description = "学号", example = "2023050111") String userId,
-            @Schema(description = "手机号", example = "12345678901") String phone
+            @Schema(description = "学号", example = "2023050111") Long userId
     ) {
     }
 }
