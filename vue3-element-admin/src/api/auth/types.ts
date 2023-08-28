@@ -20,6 +20,10 @@ export interface LoginData {
    * 验证码
    */
   verifyCode?: string;
+
+  email?: string;
+
+  userId?: number;
 }
 
 /**

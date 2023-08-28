@@ -8,7 +8,7 @@ import {
   deleteUsers,
   downloadTemplateApi,
   exportUser,
-  getUserForm,
+  getRolesByUserId,
   getUserPage,
   importUser,
   updateUser,
@@ -57,15 +57,13 @@ const rules = reactive({
   ],
   mobile: [
     {
-      pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
+      pattern: /^1[3456789][0-9]\d{8}$/,
       message: "请输入正确的手机号码",
       trigger: "blur",
     },
   ],
 });
 
-const searchDeptName = ref();
-const deptList = ref<OptionType[]>();
 const roleList = ref<OptionType[]>();
 const importDialog = reactive<DialogOption>({
   title: "用户导入",
@@ -155,13 +153,14 @@ function resetPassword(row: { [key: string]: any }) {
 }
 
 /** 打开表单弹窗 */
-async function openDialog(userId?: number) {
+async function openDialog(row?: UserPageVO) {
   await getRoleOptions();
   dialog.visible = true;
-  if (userId) {
+  if (row?.id) {
     dialog.title = "修改用户";
-    getUserForm(userId).then(({ data }) => {
-      Object.assign(formData, data);
+    Object.assign(formData, row);
+    getRolesByUserId(row.id).then(({ data }) => {
+      formData.roleIds = data;
     });
   } else {
     dialog.title = "新增用户";
@@ -180,6 +179,8 @@ function resetForm() {
   userFormRef.value.clearValidate();
 
   formData.id = undefined;
+  formData.email = undefined;
+  formData.name = undefined;
   formData.status = 1;
 }
 
@@ -266,7 +267,6 @@ function handleExcelChange(file: UploadFile) {
 
 /** 打开导入弹窗 */
 async function openImportDialog() {
-  await getDeptOptions();
   importDialog.visible = true;
 }
 
@@ -418,16 +418,16 @@ onMounted(() => {
           align="center"
           label="用户昵称"
           prop="name"
-          width="120"
+          width="200"
         />
 
         <el-table-column
           align="center"
           label="角色"
           prop="roleNames"
-          width="100"
+          width="300"
         />
-        <el-table-column align="center" label="邮箱" prop="email" width="120" />
+        <el-table-column align="center" label="邮箱" prop="email" width="300" />
 
         <el-table-column align="center" label="状态" prop="status">
           <template #default="scope">
@@ -443,7 +443,7 @@ onMounted(() => {
           align="center"
           label="创建时间"
           prop="createTime"
-          width="180"
+          width="300"
         />
         <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
@@ -462,7 +462,7 @@ onMounted(() => {
               link
               size="small"
               type="primary"
-              @click="openDialog(scope.row.id)"
+              @click="openDialog(scope.row)"
             >
               <i-ep-edit />
               编辑
@@ -504,20 +504,12 @@ onMounted(() => {
         :rules="rules"
         label-width="80px"
       >
-        <el-form-item label="用户名" prop="username">
+        <el-form-item label="用户名" prop="name">
           <el-input
-            v-model="formData.username"
+            v-model="formData.name"
             :readonly="!!formData.id"
             placeholder="请输入用户名"
           />
-        </el-form-item>
-
-        <el-form-item label="用户昵称" prop="nickname">
-          <el-input v-model="formData.nickname" placeholder="请输入用户昵称" />
-        </el-form-item>
-
-        <el-form-item label="性别" prop="gender">
-          <dictionary v-model="formData.gender" type-code="gender" />
         </el-form-item>
 
         <el-form-item label="角色" prop="roleIds">
@@ -531,12 +523,13 @@ onMounted(() => {
           </el-select>
         </el-form-item>
 
-        <el-form-item label="手机号码" prop="mobile">
+        <el-form-item label="密码" prop="password">
           <el-input
-            v-model="formData.mobile"
-            maxlength="11"
-            placeholder="请输入手机号码"
-          />
+              show-password
+              v-model="formData.password"
+          >
+
+          </el-input>
         </el-form-item>
 
         <el-form-item label="邮箱" prop="email">

@@ -36,17 +36,6 @@ export function getUserPage(
   });
 }
 
-/**
- * 获取用户表单详情
- *
- * @param userId
- */
-export function getUserForm(userId: number): AxiosPromise<UserForm> {
-  return request({
-    url: baseUrl+`/${userId}/form`,
-    method: "get",
-  });
-}
 
 /**
  * 添加用户
@@ -183,5 +172,12 @@ export function getByName(name: String) {
     url: baseUrl + "/getByName",
     method: "get",
     params: { name: name },
+  });
+}
+
+export function getRolesByUserId(userId: number) {
+  return request({
+    url: baseUrl + `/roles/${userId}`,
+    method: "get",
   });
 }

@@ -127,11 +127,16 @@
 
     <el-dialog
       v-model="verifyDialog.visible"
-      :title="verifyDialog.title"
       append-to-body
       width="600px"
       @close="closeVerifyDialog"
+      style="background-color: #2d3a4b"
     >
+      <template #header>
+        <div style="color: #90caf9">
+          {{ verifyDialog.title }}
+        </div>
+      </template>
       <el-form
         ref="studentVerifyFormRef"
         :model="studentVerifyForm"

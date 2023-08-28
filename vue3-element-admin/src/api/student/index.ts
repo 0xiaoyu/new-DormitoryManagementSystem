@@ -18,3 +18,11 @@ export function addOrUpdateStudent(data: Student) {
     data,
   });
 }
+
+export function verifyStudent(data: Student) {
+  return request({
+    url: `${baseUrl}/verify`,
+    method: "post",
+    data,
+  });
+}

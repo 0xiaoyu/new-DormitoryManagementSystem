@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 @Tag(name = "02.系统用户接口")
@@ -44,8 +45,6 @@ public class SysUserController {
 
     @Resource
     private SysUserService userService;
-    @Resource
-    private StudentService studentService;
     @Resource
     private PasswordEncoder passwordEncoder;
     @Resource
@@ -87,6 +86,8 @@ public class SysUserController {
     @Operation(description = "注册用户")
     @PreAuthorize("@security.hasPerm('sys:user:add')")
     public Result<Object> saveUser(@RequestBody SysUser user) {
+        if (user.getPassword() == null)
+            user.setPassword("123456");
         // 密码加密
         String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
@@ -154,6 +155,12 @@ public class SysUserController {
         UserImportListener listener = new UserImportListener();
         String msg = CommonUtil.importExcel(file.getInputStream(), UserImportVO.class, listener);
         return Result.success(msg);
+    }
+
+    @GetMapping("roles/{id}")
+    @Operation(summary = "获取用户的角色ID集合", security = {@SecurityRequirement(name = "Authorization")})
+    public Result<List<Long>> getUserRoleIds(@Parameter(description = "用户ID") @PathVariable Long id) {
+        return Result.success(userRoleService.list(Wrappers.lambdaQuery(SysUserRole.class).select(SysUserRole::getRoleId).eq(SysUserRole::getUserId, id)).stream().map(SysUserRole::getRoleId).toList());
     }
 
     @Schema(description = "注册学生用户")
