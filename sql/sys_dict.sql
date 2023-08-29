@@ -1,0 +1,12 @@
+INSERT INTO dormitorymanagementsystem.sys_dict (id, type_code, name, value, sort, status, defaulted, remark, create_time, update_time) VALUES (1, 'gender', '男', '1', 1, 1, 0, null, '2023-08-19 20:43:58', '2023-08-19 20:43:58');
+INSERT INTO dormitorymanagementsystem.sys_dict (id, type_code, name, value, sort, status, defaulted, remark, create_time, update_time) VALUES (2, 'gender', '女', '2', 2, 1, 0, null, '2023-08-19 20:43:58', '2023-08-19 20:43:58');
+INSERT INTO dormitorymanagementsystem.sys_dict (id, type_code, name, value, sort, status, defaulted, remark, create_time, update_time) VALUES (3, 'gender', '未知', '0', 1, 1, 0, null, '2023-08-19 20:43:58', '2023-08-19 20:43:58');
+INSERT INTO dormitorymanagementsystem.sys_dict (id, type_code, name, value, sort, status, defaulted, remark, create_time, update_time) VALUES (4, 'building', '男生宿舍', '0', 1, 1, 0, '男生宿舍', null, null);
+INSERT INTO dormitorymanagementsystem.sys_dict (id, type_code, name, value, sort, status, defaulted, remark, create_time, update_time) VALUES (5, 'building', '女生宿舍', '1', 1, 1, 0, '女生宿舍', null, null);
+INSERT INTO dormitorymanagementsystem.sys_dict (id, type_code, name, value, sort, status, defaulted, remark, create_time, update_time) VALUES (6, 'building', '在建楼', '2', 2, 1, 0, '在建楼', null, null);
+INSERT INTO dormitorymanagementsystem.sys_dict (id, type_code, name, value, sort, status, defaulted, remark, create_time, update_time) VALUES (7, 'building', '待拆楼', '3', 3, 1, 0, '待拆楼', null, null);
+INSERT INTO dormitorymanagementsystem.sys_dict (id, type_code, name, value, sort, status, defaulted, remark, create_time, update_time) VALUES (8, 'building', '维修楼', '4', 2, 1, 0, '维修楼', null, null);
+INSERT INTO dormitorymanagementsystem.sys_dict (id, type_code, name, value, sort, status, defaulted, remark, create_time, update_time) VALUES (9, 'eStatus', '正常', '0', 1, 1, 0, '', null, null);
+INSERT INTO dormitorymanagementsystem.sys_dict (id, type_code, name, value, sort, status, defaulted, remark, create_time, update_time) VALUES (10, 'eStatus', '停用', '1', 2, 1, 0, '', null, null);
+INSERT INTO dormitorymanagementsystem.sys_dict (id, type_code, name, value, sort, status, defaulted, remark, create_time, update_time) VALUES (11, 'eStatus', '临时启动', '3', 3, 1, 0, '', null, null);
+INSERT INTO dormitorymanagementsystem.sys_dict (id, type_code, name, value, sort, status, defaulted, remark, create_time, update_time) VALUES (12, 'eStatus', '异常', '4', 4, 1, 0, '', null, null);

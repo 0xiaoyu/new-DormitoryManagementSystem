@@ -6,18 +6,19 @@ create table access_log
     create_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
     a_type      tinyint                            not null comment '进出类型 0 进 1出'
 )
-    comment '进入记录';
+    comment '进入记录' row_format = DYNAMIC;
 
 create table d_building
 (
     id         int auto_increment comment '楼栋id'
         primary key,
     build_name varchar(40) collate utf8mb4_general_ci null comment '楼名字,10字以内',
+    type       tinyint default 0                      not null comment '楼层类型',
     latitude   double(10, 6)                          not null comment '经度',
     longitude  double(10, 6)                          not null comment '纬度',
-    maxroom    tinyint default 10                     not null comment '一层的最大房间号'
+    maxroom    int     default 10                     not null comment '最大房间号'
 )
-    comment '宿舍楼栋';
+    comment '宿舍楼栋' row_format = DYNAMIC;
 
 create table ele_log
 (
@@ -29,7 +30,7 @@ create table ele_log
     create_time  timestamp  default CURRENT_TIMESTAMP not null comment '缴费时间',
     status       tinyint(1) default 0                 not null comment '订单状态 0 未支付，1完成'
 )
-    comment '电费日志';
+    comment '电费日志' row_format = DYNAMIC;
 
 create table receive_notice_msg
 (
@@ -41,7 +42,22 @@ create table receive_notice_msg
     constraint receive_notice_msg_列_name_receive_id_uindex
         unique (notice_id, receive_id)
 )
-    comment '接收通知';
+    comment '接收通知' row_format = DYNAMIC;
+
+create table schedule_setting
+(
+    id              int auto_increment comment '任务ID'
+        primary key,
+    bean_name       varchar(255) null comment 'bean名称',
+    method_name     varchar(255) null comment '方法名称',
+    method_params   varchar(255) null comment '方法参数',
+    cron_expression varchar(255) null comment 'cron表达式',
+    remark          varchar(255) null comment '备注',
+    job_status      int          null comment '状态(1正常 0暂停)',
+    create_time     datetime     null comment '创建时间',
+    update_time     datetime     null comment '修改时间'
+)
+    row_format = DYNAMIC;
 
 create table sender_notice_msg
 (
@@ -51,7 +67,7 @@ create table sender_notice_msg
     n_msg     varchar(1000) not null comment '通知内容',
     n_type    tinyint       not null comment '通知类型'
 )
-    comment '通知消息';
+    comment '通知消息' row_format = DYNAMIC;
 
 create table student_log
 (
@@ -61,7 +77,7 @@ create table student_log
     detail      varchar(255) null comment '描述',
     create_time datetime     not null comment '创建时间'
 )
-    comment '学生管理日志';
+    comment '学生管理日志' row_format = DYNAMIC;
 
 create table sug_box
 (
@@ -73,7 +89,7 @@ create table sug_box
     user_id     int                                 not null comment '回复人员id',
     type        tinyint                             null comment '建议类型是否匿名'
 )
-    comment '建议箱，反馈箱';
+    comment '建议箱，反馈箱' row_format = DYNAMIC;
 
 create table sug_text
 (
@@ -83,7 +99,7 @@ create table sug_text
     s_text text    not null comment '内容',
     type   tinyint not null comment '0发起，1回复'
 )
-    comment '建议内容';
+    comment '建议内容' row_format = DYNAMIC;
 
 create table sys_dict
 (
@@ -108,7 +124,7 @@ create table sys_dict_type
         primary key,
     name        varchar(50) default '' null comment '类型名称',
     code        varchar(50) default '' null comment '类型编码',
-    status      tinyint(1)  default 0  null comment '状态(0:正常;1:禁用)',
+    status      tinyint(1)  default 0  null comment '状态(1正常;0禁用)',
     remark      varchar(255)           null comment '备注',
     create_time datetime               null comment '创建时间',
     update_time datetime               null comment '更新时间',
@@ -134,7 +150,8 @@ create table sys_menu
     icon        varchar(64)  default '' null comment '菜单图标',
     redirect    varchar(128)            null comment '跳转路径',
     create_time datetime                null comment '创建时间',
-    update_time datetime                null comment '更新时间'
+    update_time datetime                null comment '更新时间',
+    deleted     tinyint(1)   default 0  null comment '逻辑删除'
 )
     comment '菜单管理' collate = utf8mb4_general_ci
                        row_format = DYNAMIC;
@@ -146,6 +163,7 @@ create table sys_role
     name        varchar(64) collate utf8mb4_general_ci not null comment '角色名称',
     code        varchar(32) collate utf8mb4_general_ci null comment '角色编码',
     sort        int                                    null comment '显示顺序',
+    tableName   varchar(50)                            null comment '表名',
     status      tinyint(1) default 1                   null comment '角色状态(1-正常；0-停用)',
     deleted     tinyint(1) default 0                   not null comment '逻辑删除标识(0-未删除；1-已删除)',
     data_scope  tinyint                                null comment '数据权限',
@@ -153,7 +171,8 @@ create table sys_role
     update_time datetime                               null comment '更新时间',
     constraint name
         unique (name)
-);
+)
+    row_format = DYNAMIC;
 
 create table sys_role_menu
 (
@@ -170,7 +189,6 @@ create table sys_user
         primary key,
     name        varchar(80)          not null comment '用户名',
     password    varchar(100)         not null comment '密码,最多30字符',
-    role        int                  not null comment '角色 0管理员',
     avatar      varchar(255)         null comment '用户头像',
     email       varchar(100)         null comment '邮箱',
     status      tinyint(1) default 1 null comment '用户状态(1:正常;0:禁用)',
@@ -181,7 +199,8 @@ create table sys_user
     constraint login_name
         unique (name)
 )
-    collate = utf8mb4_general_ci;
+    collate = utf8mb4_general_ci
+    row_format = DYNAMIC;
 
 create table sys_user_role
 (
@@ -196,7 +215,7 @@ create table tb_dormitory
 (
     id               bigint auto_increment comment '宿舍id'
         primary key,
-    building_id      int                       not null comment '楼层栋',
+    building_id      bigint                    not null comment '楼层栋',
     dormitory_number int                       not null comment '宿舍号后2位为宿舍号，前为楼层',
     capacity         tinyint                   not null comment '宿舍容量',
     electricity      double(6, 2) default 0.00 not null comment '电费',
@@ -205,7 +224,8 @@ create table tb_dormitory
     w_status         tinyint      default 0    not null comment '水状态(0-正常;1-停用;2-送水)',
     constraint tb_dormitory_building_id_dormitory_number_uindex
         unique (building_id, dormitory_number)
-);
+)
+    row_format = DYNAMIC;
 
 create table tb_maintenance
 (
@@ -218,11 +238,12 @@ create table tb_maintenance
     status                tinyint  not null comment '维修状态，0待支付，1待维修，2完成，3异常',
     maintenance_person_id int      null comment '维修人员id,通过维修人员表获取电话',
     type_id               int      not null comment '维修的类型id'
-);
+)
+    row_format = DYNAMIC;
 
 create table tb_student
 (
-    id           char(10)             not null comment '学生ID'
+    id           bigint auto_increment comment '学生ID'
         primary key,
     student_name varchar(20)          not null comment '学生名字',
     gender       tinyint(1) default 1 null comment '性别 1男 2女',
@@ -231,7 +252,8 @@ create table tb_student
     dormitory_id int                  null comment '宿舍号，外键',
     deleted      tinyint    default 0 not null comment '逻辑删除标识(0-未删除；1-已删除)',
     class_id     int                  null comment '班级'
-);
+)
+    row_format = DYNAMIC;
 
 create table tb_user
 (
@@ -243,7 +265,7 @@ create table tb_user
     age     tinyint           null comment '年龄',
     deleted tinyint default 0 not null comment '逻辑删除标识(0-未删除；1-已删除)'
 )
-    comment '人员表';
+    comment '人员表' row_format = DYNAMIC;
 
 create table violation_log
 (
@@ -255,6 +277,5 @@ create table violation_log
     deleted    tinyint default 0 not null comment '逻辑删除标识(1:已删除;0:未删除)',
     detail     varchar(1000)     null comment '违规详情'
 )
-    comment '违规记录';
-
+    comment '违规记录' row_format = DYNAMIC;
 

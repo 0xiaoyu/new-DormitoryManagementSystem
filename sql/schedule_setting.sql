@@ -1,0 +1,2 @@
+INSERT INTO dormitorymanagementsystem.schedule_setting (id, bean_name, method_name, method_params, cron_expression, remark, job_status, create_time, update_time) VALUES (8, 'taskDemo', 'taskByParams', 'task测试', '0/5 * * * * ?', '没有备注', 0, '2023-08-10 09:57:37', '2023-08-10 09:57:42');
+INSERT INTO dormitorymanagementsystem.schedule_setting (id, bean_name, method_name, method_params, cron_expression, remark, job_status, create_time, update_time) VALUES (9, 'taskDemo', 'taskNoParams', null, '0/10 * * * * ?', null, 0, '2023-08-10 09:58:25', '2023-08-10 09:58:27');

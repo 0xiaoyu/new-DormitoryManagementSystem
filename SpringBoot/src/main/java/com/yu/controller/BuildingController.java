@@ -1,20 +1,19 @@
 package com.yu.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yu.common.model.Option;
 import com.yu.common.result.Result;
 import com.yu.model.entity.Building;
 import com.yu.service.BuildingService;
-import com.yu.service.DormitoryService;
 import com.yu.service.SysDictService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -30,15 +29,15 @@ public class BuildingController {
 
     @GetMapping("/option")
     @Operation(summary = "楼栋下拉列表", security = {@SecurityRequirement(name = "Authorization")})
-    public Result<List<Option<String>>> getOption(@ParameterObject Building building){
-        List<Option<String>> options = sysDictService.listDictOptions("building");
-        for (Option<String> o : options) {
-            o.setChildren(service.list(Wrappers.lambdaQuery(Building.class)
-                            .eq(Building::getBuildName, o.getValue())
-                            .select(Building::getId, Building::getBuildName))
-                    .stream().map(item -> new Option(item.getId(), item.getBuildName())).toList());
-        }
-        return Result.success(options);
+    public Result<List<Option<Long>>> getOption(@ParameterObject Building building) {
+        return Result.success(service.list(Wrappers.lambdaQuery(building)
+                        .select(Building::getId, Building::getBuildName))
+                .stream().map(item -> new Option<Long>(item.getId(), item.getBuildName())).toList());
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "楼栋详情", security = {@SecurityRequirement(name = "Authorization")})
+    public Result<Building> get(@ParameterObject Building building) {
+        return Result.success(service.getOne(Wrappers.lambdaQuery(building)));
+    }
 }
