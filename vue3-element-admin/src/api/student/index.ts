@@ -26,3 +26,15 @@ export function verifyStudent(data: Student) {
     data,
   });
 }
+
+/**
+ * 删除学生
+ *
+ * @param ids
+ */
+export function deleteStudent(ids: string) {
+  return request({
+    url: baseUrl + "/" + ids,
+    method: "delete",
+  });
+}

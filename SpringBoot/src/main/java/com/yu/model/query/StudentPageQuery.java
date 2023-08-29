@@ -3,7 +3,9 @@ package com.yu.model.query;
 import com.yu.common.base.BasePageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Schema(description = "学生分页查询对象")
 @Data
 public class StudentPageQuery extends BasePageQuery {

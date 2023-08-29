@@ -221,7 +221,7 @@ const captchaBase64 = ref();
 const loginFormRef = ref(ElForm);
 
 const loginData = ref<LoginData>({
-  username: "aaa",
+  username: "admin",
   password: "123456",
 });
 

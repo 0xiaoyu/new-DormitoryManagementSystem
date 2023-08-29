@@ -208,7 +208,11 @@
 
 <script setup lang="ts">
 import { Student, StudentQuery } from "@/api/student/types";
-import { addOrUpdateStudent, getStudentPage } from "@/api/student";
+import {
+  addOrUpdateStudent,
+  deleteStudent,
+  getStudentPage,
+} from "@/api/student";
 
 const queryFormRef = ref(ElForm);
 const dataFormRef = ref(ElForm);
@@ -308,6 +312,26 @@ function resetForm() {
 
   formData.id = undefined;
   formData.status = 1;
+}
+
+/** 删除用户 */
+function handleDelete(id?: number) {
+  const userIds = [id || ids.value].join(",");
+  if (!userIds) {
+    ElMessage.warning("请勾选删除项");
+    return;
+  }
+
+  ElMessageBox.confirm("确认删除学生?", "警告", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  }).then(function () {
+    deleteStudent(userIds).then(() => {
+      ElMessage.success("删除成功");
+      resetQuery();
+    });
+  });
 }
 
 handleQuery();

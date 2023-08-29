@@ -1,6 +1,7 @@
 package com.yu.controller;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yu.common.annotation.PreventDuplicateSubmit;
@@ -14,6 +15,7 @@ import com.yu.model.vo.StudentImportVO;
 import com.yu.model.vo.StudentPageVo;
 import com.yu.service.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -24,11 +26,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/student")
-@Tag(name = "学生接口")
+@Tag(name = "07.学生接口")
 public class StudentController {
 
     @Resource
@@ -58,6 +61,19 @@ public class StudentController {
         UserImportListener listener = new UserImportListener();
         String msg = CommonUtil.importExcel(file.getInputStream(), StudentImportVO.class, listener);
         return Result.success(msg);
+    }
+
+    @Operation(summary = "删除学生", security = {@SecurityRequirement(name = "Authorization")})
+    @DeleteMapping("/{ids}")
+    @PreAuthorize("@security.hasPerm('sys:user:delete')")
+    public Result<Boolean> deleteStudent(
+            @Parameter(description = "学生ID，多个以英文逗号(,)分割") @PathVariable String ids
+    ) {
+        Assert.isTrue(StrUtil.isNotBlank(ids), "删除的用户数据为空");
+        // 逻辑删除
+        boolean result = studentService.removeByIds(Arrays.stream(ids.split(","))
+                .map(Long::parseLong).toList());
+        return Result.judge(result);
     }
 
     // todo 此处应该返回一个code，先简单做了

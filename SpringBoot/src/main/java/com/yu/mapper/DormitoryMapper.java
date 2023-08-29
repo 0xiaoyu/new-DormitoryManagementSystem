@@ -1,7 +1,10 @@
 package com.yu.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yu.model.entity.Dormitory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yu.model.query.DormitoryPageQuery;
 
 /**
 * @author za'y
@@ -11,6 +14,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface DormitoryMapper extends BaseMapper<Dormitory> {
 
+    IPage<Dormitory> floorPage(Page<Dormitory> page, DormitoryPageQuery q);
 }
 
 

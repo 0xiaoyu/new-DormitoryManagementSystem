@@ -20,4 +20,28 @@
         capacity,electricity,water,
         e_status,w_status
     </sql>
+    <select id="floorPage" resultType="com.yu.model.entity.Dormitory">
+        select * from tb_dormitory
+        <where>
+            <if test="q.buildingId != null">
+                and building_id = #{q.buildingId}
+            </if>
+            <if test="q.wStatus != null">
+                and w_status = #{q.wStatus}
+            </if>
+            <if test="q.eStatus != null">
+                and e_status = #{q.eStatus}
+            </if>
+            <if test="q.floor != null">
+                <choose>
+                    <when test="q.dormitoryNumber != null">
+                        and dormitory_number = concat(#{q.floor},LPAD(#{q.dormitoryNumber}, 2, '0'))
+                    </when>
+                    <otherwise>
+                        and dormitory_number like concat(#{q.floor},'__')
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+    </select>
 </mapper>

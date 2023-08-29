@@ -28,25 +28,24 @@
         from tb_student s
         left join tb_dormitory d on s.dormitory_id = d.id
         left join d_building b on d.building_id = b.id
-        <where>
-            <if test="queryParams.id != null and queryParams.id != ''">
-                and s.id = #{queryParams.id}
-            </if>
+        where s.deleted = 0
+        <if test="queryParams.id != null and queryParams.id != ''">
+            and s.id = #{queryParams.id}
+        </if>
 
-            <if test='queryParams.name != null and queryParams.name.trim() neq ""'>
-                and s.student_name like concat('%', #{queryParams.name}, '%')
-            </if>
-            <if test="queryParams.classId != null and queryParams.classId != ''">
-                and s.class_id like #{queryParams.classId}
-            </if>
-            <if test="queryParams.gender!=null and queryParams.gender != ''">
-                and s.gender = #{queryParams.gender}
-            </if>
+        <if test='queryParams.name != null and queryParams.name.trim() neq ""'>
+            and s.student_name like concat('%', #{queryParams.name}, '%')
+        </if>
+        <if test="queryParams.classId != null and queryParams.classId != ''">
+            and s.class_id like #{queryParams.classId}
+        </if>
+        <if test="queryParams.gender!=null and queryParams.gender != ''">
+            and s.gender = #{queryParams.gender}
+        </if>
 
-            <if test="queryParams.dormitoryId != null and queryParams.dormitoryId != ''">
-                and s.dormitory_id in (#{queryParams.dormitoryId})
-            </if>
-        </where>
+        <if test="queryParams.dormitoryId != null and queryParams.dormitoryId != ''">
+            and s.dormitory_id in (#{queryParams.dormitoryId})
+        </if>
         order by s.id
     </select>
 </mapper>

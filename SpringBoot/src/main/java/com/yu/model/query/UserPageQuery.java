@@ -10,7 +10,7 @@ import lombok.Data;
  * @author haoxr
  * @since 2022/1/14
  */
-@Schema 
+@Schema(description = "用户分页查询对象")
 @Data
 public class UserPageQuery extends BasePageQuery {
 

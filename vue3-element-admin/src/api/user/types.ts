@@ -31,10 +31,6 @@ export interface UserPageVO {
    */
   createTime?: Date;
   /**
-   * 部门名称
-   */
-  deptName?: string;
-  /**
    * 用户邮箱
    */
   email?: string;
@@ -51,10 +47,6 @@ export interface UserPageVO {
    */
   mobile?: string;
   /**
-   * 用户昵称
-   */
-  nickname?: string;
-  /**
    * 角色名称，多个使用英文逗号(,)分割
    */
   roleNames?: string;
@@ -65,7 +57,7 @@ export interface UserPageVO {
   /**
    * 用户名
    */
-  username?: string;
+  name?: string;
 }
 
 /**
@@ -76,10 +68,6 @@ export interface UserForm {
    * 用户头像
    */
   avatar?: string;
-  /**
-   * 部门ID
-   */
-  deptId?: number;
   /**
    * 邮箱
    */
@@ -94,10 +82,6 @@ export interface UserForm {
   id?: number;
   mobile?: string;
   /**
-   * 昵称
-   */
-  nickname?: string;
-  /**
    * 角色ID集合
    */
   roleIds?: number[];
@@ -108,7 +92,7 @@ export interface UserForm {
   /**
    * 用户名
    */
-  username?: string;
+  name?: string;
 }
 
 // 注册

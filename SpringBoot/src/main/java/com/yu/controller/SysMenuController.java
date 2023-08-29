@@ -68,9 +68,10 @@ public class SysMenuController {
     @PreAuthorize("@security.hasPerm('sys:menu:add')")
     @PreventDuplicateSubmit
     @CacheEvict(cacheNames = "system", key = "'routes'")
-    public Result<Boolean> addMenu(@RequestBody SysMenu menuForm) {
-        return Result.judge( menuService.save(menuForm));
+    public Result<Boolean> addMenu(@RequestBody MenuForm menuForm) {
+        return Result.judge( menuService.saveMenu(menuForm));
     }
+
     @Operation(summary = "修改菜单",security = {@SecurityRequirement(name = "Authorization")})
     @PutMapping(value = "/{id}")
     @PreAuthorize("@security.hasPerm('sys:menu:edit')")

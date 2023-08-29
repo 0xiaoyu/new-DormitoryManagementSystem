@@ -1,5 +1,7 @@
 package com.yu.controller;
 
+import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yu.common.constant.UserRoleConstants;
@@ -33,8 +35,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Tag(name = "02.系统用户接口")
 @RestController
@@ -78,6 +82,19 @@ public class SysUserController {
             return Result.success();
         } else
             return Result.failed("注册学生用户失败");
+    }
+
+    @Operation(summary = "删除用户", security = {@SecurityRequirement(name = "Authorization")})
+    @DeleteMapping("/{ids}")
+    @PreAuthorize("@security.hasPerm('sys:user:delete')")
+    public Result<Boolean> deleteUsers(
+            @Parameter(description = "用户ID，多个以英文逗号(,)分割") @PathVariable String ids
+    ) {
+        Assert.isTrue(StrUtil.isNotBlank(ids), "删除的用户数据为空");
+        // 逻辑删除
+        boolean result = userService.removeByIds(Arrays.stream(ids.split(","))
+                .map(Long::parseLong).toList());
+        return Result.judge(result);
     }
 
     @PostMapping()
