@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yu.mapper.ViolationLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.yu.model.entity.ViolationLog">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="studentId" column="student_id" jdbcType="INTEGER"/>
+            <result property="type" column="type" jdbcType="INTEGER"/>
+            <result property="flag" column="flag" jdbcType="TINYINT"/>
+            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+            <result property="detail" column="detail" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,student_id,type,
+        flag,deleted,detail
+    </sql>
+    <select id="getLogPage" resultType="java.util.List">
+        select v.*, ts.student_name as name
+        from violation_log v
+                 left join yu.tb_student ts on v.student_id = ts.id
+    </select>
+</mapper>

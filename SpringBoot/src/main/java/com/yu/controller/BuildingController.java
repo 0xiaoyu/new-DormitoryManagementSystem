@@ -1,20 +1,20 @@
 package com.yu.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.yu.common.model.BmMarker;
 import com.yu.common.model.Option;
 import com.yu.common.result.Result;
 import com.yu.model.entity.Building;
 import com.yu.service.BuildingService;
-import com.yu.service.DormitoryService;
 import com.yu.service.SysDictService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -39,6 +39,12 @@ public class BuildingController {
                     .stream().map(item -> new Option(item.getId(), item.getBuildName())).toList());
         }
         return Result.success(options);
+    }
+
+    @GetMapping("/location")
+    @Operation(summary = "查询所有宿舍的位置",security = {@SecurityRequirement(name = "Authorization")})
+    public Result<List<BmMarker>> getLocation(){
+        return Result.success(service.list().stream().map(BmMarker::new).toList());
     }
 
 }
