@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
+    "@map-component/vue-tmap": "^1.0.1",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vueuse/core": "^10.1.2",
     "@wangeditor/editor": "^5.1.23",

@@ -8,7 +8,7 @@ import "@/permission";
 
 // 本地SVG图标
 import "virtual:svg-icons-register";
-
+import Tmap from "@map-component/vue-tmap";
 // 国际化
 import i18n from "@/lang/index";
 
@@ -24,7 +24,7 @@ setupDirective(app);
 // 全局注册 状态管理(store)
 setupStore(app);
 
-app.use(router).use(i18n).mount("#app");
+app.use(router).use(Tmap).use(i18n).mount("#app");
 
 app.directive("shake", (el, vnode, preVnode) => {
   el.addEventListener("click", () => {

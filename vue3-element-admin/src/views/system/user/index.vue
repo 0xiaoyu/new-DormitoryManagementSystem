@@ -524,7 +524,11 @@ onMounted(() => {
         </el-form-item>
 
         <el-form-item label="密码" prop="password">
-          <el-input show-password v-model="formData.password" placeholder="默认密码123456" />
+          <el-input
+            show-password
+            v-model="formData.password"
+            placeholder="默认密码123456"
+          />
         </el-form-item>
 
         <el-form-item label="邮箱" prop="email">

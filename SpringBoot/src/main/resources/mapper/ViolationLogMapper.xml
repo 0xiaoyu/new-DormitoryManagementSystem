@@ -17,7 +17,7 @@
         id,student_id,type,
         flag,deleted,detail
     </sql>
-    <select id="getLogPage" resultType="java.util.List">
+    <select id="getLogPage" resultType="com.yu.model.vo.ViolationLogPageVo">
         select v.*, ts.student_name as name
         from violation_log v
                  left join yu.tb_student ts on v.student_id = ts.id

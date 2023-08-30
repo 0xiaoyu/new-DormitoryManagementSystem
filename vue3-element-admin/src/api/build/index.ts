@@ -18,3 +18,26 @@ export function getBuildBy(params: Building) {
     params,
   });
 }
+
+export function getBuildList(params: Building) {
+  return request({
+    url: baseUrl,
+    method: "get",
+    params,
+  });
+}
+
+export function addBuild(data: Building) {
+  return request({
+    url: baseUrl,
+    method: "post",
+    data,
+  });
+}
+
+export function deleteBuild(id: number) {
+  return request({
+    url: `baseUrl/${id}`,
+    method: "delete",
+  });
+}

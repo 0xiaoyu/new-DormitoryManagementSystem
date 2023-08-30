@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="search-container">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-        <el-form-item label="宿舍楼类型" prop="buildingId">
+        <el-form-item label="宿舍楼类型" prop="buildType">
           <dictionary :typeCode="'building'" v-model="queryParams.buildType" />
         </el-form-item>
         <el-form-item label="宿舍楼" prop="buildingId" style="width: 200px">
@@ -144,7 +144,6 @@
             </el-button>
           </template>
         </el-table-column>
-        -->
       </el-table>
 
       <pagination
@@ -169,7 +168,20 @@
         label-width="80px"
       >
         <el-form-item label="楼层栋" prop="buildingId">
-          <el-input v-model="formData.buildingId" placeholder="请输入姓名" />
+          <el-select
+            v-model="formData.buildingId"
+            placeholder="请选择宿舍楼"
+            clearable
+            filterable
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+<!--          <el-input v-model="formData.buildingId" placeholder="请输入姓名" />-->
         </el-form-item>
         <el-form-item label="宿舍号" prop="dormitoryNumber">
           <el-input

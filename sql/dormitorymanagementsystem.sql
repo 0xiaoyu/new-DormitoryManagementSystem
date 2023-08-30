@@ -11,7 +11,7 @@
  Target Server Version : 80027 (8.0.27)
  File Encoding         : 65001
 
- Date: 28/08/2023 23:23:21
+ Date: 30/08/2023 23:29:40
 */
 
 SET NAMES utf8mb4;
@@ -27,7 +27,7 @@ CREATE TABLE `access_log`  (
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `a_type` tinyint NOT NULL COMMENT '进出类型 0 进 1出',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '进入记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '进入记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of access_log
@@ -40,16 +40,17 @@ DROP TABLE IF EXISTS `d_building`;
 CREATE TABLE `d_building`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '楼栋id',
   `build_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '楼名字,10字以内',
+  `type` tinyint NOT NULL DEFAULT 0 COMMENT '楼层类型',
   `latitude` double(10, 6) NOT NULL COMMENT '经度',
   `longitude` double(10, 6) NOT NULL COMMENT '纬度',
-  `maxroom` tinyint NOT NULL DEFAULT 10 COMMENT '一层的最大房间号',
+  `maxroom` int NOT NULL DEFAULT 10 COMMENT '最大房间号',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '宿舍楼栋' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '宿舍楼栋' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of d_building
 -- ----------------------------
-INSERT INTO `d_building` VALUES (1, 'testBuildName', 50.000000, 50.000000, 13);
+INSERT INTO `d_building` VALUES (1, 'testBuildName', 0, 50.000000, 50.000000, 713);
 
 -- ----------------------------
 -- Table structure for ele_log
@@ -63,7 +64,7 @@ CREATE TABLE `ele_log`  (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '缴费时间',
   `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '订单状态 0 未支付，1完成',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '电费日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '电费日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ele_log
@@ -80,11 +81,34 @@ CREATE TABLE `receive_notice_msg`  (
   `r_status` tinyint NOT NULL COMMENT '接收状态,0未读，1已读',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `receive_notice_msg_列_name_receive_id_uindex`(`notice_id` ASC, `receive_id` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '接收通知' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '接收通知' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of receive_notice_msg
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for schedule_setting
+-- ----------------------------
+DROP TABLE IF EXISTS `schedule_setting`;
+CREATE TABLE `schedule_setting`  (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '任务ID',
+  `bean_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'bean名称',
+  `method_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '方法名称',
+  `method_params` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '方法参数',
+  `cron_expression` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'cron表达式',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
+  `job_status` int NULL DEFAULT NULL COMMENT '状态(1正常 0暂停)',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of schedule_setting
+-- ----------------------------
+INSERT INTO `schedule_setting` VALUES (8, 'taskDemo', 'taskByParams', 'task测试', '0/5 * * * * ?', '没有备注', 0, '2023-08-10 09:57:37', '2023-08-10 09:57:42');
+INSERT INTO `schedule_setting` VALUES (9, 'taskDemo', 'taskNoParams', NULL, '0/10 * * * * ?', NULL, 0, '2023-08-10 09:58:25', '2023-08-10 09:58:27');
 
 -- ----------------------------
 -- Table structure for sender_notice_msg
@@ -96,7 +120,7 @@ CREATE TABLE `sender_notice_msg`  (
   `n_msg` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '通知内容',
   `n_type` tinyint NOT NULL COMMENT '通知类型',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '通知消息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '通知消息' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sender_notice_msg
@@ -112,7 +136,7 @@ CREATE TABLE `student_log`  (
   `detail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '学生管理日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '学生管理日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of student_log
@@ -130,7 +154,7 @@ CREATE TABLE `sug_box`  (
   `user_id` int NOT NULL COMMENT '回复人员id',
   `type` tinyint NULL DEFAULT NULL COMMENT '建议类型是否匿名',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '建议箱，反馈箱' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '建议箱，反馈箱' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sug_box
@@ -146,7 +170,7 @@ CREATE TABLE `sug_text`  (
   `s_text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '内容',
   `type` tinyint NOT NULL COMMENT '0发起，1回复',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '建议内容' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '建议内容' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sug_text
@@ -168,7 +192,7 @@ CREATE TABLE `sys_dict`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典数据表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典数据表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dict
@@ -176,6 +200,15 @@ CREATE TABLE `sys_dict`  (
 INSERT INTO `sys_dict` VALUES (1, 'gender', '男', '1', 1, 1, 0, NULL, '2023-08-19 20:43:58', '2023-08-19 20:43:58');
 INSERT INTO `sys_dict` VALUES (2, 'gender', '女', '2', 2, 1, 0, NULL, '2023-08-19 20:43:58', '2023-08-19 20:43:58');
 INSERT INTO `sys_dict` VALUES (3, 'gender', '未知', '0', 1, 1, 0, NULL, '2023-08-19 20:43:58', '2023-08-19 20:43:58');
+INSERT INTO `sys_dict` VALUES (4, 'building', '男生宿舍', '0', 1, 1, 0, '男生宿舍', NULL, NULL);
+INSERT INTO `sys_dict` VALUES (5, 'building', '女生宿舍', '1', 1, 1, 0, '女生宿舍', NULL, NULL);
+INSERT INTO `sys_dict` VALUES (6, 'building', '在建楼', '2', 2, 1, 0, '在建楼', NULL, NULL);
+INSERT INTO `sys_dict` VALUES (7, 'building', '待拆楼', '3', 3, 1, 0, '待拆楼', NULL, NULL);
+INSERT INTO `sys_dict` VALUES (8, 'building', '维修楼', '4', 2, 1, 0, '维修楼', NULL, NULL);
+INSERT INTO `sys_dict` VALUES (9, 'eStatus', '正常', '0', 1, 1, 0, '', NULL, NULL);
+INSERT INTO `sys_dict` VALUES (10, 'eStatus', '停用', '1', 2, 1, 0, '', NULL, NULL);
+INSERT INTO `sys_dict` VALUES (11, 'eStatus', '临时启动', '3', 3, 1, 0, '', NULL, NULL);
+INSERT INTO `sys_dict` VALUES (12, 'eStatus', '异常', '4', 4, 1, 0, '', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_dict_type
@@ -191,15 +224,16 @@ CREATE TABLE `sys_dict_type`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `type_code`(`code` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 91 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典类型表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 94 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典类型表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dict_type
 -- ----------------------------
 INSERT INTO `sys_dict_type` VALUES (1, '性别', 'gender', 1, NULL, '2023-08-19 20:43:57', '2023-08-26 15:22:36');
 INSERT INTO `sys_dict_type` VALUES (2, '维修类型', 'maintain', 0, NULL, '2023-08-19 21:20:32', '2023-08-19 21:20:33');
-INSERT INTO `sys_dict_type` VALUES (3, '通知类型', 'notice', 0, NULL, '2023-08-19 21:20:59', '2023-08-19 21:21:00');
-INSERT INTO `sys_dict_type` VALUES (90, '违规类型', 'Violation', 1, NULL, '2023-08-26 15:22:29', '2023-08-26 15:22:29');
+INSERT INTO `sys_dict_type` VALUES (91, '通知类型', 'notice', 1, '用于通知的枚举', '2023-08-29 09:05:15', '2023-08-29 09:05:15');
+INSERT INTO `sys_dict_type` VALUES (92, '楼层类型', 'building', 1, '记录该楼的类型，如男，女，在建等', '2023-08-29 11:29:49', '2023-08-29 11:29:49');
+INSERT INTO `sys_dict_type` VALUES (93, '寝室消费状态', 'eStatus', 1, '记录宿舍电量，水量的状态\n', '2023-08-29 22:06:40', '2023-08-29 22:08:11');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -222,7 +256,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 96 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单管理' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 102 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单管理' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -243,15 +277,15 @@ INSERT INTO `sys_menu` VALUES (13, 4, '0,1,4', '菜单编辑', 4, '', NULL, 'sys
 INSERT INTO `sys_menu` VALUES (14, 4, '0,1,4', '菜单删除', 4, '', NULL, 'sys:menu:delete', 1, 3, '', NULL, '2023-08-19 21:12:21', '2023-08-19 21:12:21', 0);
 INSERT INTO `sys_menu` VALUES (15, 2, '0,1,2', '重置密码', 4, '', NULL, 'sys:user:reset_pwd', 1, 4, '', NULL, '2023-08-19 21:12:21', '2023-08-19 21:12:21', 0);
 INSERT INTO `sys_menu` VALUES (16, 0, '0', '人员管理', 2, '/people', 'Layout', NULL, 1, 2, 'uv', NULL, '2023-08-26 10:41:15', '2023-08-27 15:05:17', 0);
-INSERT INTO `sys_menu` VALUES (17, 16, '0,16', '学生人员', 1, 'student', 'people/student/index', NULL, 1, 1, 'user', '', '2023-08-26 10:43:10', '2023-08-27 15:04:46', 0);
-INSERT INTO `sys_menu` VALUES (18, 16, '0,16', '宿管人员', 1, 'housemaster', 'people/housemaster/index', NULL, 1, 2, 'housemaster', '', '2023-08-26 10:46:08', '2023-08-26 10:46:08', 0);
+INSERT INTO `sys_menu` VALUES (17, 16, '0,16', '学生人员', 1, 'student', 'people/student/index', NULL, 1, 1, 'student', '', '2023-08-26 10:43:10', '2023-08-30 21:15:58', 0);
+INSERT INTO `sys_menu` VALUES (18, 16, '0,16', '宿管人员', 1, 'housemaster', 'people/housemaster/index', NULL, 1, 2, 'cangkuyonghu', '', '2023-08-26 10:46:08', '2023-08-30 21:14:50', 0);
 INSERT INTO `sys_menu` VALUES (19, 16, '0,16', '维修人员', 1, 'repair', 'people/repair/index', NULL, 1, 3, 'repair', '', '2023-08-26 10:46:09', '2023-08-26 10:46:10', 0);
 INSERT INTO `sys_menu` VALUES (20, 0, '0', '日志管理', 2, '/log', 'Layout', NULL, 1, 6, 'log', '', '2023-08-26 10:48:13', '2023-08-26 10:48:13', 0);
-INSERT INTO `sys_menu` VALUES (21, 20, '0,20', '缴费日志', 1, 'paymentLog', 'logs/paymentLog/index', NULL, 1, 1, 'paymentLog', NULL, '2023-08-26 10:52:26', '2023-08-26 10:52:25', 0);
-INSERT INTO `sys_menu` VALUES (22, 20, '0,20', '违纪日志', 1, 'violation', 'logs/violation/index', NULL, 1, 2, 'violationLog', NULL, '2023-08-26 10:52:28', '2023-08-26 10:52:24', 0);
+INSERT INTO `sys_menu` VALUES (21, 20, '0,20', '缴费日志', 1, 'paymentLog', 'logs/paymentLog/index', NULL, 1, 1, 'pay', NULL, '2023-08-26 10:52:26', '2023-08-30 21:18:44', 0);
+INSERT INTO `sys_menu` VALUES (22, 20, '0,20', '违纪日志', 1, 'violation', 'logs/violation/index', NULL, 1, 2, 'violation', NULL, '2023-08-26 10:52:28', '2023-08-30 21:18:29', 0);
 INSERT INTO `sys_menu` VALUES (23, 0, '0', '宿舍管理', 2, '/dormitory', 'Layout', NULL, 1, 4, 'client', NULL, '2023-08-26 10:53:55', '2023-08-27 15:05:51', 0);
-INSERT INTO `sys_menu` VALUES (24, 23, '0,23', '宿舍列表', 1, 'dList', 'dormitory/dList/index', NULL, 1, 1, 'dList', NULL, '2023-08-26 10:54:06', '2023-08-26 10:54:05', 0);
-INSERT INTO `sys_menu` VALUES (25, 23, '0,23', '门禁管理', 1, 'access', 'dormitory/access/index', NULL, 1, 2, 'access', NULL, '2023-08-26 11:00:38', '2023-08-26 11:00:38', 0);
+INSERT INTO `sys_menu` VALUES (24, 23, '0,23', '宿舍列表', 1, 'dList', 'dormitory/dList/index', NULL, 1, 1, 'dormitory', NULL, '2023-08-26 10:54:06', '2023-08-30 21:21:55', 0);
+INSERT INTO `sys_menu` VALUES (25, 23, '0,23', '门禁管理', 1, 'access', 'dormitory/access/index', NULL, 1, 2, 'accessManage', NULL, '2023-08-26 11:00:38', '2023-08-30 21:20:51', 0);
 INSERT INTO `sys_menu` VALUES (26, 1, '0,1', '字典管理', 1, 'dict', 'system/dict/index', '', 1, 5, 'dict', NULL, '2023-08-26 15:09:05', '2023-08-26 15:09:05', 0);
 INSERT INTO `sys_menu` VALUES (79, 6, '0,1,2,6', '字典类型新增', 4, '', NULL, 'sys:dict_type:add', 1, 1, '', NULL, '2023-08-26 15:09:05', '2023-08-26 23:23:18', 0);
 INSERT INTO `sys_menu` VALUES (81, 6, '0,1,6', '字典类型编辑', 4, '', NULL, 'sys:dict_type:edit', 1, 2, '', NULL, '2023-08-26 15:09:05', '2023-08-26 15:09:05', 0);
@@ -260,6 +294,10 @@ INSERT INTO `sys_menu` VALUES (85, 6, '0,1,6', '字典数据新增', 4, '', NULL
 INSERT INTO `sys_menu` VALUES (86, 6, '0,1,6', '字典数据编辑', 4, '', NULL, 'sys:dict:edit', 1, 5, '', NULL, '2023-08-26 15:09:05', '2023-08-26 15:09:05', 0);
 INSERT INTO `sys_menu` VALUES (87, 6, '0,1,6', '字典数据删除', 4, '', NULL, 'sys:dict:delete', 1, 6, '', NULL, '2023-08-26 15:09:05', '2023-08-26 15:09:05', 0);
 INSERT INTO `sys_menu` VALUES (95, 17, '0,16', '新增学生', 4, '', NULL, 'sys:student:add', 1, 1, '', NULL, '2023-08-26 10:43:10', '2023-08-26 10:43:11', 1);
+INSERT INTO `sys_menu` VALUES (96, 0, '0', '接口管理', 2, '/api', 'Layout', NULL, 1, 7, 'api', 'api-doc', '2023-08-29 08:42:47', '2023-08-29 08:59:16', 0);
+INSERT INTO `sys_menu` VALUES (99, 96, NULL, '接口文档', 1, 'api-doc', 'demo/api-doc', NULL, 1, 1, 'api', NULL, '2023-08-29 08:51:02', '2023-08-29 08:51:02', 1);
+INSERT INTO `sys_menu` VALUES (100, 96, '0,96', '接口文档', 1, 'api-doc', 'demo/api-doc', NULL, 1, 1, 'api', NULL, '2023-08-29 08:58:52', '2023-08-29 08:58:52', 0);
+INSERT INTO `sys_menu` VALUES (101, 23, '0,23', '楼管理', 1, 'building', 'dormitory/building/index', NULL, 1, 3, 'homepage', NULL, '2023-08-30 21:10:18', '2023-08-30 21:49:35', 0);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -278,7 +316,7 @@ CREATE TABLE `sys_role`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `name`(`name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_role
@@ -305,6 +343,12 @@ CREATE TABLE `sys_role_menu`  (
 -- Records of sys_role_menu
 -- ----------------------------
 INSERT INTO `sys_role_menu` VALUES (1, 1);
+INSERT INTO `sys_role_menu` VALUES (4, 23);
+INSERT INTO `sys_role_menu` VALUES (4, 24);
+INSERT INTO `sys_role_menu` VALUES (4, 25);
+INSERT INTO `sys_role_menu` VALUES (7, 16);
+INSERT INTO `sys_role_menu` VALUES (7, 18);
+INSERT INTO `sys_role_menu` VALUES (7, 19);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -323,7 +367,7 @@ CREATE TABLE `sys_user`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `login_name`(`name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
@@ -363,14 +407,14 @@ CREATE TABLE `tb_dormitory`  (
   `w_status` tinyint NOT NULL DEFAULT 0 COMMENT '水状态(0-正常;1-停用;2-送水)',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `tb_dormitory_building_id_dormitory_number_uindex`(`building_id` ASC, `dormitory_number` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 463 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 463 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tb_dormitory
 -- ----------------------------
 INSERT INTO `tb_dormitory` VALUES (1, 1, 101, 8, 36.71, 67.13, 0, 0);
-INSERT INTO `tb_dormitory` VALUES (2, 1, 102, 8, 0.02, 61.67, 0, 0);
-INSERT INTO `tb_dormitory` VALUES (3, 1, 103, 8, 78.27, 18.02, 0, 0);
+INSERT INTO `tb_dormitory` VALUES (2, 1, 102, 8, -10.00, 61.67, 1, 0);
+INSERT INTO `tb_dormitory` VALUES (3, 1, 103, 8, 78.27, -10.20, 1, 0);
 INSERT INTO `tb_dormitory` VALUES (4, 1, 104, 8, 3.80, 13.51, 0, 0);
 INSERT INTO `tb_dormitory` VALUES (5, 1, 105, 8, 96.43, 64.78, 0, 0);
 INSERT INTO `tb_dormitory` VALUES (6, 1, 106, 8, 74.11, 14.81, 0, 0);
@@ -831,7 +875,7 @@ CREATE TABLE `tb_maintenance`  (
   `maintenance_person_id` int NULL DEFAULT NULL COMMENT '维修人员id,通过维修人员表获取电话',
   `type_id` int NOT NULL COMMENT '维修的类型id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tb_maintenance
@@ -851,7 +895,7 @@ CREATE TABLE `tb_student`  (
   `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '逻辑删除标识(0-未删除；1-已删除)',
   `class_id` int NULL DEFAULT NULL COMMENT '班级',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1004 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1004 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tb_student
@@ -1854,8 +1898,8 @@ INSERT INTO `tb_student` VALUES (995, '唐晓明', 2, 19, '15223064172', NULL, 0
 INSERT INTO `tb_student` VALUES (996, 'Nakano Yuto', 1, 24, '282794934', NULL, 0, NULL);
 INSERT INTO `tb_student` VALUES (997, 'Wada Kazuma', 2, 19, '16748724268', NULL, 0, NULL);
 INSERT INTO `tb_student` VALUES (998, '熊震南', 1, 24, '17491600765', NULL, 0, NULL);
-INSERT INTO `tb_student` VALUES (999, 'Endo Akina', 2, 24, '16972084439', NULL, 0, NULL);
-INSERT INTO `tb_student` VALUES (1000, 'Wada Ryota', 1, 20, '2841040112', NULL, 0, NULL);
+INSERT INTO `tb_student` VALUES (999, 'Endo Akina', 2, 24, '16972084439', NULL, 1, NULL);
+INSERT INTO `tb_student` VALUES (1000, 'Wada Ryota', 1, 20, '2841040112', NULL, 1, NULL);
 INSERT INTO `tb_student` VALUES (1001, '宋致远', 1, 21, '17097849903', NULL, 0, NULL);
 INSERT INTO `tb_student` VALUES (1003, '李小龙', 1, 20, '1760819842', 1, 0, NULL);
 
@@ -1871,7 +1915,7 @@ CREATE TABLE `tb_user`  (
   `age` tinyint NULL DEFAULT NULL COMMENT '年龄',
   `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '逻辑删除标识(0-未删除；1-已删除)',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '人员表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '人员表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tb_user
@@ -1889,7 +1933,7 @@ CREATE TABLE `violation_log`  (
   `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '逻辑删除标识(1:已删除;0:未删除)',
   `detail` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '违规详情',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '违规记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '违规记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of violation_log

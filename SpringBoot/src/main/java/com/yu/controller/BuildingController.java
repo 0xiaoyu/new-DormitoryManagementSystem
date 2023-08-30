@@ -1,6 +1,7 @@
 package com.yu.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.yu.common.model.BmMarker;
 import com.yu.common.model.Option;
 import com.yu.common.result.Result;
 import com.yu.model.entity.Building;
@@ -11,13 +12,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.yu.common.model.BmMarker;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -50,4 +46,24 @@ public class BuildingController {
         return Result.success(service.list().stream().map(BmMarker::new).toList());
     }
 
+    @PostMapping
+    @Operation(description = "添加楼层",security = {@SecurityRequirement(name = "Authorization")})
+    public Result<Boolean> addBuild(@RequestBody Building building){
+        return Result.judge(service.save(building));
+    }
+
+    @Operation(description = "楼层列表")
+    @GetMapping
+    public Result<List<Building>> getList(@ParameterObject Building building){
+        String name = building.getBuildName();
+        building.setBuildName(null);
+        return Result.success(service.list(Wrappers.lambdaQuery(building)
+                .like(StringUtils.hasText(name),Building::getBuildName,name)));
+    }
+
+    @Operation(description = "删除楼层")
+    @DeleteMapping("/{id}")
+    public Result<Boolean> deleteBuild(@PathVariable String id){
+        return Result.judge(service.removeById(id));
+    }
 }

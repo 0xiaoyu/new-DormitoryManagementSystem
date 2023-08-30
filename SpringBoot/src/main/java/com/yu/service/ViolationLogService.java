@@ -1,12 +1,10 @@
 package com.yu.service;
 
-import com.yu.common.result.PageResult;
-import com.yu.model.entity.ViolationLog;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yu.model.entity.ViolationLog;
 import com.yu.model.query.ViolationLogPageQuery;
 import com.yu.model.vo.ViolationLogPageVo;
-
-import java.util.List;
 
 /**
 * @author zay
@@ -15,5 +13,5 @@ import java.util.List;
 */
 public interface ViolationLogService extends IService<ViolationLog> {
 
-    PageResult<List<ViolationLogPageVo>> getLogPage(ViolationLogPageQuery query);
+    Page<ViolationLogPageVo> getLogPage(ViolationLogPageQuery query);
 }

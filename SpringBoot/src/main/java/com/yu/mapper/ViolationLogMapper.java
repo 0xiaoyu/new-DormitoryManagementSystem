@@ -1,13 +1,10 @@
 package com.yu.mapper;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yu.common.result.PageResult;
-import com.yu.model.entity.ViolationLog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yu.model.entity.ViolationLog;
 import com.yu.model.query.ViolationLogPageQuery;
 import com.yu.model.vo.ViolationLogPageVo;
-
-import java.util.List;
 
 /**
 * @author zay
@@ -17,7 +14,7 @@ import java.util.List;
 */
 public interface ViolationLogMapper extends BaseMapper<ViolationLog> {
 
-    PageResult<List<ViolationLogPageVo>> getLogPage(Page page, ViolationLogPageQuery q);
+    Page<ViolationLogPageVo> getLogPage(Page page, ViolationLogPageQuery q);
 }
 
 
