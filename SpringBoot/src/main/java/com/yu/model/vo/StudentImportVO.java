@@ -2,6 +2,7 @@ package com.yu.model.vo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.yu.common.enums.GenderEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -11,6 +12,7 @@ import lombok.Data;
  * @since 2022/4/10
  */
 @Data
+@Schema(description = "学生导出对象")
 public class StudentImportVO {
 
     @ExcelProperty(value = "学号")

@@ -14,6 +14,10 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.yu.common.model.BmMarker;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -40,4 +44,10 @@ public class BuildingController {
     public Result<Building> get(@ParameterObject Building building) {
         return Result.success(service.getOne(Wrappers.lambdaQuery(building)));
     }
+    @GetMapping("/location")
+    @Operation(summary = "查询所有宿舍的位置",security = {@SecurityRequirement(name = "Authorization")})
+    public Result<List<BmMarker>> getLocation(){
+        return Result.success(service.list().stream().map(BmMarker::new).toList());
+    }
+
 }
