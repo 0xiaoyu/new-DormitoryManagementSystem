@@ -35,9 +35,9 @@ export function addBuild(data: Building) {
   });
 }
 
-export function deleteBuild(id: number) {
+export function deleteBuild(ids: string) {
   return request({
-    url: `baseUrl/${id}`,
+    url: `${baseUrl}/${ids}`,
     method: "delete",
   });
 }

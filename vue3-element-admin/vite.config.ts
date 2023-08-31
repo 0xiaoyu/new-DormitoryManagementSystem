@@ -57,20 +57,9 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
               env.VITE_APP_TARGET_BASE_API
             ), // 替换 /dev-api 为 target 接口地址
         },
-        /*"/img": {
-          target: env.VITE_APP_TARGET_URL,
-          changeOrigin: true,
-          rewrite: (path) =>
-            path.replace(new RegExp("^/img"), env.VITE_APP_TARGET_BASE_API), // 替换 /dev-api 为 target 接口地址
-          bypass: (req, res, options) => {
-            const proxyUrl =
-              new URL(options.rewrite(req.url) || "", options.target as string)
-                ?.href || "";
-            console.log(proxyUrl);
-            req.headers["x-referer"] = proxyUrl;
-            res.setHeader("x-response-url", proxyUrl);
-          },
-        },*/
+        '/ws': {
+          target: 'https://apis.map.qq.com',
+        }
       },
     },
     plugins: [

@@ -15,6 +15,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -48,8 +49,8 @@ public class BuildingController {
 
     @PostMapping
     @Operation(description = "添加楼层",security = {@SecurityRequirement(name = "Authorization")})
-    public Result<Boolean> addBuild(@RequestBody Building building){
-        return Result.judge(service.save(building));
+    public Result<Boolean> saveOrUpdateBuild(@RequestBody Building building){
+        return Result.judge(service.saveOrUpdate(building));
     }
 
     @Operation(description = "楼层列表")
@@ -62,8 +63,8 @@ public class BuildingController {
     }
 
     @Operation(description = "删除楼层")
-    @DeleteMapping("/{id}")
-    public Result<Boolean> deleteBuild(@PathVariable String id){
-        return Result.judge(service.removeById(id));
+    @DeleteMapping("/{ids}")
+    public Result<Boolean> deleteBuild(@PathVariable String ids){
+        return Result.judge(service.removeByIds(Arrays.asList(ids.split(","))));
     }
 }
