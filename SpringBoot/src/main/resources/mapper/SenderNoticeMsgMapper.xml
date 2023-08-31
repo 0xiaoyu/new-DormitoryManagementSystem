@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yu.mapper.SenderNoticeMsgMapper">
+    <resultMap id="BaseResultMap" type="com.yu.model.entity.SenderNoticeMsgEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="sender_id" jdbcType="INTEGER" property="senderId"/>
+        <result column="n_msg" jdbcType="VARCHAR" property="nMsg"/>
+        <result column="n_type" jdbcType="TINYINT" property="nType"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        `id`, `sender_id`, `n_msg`, `n_type`
+    </sql>
+
+</mapper>

@@ -2,15 +2,17 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yu.mapper.AccessLogMapper">
-    <resultMap id="BaseResultMap" type="com.yu.model.entity.AccessLogEntity">
+<mapper namespace="com.yu.mapper.EleLogMapper">
+    <resultMap id="BaseResultMap" type="com.yu.model.entity.EleLogEntity">
         <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="dormitory_id" jdbcType="INTEGER" property="dormitoryId"/>
+        <result column="amount" jdbcType="INTEGER" property="amount"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="a_type" jdbcType="TINYINT" property="aType"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`, `user_id`, `create_time`, `a_type`
+        `id`, `dormitory_id`, `amount`, `user_id`, `create_time`, `status`
     </sql>
 
 </mapper>

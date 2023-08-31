@@ -1,18 +1,17 @@
 package com.yu.mapper;
 
-import com.yu.model.entity.SugBox;
+import com.yu.model.entity.SugBoxEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
-* @author ymauser
-* @description 针对表【sug_box(建议箱，反馈箱)】的数据库操作Mapper
-* @createDate 2023-08-30 17:22:22
-* @Entity com.yu.model.entity.SugBox
-*/
-public interface SugBoxMapper extends BaseMapper<SugBox> {
+ * 建议箱，反馈箱 映射层。
+ *
+ * @author yu
+ * @since 1.0
+ */
+@Mapper
+public interface SugBoxMapper extends BaseMapper<SugBoxEntity> {
+
 
 }
-
-
-
-

@@ -2,6 +2,7 @@ package com.yu.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yu.common.annotation.PreventDuplicateSubmit;
+import com.yu.common.enums.MenuTypeEnum;
 import com.yu.common.model.Option;
 import com.yu.common.result.Result;
 import com.yu.model.entity.SysMenu;
@@ -79,6 +80,9 @@ public class SysMenuController {
     public Result<Boolean> updateMenu(
             @RequestBody MenuForm menuForm
     ) {
+        if (menuForm.getType() != MenuTypeEnum.BUTTON){
+            menuForm.setPerm(null);
+        }
         boolean result = menuService.saveMenu(menuForm);
         return Result.judge(result);
     }

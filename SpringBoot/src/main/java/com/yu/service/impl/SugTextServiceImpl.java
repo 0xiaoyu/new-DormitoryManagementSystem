@@ -1,22 +1,19 @@
 package com.yu.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yu.model.entity.SugText;
-import com.yu.service.SugTextService;
-import com.yu.mapper.SugTextMapper;
+
 import org.springframework.stereotype.Service;
+import com.yu.service.SugTextService;
+import com.yu.model.entity.SugTextEntity;
+import com.yu.mapper.SugTextMapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 /**
-* @author ymauser
-* @description 针对表【sug_text(建议内容)】的数据库操作Service实现
-* @createDate 2023-08-30 17:22:22
-*/
+ * 建议内容 服务层实现。
+ *
+ * @author yu
+ * @since 1.0
+ */
 @Service
-public class SugTextServiceImpl extends ServiceImpl<SugTextMapper, SugText>
-    implements SugTextService{
+public class SugTextServiceImpl extends ServiceImpl<SugTextMapper, SugTextEntity> implements SugTextService {
 
 }
-
-
-
-

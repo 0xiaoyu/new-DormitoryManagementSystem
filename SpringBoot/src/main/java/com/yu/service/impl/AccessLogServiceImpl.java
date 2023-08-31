@@ -1,22 +1,19 @@
 package com.yu.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yu.model.entity.AccessLog;
-import com.yu.service.AccessLogService;
-import com.yu.mapper.AccessLogMapper;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.stereotype.Service;
+import com.yu.model.entity.AccessLogEntity;
+import com.yu.mapper.AccessLogMapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 /**
-* @author ymauser
-* @description 针对表【access_log(进入记录)】的数据库操作Service实现
-* @createDate 2023-08-30 17:21:24
-*/
+ * 进入记录 服务层实现。
+ *
+ * @author yu
+ * @since 1.0
+ */
 @Service
-public class AccessLogServiceImpl extends ServiceImpl<AccessLogMapper, AccessLog>
-    implements AccessLogService{
+public class AccessLogServiceImpl extends ServiceImpl<AccessLogMapper, AccessLogEntity> implements IService<AccessLogEntity> {
 
 }
-
-
-
-

@@ -3,18 +3,16 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yu.mapper.SugBoxMapper">
-
-    <resultMap id="BaseResultMap" type="com.yu.model.entity.SugBox">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="studentId" column="student_id" jdbcType="INTEGER"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="status" column="status" jdbcType="TINYINT"/>
-            <result property="userId" column="user_id" jdbcType="INTEGER"/>
-            <result property="type" column="type" jdbcType="TINYINT"/>
+    <resultMap id="BaseResultMap" type="com.yu.model.entity.SugBoxEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="student_id" jdbcType="INTEGER" property="studentId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
     </resultMap>
-
     <sql id="Base_Column_List">
-        id,student_id,create_time,
-        status,user_id,type
+        `id`, `student_id`, `create_time`, `status`, `user_id`, `type`
     </sql>
+
 </mapper>

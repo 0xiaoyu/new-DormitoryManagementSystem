@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yu.mapper.ReceiveNoticeMsgMapper">
+    <resultMap id="BaseResultMap" type="com.yu.model.entity.ReceiveNoticeMsgEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="notice_id" jdbcType="BIGINT" property="noticeId"/>
+        <result column="receive_id" jdbcType="INTEGER" property="receiveId"/>
+        <result column="r_status" jdbcType="TINYINT" property="rStatus"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        `id`, `notice_id`, `receive_id`, `r_status`
+    </sql>
+
+</mapper>

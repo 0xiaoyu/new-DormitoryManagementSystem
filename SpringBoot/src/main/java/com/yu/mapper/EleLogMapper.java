@@ -1,17 +1,17 @@
 package com.yu.mapper;
 
-import com.yu.model.entity.SugTextEntity;
+import com.yu.model.entity.EleLogEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 建议内容 映射层。
+ * 电费日志 映射层。
  *
  * @author yu
  * @since 1.0
  */
 @Mapper
-public interface SugTextMapper extends BaseMapper<SugTextEntity> {
+public interface EleLogMapper extends BaseMapper<EleLogEntity> {
 
 
 }

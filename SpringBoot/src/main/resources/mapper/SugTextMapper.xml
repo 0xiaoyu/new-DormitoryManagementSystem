@@ -3,16 +3,14 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yu.mapper.SugTextMapper">
-
-    <resultMap id="BaseResultMap" type="com.yu.model.entity.SugText">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="sId" column="s_id" jdbcType="INTEGER"/>
-            <result property="sText" column="s_text" jdbcType="VARCHAR"/>
-            <result property="type" column="type" jdbcType="TINYINT"/>
+    <resultMap id="BaseResultMap" type="com.yu.model.entity.SugTextEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="s_id" jdbcType="INTEGER" property="sId"/>
+        <result column="s_text" jdbcType="CLOB" property="sText"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
     </resultMap>
-
     <sql id="Base_Column_List">
-        id,s_id,s_text,
-        type
+        `id`, `s_id`, `s_text`, `type`
     </sql>
+
 </mapper>

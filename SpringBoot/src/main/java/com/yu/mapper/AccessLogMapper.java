@@ -1,18 +1,17 @@
 package com.yu.mapper;
 
-import com.yu.model.entity.AccessLog;
+import com.yu.model.entity.AccessLogEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
-* @author ymauser
-* @description 针对表【access_log(进入记录)】的数据库操作Mapper
-* @createDate 2023-08-30 17:21:24
-* @Entity com.yu.model.entity.AccessLog
-*/
-public interface AccessLogMapper extends BaseMapper<AccessLog> {
+ * 进入记录 映射层。
+ *
+ * @author yu
+ * @since 1.0
+ */
+@Mapper
+public interface AccessLogMapper extends BaseMapper<AccessLogEntity> {
+
 
 }
-
-
-
-

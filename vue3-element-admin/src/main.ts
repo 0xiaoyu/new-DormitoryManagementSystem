@@ -5,7 +5,7 @@ import { setupStore } from "@/store";
 import { setupDirective } from "@/directive";
 
 import "@/permission";
-import BaiduMap from 'vue-baidu-map-3x'
+import BaiduMap from "vue-baidu-map-3x";
 // 本地SVG图标
 import "virtual:svg-icons-register";
 // 国际化
@@ -22,8 +22,11 @@ setupDirective(app);
 // 全局注册 状态管理(store)
 setupStore(app);
 
-app.use(router).use(BaiduMap, {ak: 'rhcGsfgcixgfDFvkezK08tMuxKcQxTdV'})
-    .use(i18n).mount("#app");
+app
+  .use(router)
+  .use(BaiduMap, { ak: "rhcGsfgcixgfDFvkezK08tMuxKcQxTdV" })
+  .use(i18n)
+  .mount("#app");
 
 app.directive("shake", (el, vnode, preVnode) => {
   el.addEventListener("click", () => {

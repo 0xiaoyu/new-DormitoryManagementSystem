@@ -50,9 +50,16 @@ public class DormitoryController {
         boolean b = dormitoryService.update(Wrappers.lambdaUpdate(Dormitory.class)
                 .eq(Dormitory::getId, id)
                 .set(Dormitory::getWater, water)
-                .set(Dormitory::getEStatus, water > 0 ? 0 : 1));
+                .set(Dormitory::getWStatus, water > 0 ? 0 : 1));
         return Result.judge(b);
     }
+
+    @Operation(summary = "更新寝室信息")
+    @PatchMapping
+    public Result<Boolean> update(@RequestBody Dormitory dormitoryPage){
+        return Result.judge(dormitoryService.updateById(dormitoryPage));
+    }
+
 
 
 }
