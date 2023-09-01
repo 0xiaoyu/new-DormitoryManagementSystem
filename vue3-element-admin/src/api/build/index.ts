@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import { Building } from "@/api/build/types";
+import {Building} from "@/api/build/types";
 
 const baseUrl = "/api/v1/building";
 
@@ -40,4 +40,11 @@ export function deleteBuild(ids: string) {
     url: `${baseUrl}/${ids}`,
     method: "delete",
   });
+}
+
+export function getBuildLocaltion(){
+  return request({
+    url: baseUrl+'/location',
+    method: 'get'
+  })
 }

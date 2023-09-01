@@ -196,10 +196,10 @@
 </template>
 
 <script lang="ts" setup>
-import { Building } from "@/api/build/types";
-import { addBuild, deleteBuild, getBuildList } from "@/api/build";
-import { getDictOptions } from "@/api/dict";
-import { RefType } from "@/types/utils";
+import {Building} from "@/api/build/types";
+import {addBuild, deleteBuild, getBuildList} from "@/api/build";
+import {getDictOptions} from "@/api/dict";
+import {BmMark, RefType} from "@/types/utils";
 
 const dataFormRef = ref<RefType>(ElForm);
 const queryFormRef = ref<RefType>(ElForm);
@@ -229,7 +229,7 @@ const mapConfig = ref({
     formData.value.longitude = e.point.lng;
   },
 });
-const bmMark = ref({
+const bmMark = ref<BmMark>({
   position: { lat: 28.225525204117517, lng: 112.92573134402001 },
 });
 

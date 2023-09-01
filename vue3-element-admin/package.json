@@ -56,6 +56,8 @@
     "path-browserify": "^1.0.1",
     "path-to-regexp": "^6.2.0",
     "pinia": "^2.0.33",
+    "qrcode-reader-vue3": "^3.1.2",
+    "qrcode.vue": "^3.4.1",
     "screenfull": "^6.0.0",
     "sortablejs": "^1.15.0",
     "vue": "^3.3.4",

@@ -235,7 +235,6 @@ onMounted(() => {
           hasChildren: 'hasChildren',
         }"
         row-key="id"
-        default-expand-all
         border
         size="small"
         @row-click="onRowClick"
