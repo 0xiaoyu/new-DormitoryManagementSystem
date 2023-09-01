@@ -11,7 +11,7 @@
  Target Server Version : 80027 (8.0.27)
  File Encoding         : 65001
 
- Date: 30/08/2023 23:29:40
+ Date: 01/09/2023 23:13:38
 */
 
 SET NAMES utf8mb4;
@@ -23,15 +23,16 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `access_log`;
 CREATE TABLE `access_log`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '进出id',
-  `user_id` int NOT NULL COMMENT '进出id',
+  `user_id` bigint NOT NULL COMMENT '进出id',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `a_type` tinyint NOT NULL COMMENT '进出类型 0 进 1出',
+  `a_type` tinyint NOT NULL COMMENT '进出类型 0 进 1出 2 其他进 3其他出',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '进入记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '进入记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of access_log
 -- ----------------------------
+INSERT INTO `access_log` VALUES (1, 1, '2023-09-01 22:15:23', 1);
 
 -- ----------------------------
 -- Table structure for d_building
@@ -45,12 +46,19 @@ CREATE TABLE `d_building`  (
   `longitude` double(10, 6) NOT NULL COMMENT '纬度',
   `maxroom` int NOT NULL DEFAULT 10 COMMENT '最大房间号',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '宿舍楼栋' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '宿舍楼栋' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of d_building
 -- ----------------------------
 INSERT INTO `d_building` VALUES (1, 'testBuildName', 0, 50.000000, 50.000000, 713);
+INSERT INTO `d_building` VALUES (2, '男一', 0, 28.226114, 112.925264, 612);
+INSERT INTO `d_building` VALUES (3, 'testName', 0, 28.226210, 112.925004, 720);
+INSERT INTO `d_building` VALUES (4, '女1', 1, 28.228230, 112.924788, 515);
+INSERT INTO `d_building` VALUES (5, 't3', 0, 28.227061, 112.926791, 514);
+INSERT INTO `d_building` VALUES (6, 'new1', 2, 28.227085, 112.926118, 618);
+INSERT INTO `d_building` VALUES (10, '在建', 2, 28.227005, 112.926019, 720);
+INSERT INTO `d_building` VALUES (11, '女2', 1, 28.228708, 112.924546, 514);
 
 -- ----------------------------
 -- Table structure for ele_log
@@ -256,7 +264,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 102 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单管理' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 111 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单管理' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -277,7 +285,7 @@ INSERT INTO `sys_menu` VALUES (13, 4, '0,1,4', '菜单编辑', 4, '', NULL, 'sys
 INSERT INTO `sys_menu` VALUES (14, 4, '0,1,4', '菜单删除', 4, '', NULL, 'sys:menu:delete', 1, 3, '', NULL, '2023-08-19 21:12:21', '2023-08-19 21:12:21', 0);
 INSERT INTO `sys_menu` VALUES (15, 2, '0,1,2', '重置密码', 4, '', NULL, 'sys:user:reset_pwd', 1, 4, '', NULL, '2023-08-19 21:12:21', '2023-08-19 21:12:21', 0);
 INSERT INTO `sys_menu` VALUES (16, 0, '0', '人员管理', 2, '/people', 'Layout', NULL, 1, 2, 'uv', NULL, '2023-08-26 10:41:15', '2023-08-27 15:05:17', 0);
-INSERT INTO `sys_menu` VALUES (17, 16, '0,16', '学生人员', 1, 'student', 'people/student/index', NULL, 1, 1, 'student', '', '2023-08-26 10:43:10', '2023-08-30 21:15:58', 0);
+INSERT INTO `sys_menu` VALUES (17, 16, '0,16', '学生人员', 1, 'student', 'people/student/index', '', 1, 1, 'student', '', '2023-08-26 10:43:10', '2023-08-31 23:00:46', 0);
 INSERT INTO `sys_menu` VALUES (18, 16, '0,16', '宿管人员', 1, 'housemaster', 'people/housemaster/index', NULL, 1, 2, 'cangkuyonghu', '', '2023-08-26 10:46:08', '2023-08-30 21:14:50', 0);
 INSERT INTO `sys_menu` VALUES (19, 16, '0,16', '维修人员', 1, 'repair', 'people/repair/index', NULL, 1, 3, 'repair', '', '2023-08-26 10:46:09', '2023-08-26 10:46:10', 0);
 INSERT INTO `sys_menu` VALUES (20, 0, '0', '日志管理', 2, '/log', 'Layout', NULL, 1, 6, 'log', '', '2023-08-26 10:48:13', '2023-08-26 10:48:13', 0);
@@ -295,9 +303,18 @@ INSERT INTO `sys_menu` VALUES (86, 6, '0,1,6', '字典数据编辑', 4, '', NULL
 INSERT INTO `sys_menu` VALUES (87, 6, '0,1,6', '字典数据删除', 4, '', NULL, 'sys:dict:delete', 1, 6, '', NULL, '2023-08-26 15:09:05', '2023-08-26 15:09:05', 0);
 INSERT INTO `sys_menu` VALUES (95, 17, '0,16', '新增学生', 4, '', NULL, 'sys:student:add', 1, 1, '', NULL, '2023-08-26 10:43:10', '2023-08-26 10:43:11', 1);
 INSERT INTO `sys_menu` VALUES (96, 0, '0', '接口管理', 2, '/api', 'Layout', NULL, 1, 7, 'api', 'api-doc', '2023-08-29 08:42:47', '2023-08-29 08:59:16', 0);
-INSERT INTO `sys_menu` VALUES (99, 96, NULL, '接口文档', 1, 'api-doc', 'demo/api-doc', NULL, 1, 1, 'api', NULL, '2023-08-29 08:51:02', '2023-08-29 08:51:02', 1);
+INSERT INTO `sys_menu` VALUES (99, 96, '0', '接口文档', 1, 'api-doc', 'demo/api-doc', NULL, 1, 1, 'api', NULL, '2023-08-29 08:51:02', '2023-08-29 08:51:02', 1);
 INSERT INTO `sys_menu` VALUES (100, 96, '0,96', '接口文档', 1, 'api-doc', 'demo/api-doc', NULL, 1, 1, 'api', NULL, '2023-08-29 08:58:52', '2023-08-29 08:58:52', 0);
 INSERT INTO `sys_menu` VALUES (101, 23, '0,23', '楼管理', 1, 'building', 'dormitory/building/index', NULL, 1, 3, 'homepage', NULL, '2023-08-30 21:10:18', '2023-08-30 21:49:35', 0);
+INSERT INTO `sys_menu` VALUES (102, 17, '0,16,17', '添加学生', 4, '', NULL, 'sys:student:add', 1, 1, 'student', NULL, '2023-08-31 23:01:02', '2023-08-31 23:01:02', 0);
+INSERT INTO `sys_menu` VALUES (103, 17, '0,16,17', '删除学生', 4, '', NULL, 'sys:student:delete', 1, 2, 'student', NULL, '2023-08-31 23:01:26', '2023-08-31 23:01:26', 0);
+INSERT INTO `sys_menu` VALUES (104, 18, '0,16,18', '添加宿管', 4, '', NULL, 'sys:housemaster:add', 1, 1, 'student', NULL, '2023-08-31 23:02:23', '2023-08-31 23:02:23', 0);
+INSERT INTO `sys_menu` VALUES (105, 18, '0,16,18', '删除宿管', 4, '', NULL, 'sys:housemaster:delete', 1, 3, 'student', NULL, '2023-08-31 23:02:38', '2023-08-31 23:02:38', 0);
+INSERT INTO `sys_menu` VALUES (106, 107, '0,107', '宿舍地图', 1, '/navigation-map', 'student/navigation-map/index', NULL, 1, 8, 'map', NULL, '2023-08-31 23:11:57', '2023-09-01 20:30:43', 0);
+INSERT INTO `sys_menu` VALUES (107, 0, '0', '宿舍导航', 2, '/student', 'Layout', NULL, 1, 8, 'publish', '/navigation-map', '2023-09-01 20:30:24', '2023-09-01 20:30:31', 0);
+INSERT INTO `sys_menu` VALUES (108, 0, '0', '进出控制', 2, '/pass', 'Layout', NULL, 1, 9, 'pass', '/passQRCode', '2023-09-01 20:31:25', '2023-09-01 20:31:25', 0);
+INSERT INTO `sys_menu` VALUES (109, 108, '0,108', '进出二维码', 1, '/passQRCode', 'pass/passQRCode/index', NULL, 1, 1, 'passQR', NULL, '2023-09-01 20:31:48', '2023-09-01 20:31:48', 0);
+INSERT INTO `sys_menu` VALUES (110, 108, '0,108', '扫描二维码', 1, '/scanQRCode', 'pass/scanQRCode/index', NULL, 1, 2, 'scan', NULL, '2023-09-01 20:32:11', '2023-09-01 20:32:11', 0);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -343,6 +360,11 @@ CREATE TABLE `sys_role_menu`  (
 -- Records of sys_role_menu
 -- ----------------------------
 INSERT INTO `sys_role_menu` VALUES (1, 1);
+INSERT INTO `sys_role_menu` VALUES (3, 106);
+INSERT INTO `sys_role_menu` VALUES (3, 107);
+INSERT INTO `sys_role_menu` VALUES (3, 108);
+INSERT INTO `sys_role_menu` VALUES (3, 109);
+INSERT INTO `sys_role_menu` VALUES (3, 110);
 INSERT INTO `sys_role_menu` VALUES (4, 23);
 INSERT INTO `sys_role_menu` VALUES (4, 24);
 INSERT INTO `sys_role_menu` VALUES (4, 25);
@@ -373,8 +395,8 @@ CREATE TABLE `sys_user`  (
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES (1, 'admin', '$2a$10$xVWsNOhHrCxh5UbpCE7/HuJ.PAOKcYAqRxD2CO2nVnJS.IAXkr5aq', '/img/default.gif', NULL, 1, NULL, 0, '2023-08-20 20:20:19', '2023-08-20 20:20:20');
-INSERT INTO `sys_user` VALUES (2, 'root', '1', NULL, NULL, 1, NULL, 0, '2023-08-26 13:47:37', NULL);
-INSERT INTO `sys_user` VALUES (5, '张三', '$2a$10$h7kEg3K.iaXGVwRl4HqMQuv4h.XXQ9CTImN5GpaKx3A1swcZCetp2', '/img/default.gif', '1621@qq.com', 1, NULL, 0, '2023-08-23 00:15:04', '2023-08-23 00:15:04');
+INSERT INTO `sys_user` VALUES (2, 'root', '1', NULL, NULL, 1, 0, 0, '2023-08-26 13:47:37', NULL);
+INSERT INTO `sys_user` VALUES (5, '张三', '$2a$10$h7kEg3K.iaXGVwRl4HqMQuv4h.XXQ9CTImN5GpaKx3A1swcZCetp2', '/img/default.gif', '1621@qq.com', 1, 1, 0, '2023-08-23 00:15:04', '2023-08-23 00:15:04');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -414,7 +436,7 @@ CREATE TABLE `tb_dormitory`  (
 -- ----------------------------
 INSERT INTO `tb_dormitory` VALUES (1, 1, 101, 8, 36.71, 67.13, 0, 0);
 INSERT INTO `tb_dormitory` VALUES (2, 1, 102, 8, -10.00, 61.67, 1, 0);
-INSERT INTO `tb_dormitory` VALUES (3, 1, 103, 8, 78.27, -10.20, 1, 0);
+INSERT INTO `tb_dormitory` VALUES (3, 1, 103, 8, 78.27, -10.20, 0, 1);
 INSERT INTO `tb_dormitory` VALUES (4, 1, 104, 8, 3.80, 13.51, 0, 0);
 INSERT INTO `tb_dormitory` VALUES (5, 1, 105, 8, 96.43, 64.78, 0, 0);
 INSERT INTO `tb_dormitory` VALUES (6, 1, 106, 8, 74.11, 14.81, 0, 0);
@@ -875,7 +897,7 @@ CREATE TABLE `tb_maintenance`  (
   `maintenance_person_id` int NULL DEFAULT NULL COMMENT '维修人员id,通过维修人员表获取电话',
   `type_id` int NOT NULL COMMENT '维修的类型id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '维修人员表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tb_maintenance
@@ -1910,16 +1932,17 @@ DROP TABLE IF EXISTS `tb_user`;
 CREATE TABLE `tb_user`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '人员id',
   `name` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '宿管名字',
-  `gender` tinyint(1) NOT NULL COMMENT '性别0 男 1女',
+  `gender` tinyint(1) NOT NULL COMMENT '性别1男 2女',
   `phone` char(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手机号',
   `age` tinyint NULL DEFAULT NULL COMMENT '年龄',
   `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '逻辑删除标识(0-未删除；1-已删除)',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '人员表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '人员表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tb_user
 -- ----------------------------
+INSERT INTO `tb_user` VALUES (1, 'admin', 1, '17608440747', 20, 0);
 
 -- ----------------------------
 -- Table structure for violation_log

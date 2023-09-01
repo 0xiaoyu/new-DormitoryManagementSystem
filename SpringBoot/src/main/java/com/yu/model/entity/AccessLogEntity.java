@@ -40,7 +40,7 @@ public class AccessLogEntity {
      */
     @Schema(description = "进出id")
     @TableField(value = "user_id")
-    private Integer userId;
+    private Long userId;
 
     /**
      * 创建时间

@@ -15,4 +15,6 @@ public interface StudentService extends IService<Student> {
     IPage<StudentPageVo> getPage(StudentPageQuery queryParams);
 
     Boolean saveOrUpdateStudent(StudentPageVo student);
+
+
 }

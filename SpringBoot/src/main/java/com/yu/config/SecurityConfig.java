@@ -66,6 +66,7 @@ public class SecurityConfig {
                         "/api/v1/student/verify",
                         "/api/v1/users/getEmailVerifyCode",
                         "/api/v1/users/saveStudent",
+                        "api/v1/accessLog/authentication",
                         "/webjars/**",
                         "/doc.html",
                         "/v3/api-docs/**",

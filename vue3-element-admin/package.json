@@ -56,7 +56,6 @@
     "path-browserify": "^1.0.1",
     "path-to-regexp": "^6.2.0",
     "pinia": "^2.0.33",
-    "qrcode-reader-vue3": "^3.1.2",
     "qrcode.vue": "^3.4.1",
     "screenfull": "^6.0.0",
     "sortablejs": "^1.15.0",
@@ -64,6 +63,7 @@
     "vue-baidu-map-3x": "^1.0.35",
     "vue-i18n": "9.2.2",
     "vue-router": "^4.2.0",
+    "vue3-qr-reader": "^1.0.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
