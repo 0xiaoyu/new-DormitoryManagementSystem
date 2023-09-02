@@ -90,7 +90,8 @@ public class AccessController {
             accessLogService.save(log);
         } else {
             name = iUserService.getById(userId).getName();
-            AccessLogEntity log = AccessLogEntity.builder()
+            AccessLogEntity log = AccessLogEntity
+                    .builder()
                     .userId(userId)
                     .aType(2)
                     .build();

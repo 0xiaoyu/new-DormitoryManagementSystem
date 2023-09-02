@@ -98,7 +98,11 @@
               class="w-[60%]"
               @keyup.enter="handleLogin"
             />
-            <el-button :disabled="isDisposed" type="primary" @click="getEmail">
+            <el-button
+              :disabled="isDisposed"
+              type="primary"
+              @click="getEmail('REGISTER')"
+            >
               {{ isDisposed ? `${emailTime}s后重新获取` : "获取验证码" }}
             </el-button>
           </el-form-item>
@@ -122,11 +126,15 @@
           @click.prevent="handleLogin"
           >{{ isLogin ? "登录" : "注册" }}
         </el-button>
+        <div @click="openReset">
+          <a style="float: right; color: #ffffff"> 忘记密码？ </a>
+        </div>
       </el-form>
     </el-card>
 
     <el-dialog
       v-model="verifyDialog.visible"
+      :title="verifyDialog.title"
       append-to-body
       width="600px"
       @close="closeVerifyDialog"
@@ -175,6 +183,101 @@
         </div>
       </template>
     </el-dialog>
+    <el-dialog
+      v-model="resetDialog.visible"
+      :title="resetDialog.title"
+      append-to-body
+      width="500px"
+      @close="closeResetDialog"
+      style="background-color: #2d3a4b"
+    >
+      <template #header>
+        <div style="color: #90caf9">
+          {{ verifyDialog.title }}
+        </div>
+      </template>
+      <el-form
+        ref="resetFormRef"
+        :model="resetForm"
+        :rules="resetRules"
+        label-width="40px"
+      >
+        <el-form-item prop="username">
+          <div class="p-2 text-white">
+            <svg-icon icon-class="user" />
+          </div>
+          <el-input
+            ref="username"
+            v-model="resetForm.username"
+            v-shake
+            placeholder=" 用户名"
+            class="flex-1"
+            name="username"
+            size="large"
+          />
+        </el-form-item>
+        <el-form-item prop="email">
+          <span class="p-2 text-white">
+            <svg-icon icon-class="verify_code" />
+          </span>
+          <el-input
+            v-model="resetForm.email"
+            v-shake
+            :placeholder="'请输入邮箱'"
+            auto-complete="off"
+            class="w-[60%]"
+            @keyup.enter="handleLogin"
+          />
+          <el-button
+            :disabled="isDisposed"
+            type="primary"
+            @click="getEmail('RESET_PASSWORD')"
+          >
+            {{ isDisposed ? `${emailTime}s后重新获取` : "获取验证码" }}
+          </el-button>
+        </el-form-item>
+        <el-form-item prop="verifyCode">
+          <el-input
+            ref="verifyCode"
+            v-model="resetForm.verifyCode"
+            v-shake
+            style="margin-left: 35px"
+            placeholder="输入验证码"
+            class="flex-1"
+            name="emailCode"
+            size="large"
+          />
+        </el-form-item>
+        <el-form-item prop="password">
+          <span class="p-2 text-white">
+            <svg-icon icon-class="password" />
+          </span>
+          <el-input
+            v-model="resetForm.password"
+            v-shake
+            :type="passwordVisible === false ? 'password' : 'input'"
+            class="flex-1"
+            name="password"
+            placeholder="新密码"
+            size="large"
+            @keyup="checkCapslock"
+            @keyup.enter="handleLogin"
+          />
+          <span class="mr-2" @click="passwordVisible = !passwordVisible">
+            <svg-icon
+              :icon-class="!passwordVisible ? 'eye' : 'eye-open'"
+              class="text-white cursor-pointer"
+            />
+          </span>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="reset">重 置</el-button>
+          <el-button @click="closeResetDialog">取 消</el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -190,9 +293,15 @@ import { useUserStore } from "@/store/modules/user";
 import { LocationQuery, LocationQueryValue, useRoute } from "vue-router";
 import { getCaptchaApi } from "@/api/auth";
 import { LoginData } from "@/api/auth/types";
-import { getByName, getEmailCode, saveStudent } from "@/api/user";
+import {
+  getByName,
+  getEmailCode,
+  resetPassword,
+  saveStudent,
+} from "@/api/user";
 import { Student } from "@/api/student/types";
 import { verifyStudent } from "@/api/student";
+import { RefType } from "@/types/utils";
 
 const userStore = useUserStore();
 const route = useRoute();
@@ -218,15 +327,17 @@ const captchaBase64 = ref();
 /**
  * 登录表单引用
  */
-const loginFormRef = ref(ElForm);
+const loginFormRef = ref<RefType>(ElForm);
+const resetFormRef = ref<RefType>(ElForm);
 
 const loginData = ref<LoginData>({
   username: "admin",
   password: "123456",
 });
 
-const studentVerifyFormRef = ref(ElForm); // 用户表单
+const studentVerifyFormRef = ref<RefType>(ElForm); // 用户表单
 const studentVerifyForm = reactive<Student>({});
+const resetForm = reactive<LoginData>({});
 const verifyDialog = reactive<DialogOption>({
   title: "学生认证",
   visible: false,
@@ -272,6 +383,7 @@ const loginRules = {
   ],
   verifyCode: [{ required: true, trigger: "blur", message: "请输入验证码" }],
 };
+const resetRules = {};
 const handleTimeChange = () => {
   if (emailTime.value <= 0) {
     isDisposed.value = false;
@@ -287,6 +399,26 @@ const handleTimeChange = () => {
 
 const emailTime = ref(60);
 const isDisposed = ref(false);
+const resetDialog = reactive<DialogOption>({
+  title: "找回密码",
+  visible: false,
+});
+
+function openReset() {
+  resetDialog.visible = true;
+}
+
+function reset() {
+  resetFormRef.value.validate((valid) => {
+    if (valid) {
+      resetPassword(resetForm).then(() => {
+        loginData.value.username = resetForm.username;
+        loginData.value.password = resetForm.password;
+        resetDialog.visible = false;
+      });
+    }
+  });
+}
 
 function openVerifyDialog() {
   verifyDialog.visible = true;
@@ -296,9 +428,17 @@ function resetVerifyForm() {
   studentVerifyFormRef.value.resetFields();
   studentVerifyFormRef.value.clearValidate();
 }
+
 function closeVerifyDialog() {
   verifyDialog.visible = false;
   resetVerifyForm();
+}
+
+function closeResetDialog() {
+  resetDialog.visible = false;
+  console.log(resetFormRef.value);
+  resetFormRef.value.resetFields();
+  resetFormRef.value.clearValidate();
 }
 
 function checkName() {
@@ -309,6 +449,7 @@ function checkName() {
     }
   });
 }
+
 function verify() {
   studentVerifyFormRef.value.validate((valid: boolean) => {
     if (valid) {
@@ -443,8 +584,13 @@ function startTime() {
   }
 }
 
-function getEmail() {
-  const email = loginData.value.email || "";
+function getEmail(type: string) {
+  let email = "";
+  if (type === "RESET_PASSWORD") {
+    email = resetForm.email || "";
+  } else {
+    email = loginData.value.email || "";
+  }
   const regEmail = /[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+/;
   if (!regEmail.test(email)) {
     ElMessage.error("电子邮件格式不正确");
@@ -454,7 +600,7 @@ function getEmail() {
   if (isDisposed.value) {
     return;
   }
-  getEmailCode(email).then(() => {
+  getEmailCode(email, type).then(() => {
     ElMessage.success("验证码已发送");
     isDisposed.value = true;
     handleTimeChange();
