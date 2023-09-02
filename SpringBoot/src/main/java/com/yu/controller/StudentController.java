@@ -57,6 +57,7 @@ public class StudentController {
 
     @Operation(summary = "导入用户", security = {@SecurityRequirement(name = "Authorization")})
     @PostMapping("/_import")
+    @PreAuthorize("@security.hasPerm('sys:student:add')")
     public Result<String> importUsers(MultipartFile file) throws IOException {
         UserImportListener listener = new UserImportListener();
         String msg = CommonUtil.importExcel(file.getInputStream(), StudentImportVO.class, listener);
@@ -74,6 +75,14 @@ public class StudentController {
         boolean result = studentService.removeByIds(Arrays.stream(ids.split(","))
                 .map(Long::parseLong).toList());
         return Result.judge(result);
+    }
+
+    @Operation(summary = "获取学生联系方式",security = {@SecurityRequirement(name = "Authorization")})
+    @GetMapping("/{id}/phone")
+    @PreAuthorize("@security.hasPerm('student:phone:get')")
+    public Result<String> getStudentPhone(@PathVariable Long id){
+        Student phone = studentService.getOne(Wrappers.<Student>lambdaQuery().eq(Student::getId, id).select(Student::getPhone));
+        return Result.success(phone.getPhone());
     }
 
     // todo 此处应该返回一个code，先简单做了

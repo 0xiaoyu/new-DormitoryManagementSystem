@@ -1,7 +1,7 @@
 package com.yu.service;
 
 
-import com.yu.model.entity.EleLogEntity;
+import com.yu.model.entity.PayLogEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -10,6 +10,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author yu
  * @since 1.0
  */
-public interface EleLogService extends IService<EleLogEntity> {
+public interface PayLogService extends IService<PayLogEntity> {
 
 }

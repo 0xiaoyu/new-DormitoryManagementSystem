@@ -1,5 +1,7 @@
 package com.yu.model.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.yu.common.base.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,6 +19,7 @@ import lombok.Data;
 public class SysDictType extends BaseEntity {
 
     @Schema(description="字典类型ID")
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     @Schema(description="类型名称")

@@ -1,7 +1,7 @@
 package com.yu.service;
 
 
-import com.yu.model.entity.TbMaintenanceEntity;
+import com.yu.model.entity.MaintenanceEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -10,6 +10,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author yu
  * @since 1.0
  */
-public interface MaintenanceService extends IService<TbMaintenanceEntity> {
+public interface MaintenanceService extends IService<MaintenanceEntity> {
 
 }

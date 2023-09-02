@@ -5,8 +5,12 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yu.common.result.PageResult;
 import com.yu.common.result.Result;
 import com.yu.model.entity.Dormitory;
+import com.yu.model.entity.PayLogEntity;
+import com.yu.model.entity.SysDict;
 import com.yu.model.query.DormitoryPageQuery;
 import com.yu.service.DormitoryService;
+import com.yu.service.PayLogService;
+import com.yu.service.SysDictService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -23,6 +27,10 @@ public class DormitoryController {
 
     @Resource
     private DormitoryService dormitoryService;
+    @Resource
+    private PayLogService payLogService;
+    @Resource
+    private SysDictService dictService;
 
     @GetMapping("/page")
     @Operation(summary = "宿舍楼分页", security = {@SecurityRequirement(name = "Authorization")})
@@ -56,10 +64,34 @@ public class DormitoryController {
 
     @Operation(summary = "更新寝室信息")
     @PatchMapping
-    public Result<Boolean> update(@RequestBody Dormitory dormitoryPage){
+    public Result<Boolean> update(@RequestBody Dormitory dormitoryPage) {
         return Result.judge(dormitoryService.updateById(dormitoryPage));
     }
 
+    @PostMapping
+    public Result<PayLogEntity> generateOrder(@RequestBody PayLogEntity payLog) {
+        payLog.setStatus(0);
+        payLogService.save(payLog);
+        return Result.success(payLog);
+    }
+
+    @PatchMapping("/{id}/payElectricity")
+    public Result<Boolean> payElectricity(@Parameter(description = "宿舍id") @PathVariable Long id,
+                                          @Parameter(description = "缴费人id") @RequestParam Long userId,
+                                          @Parameter(description = "缴纳金额") @RequestParam Double money
+    ) {
+        String value = dictService.getOne(Wrappers.lambdaQuery(SysDict.class)
+                .select(SysDict::getValue).eq(SysDict::getName, "电费比例")).getValue();
+        Double payElectricity = Double.valueOf(value);
+        boolean b = dormitoryService.update(Wrappers.<Dormitory>lambdaUpdate()
+                .setSql("electricity = electricity + %f".formatted(money)).eq(Dormitory::getId, id));
+        if (!b)
+            return Result.failed("缴费失败，请联系管理员");
+        payLogService.save(PayLogEntity.builder()
+                .dormitoryId(id).amount(money).userId(userId).type(1).status(1)
+                .build());
+        return Result.success();
+    }
 
 
 }

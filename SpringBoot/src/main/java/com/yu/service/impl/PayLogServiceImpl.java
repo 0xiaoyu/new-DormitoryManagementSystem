@@ -2,9 +2,9 @@ package com.yu.service.impl;
 
 
 import org.springframework.stereotype.Service;
-import com.yu.service.EleLogService;
-import com.yu.model.entity.EleLogEntity;
-import com.yu.mapper.EleLogMapper;
+import com.yu.service.PayLogService;
+import com.yu.model.entity.PayLogEntity;
+import com.yu.mapper.PayLogMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 /**
@@ -14,6 +14,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  * @since 1.0
  */
 @Service
-public class EleLogServiceImpl extends ServiceImpl<EleLogMapper, EleLogEntity> implements EleLogService {
+public class PayLogServiceImpl extends ServiceImpl<PayLogMapper, PayLogEntity> implements PayLogService {
 
 }

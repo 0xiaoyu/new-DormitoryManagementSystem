@@ -20,7 +20,7 @@ public class DormitoryServiceImpl extends ServiceImpl<DormitoryMapper, Dormitory
 
     @Override
     public IPage<Dormitory> getPage(DormitoryPageQuery queryParams) {
-        Page<Dormitory> page = new Page<>(queryParams.getPageNum(), queryParams.getPageSize());
+        Page<Dormitory> page = queryParams.getPage();
         return this.baseMapper.floorPage(page, queryParams);
     }
 }

@@ -1,6 +1,6 @@
 package com.yu.mapper;
 
-import com.yu.model.entity.TbMaintenanceEntity;
+import com.yu.model.entity.MaintenanceEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 1.0
  */
 @Mapper
-public interface TbMaintenanceMapper extends BaseMapper<TbMaintenanceEntity> {
+public interface TbMaintenanceMapper extends BaseMapper<MaintenanceEntity> {
 
 
 }

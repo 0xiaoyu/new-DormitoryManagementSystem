@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 import java.lang.Integer;
 
 /**
- * 维修人员表 实体类。
+ * 维修详情表 实体类。
  *
  * @author yu
  * @since 1.0
@@ -26,7 +26,7 @@ import java.lang.Integer;
 @AllArgsConstructor
 @Schema(name = "维修人员表")
 @TableName(value = "tb_maintenance")
-public class TbMaintenanceEntity {
+public class MaintenanceEntity {
 
     /**
      * 维修id
@@ -47,7 +47,7 @@ public class TbMaintenanceEntity {
      */
     @Schema(description = "维修详情")
     @TableField(value = "detail")
-    private Integer detail;
+    private String detail;
 
     /**
      * 创建时间

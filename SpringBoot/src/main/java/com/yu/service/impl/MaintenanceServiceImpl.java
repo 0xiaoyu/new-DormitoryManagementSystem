@@ -3,7 +3,7 @@ package com.yu.service.impl;
 
 import org.springframework.stereotype.Service;
 import com.yu.service.MaintenanceService;
-import com.yu.model.entity.TbMaintenanceEntity;
+import com.yu.model.entity.MaintenanceEntity;
 import com.yu.mapper.TbMaintenanceMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -14,6 +14,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  * @since 1.0
  */
 @Service
-public class MaintenanceServiceImpl extends ServiceImpl<TbMaintenanceMapper, TbMaintenanceEntity> implements MaintenanceService {
+public class MaintenanceServiceImpl extends ServiceImpl<TbMaintenanceMapper, MaintenanceEntity> implements MaintenanceService {
 
 }

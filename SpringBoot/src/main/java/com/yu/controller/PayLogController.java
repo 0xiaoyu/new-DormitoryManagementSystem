@@ -2,8 +2,8 @@ package com.yu.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yu.common.result.Result;
-import com.yu.model.entity.EleLogEntity;
-import com.yu.service.EleLogService;
+import com.yu.model.entity.PayLogEntity;
+import com.yu.service.PayLogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -23,10 +23,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/eleLog")
 @Tag(name = "电费日志控制层")
-public class EleLogController {
+public class PayLogController {
 
     @Resource
-    private EleLogService eleLogService;
+    private PayLogService payLogService;
 
     /**
      * 添加 电费日志
@@ -49,8 +49,8 @@ public class EleLogController {
 
             @Parameter(name = "status", description = "订单状态 0 未支付，1完成")
     })
-    public Result<Boolean> save(@RequestBody EleLogEntity eleLog) {
-        return Result.success(eleLogService.save(eleLog));
+    public Result<Boolean> save(@RequestBody PayLogEntity eleLog) {
+        return Result.success(payLogService.save(eleLog));
     }
 
 
@@ -66,7 +66,7 @@ public class EleLogController {
             @Parameter(name = "id", description = "", required = true)
     })
     public Result<Boolean> remove(@PathVariable Serializable id) {
-        return Result.success(eleLogService.removeById(id));
+        return Result.success(payLogService.removeById(id));
     }
 
 
@@ -91,8 +91,8 @@ public class EleLogController {
 
             @Parameter(name = "status", description = "订单状态 0 未支付，1完成")
     })
-    public Result<Boolean> update(@RequestBody EleLogEntity eleLog) {
-        return Result.success(eleLogService.updateById(eleLog));
+    public Result<Boolean> update(@RequestBody PayLogEntity eleLog) {
+        return Result.success(payLogService.updateById(eleLog));
     }
 
 
@@ -103,8 +103,8 @@ public class EleLogController {
      */
     @GetMapping("/list")
     @Operation(summary = "查询所有电费日志")
-    public Result<List<EleLogEntity>> list() {
-        return Result.success(eleLogService.list());
+    public Result<List<PayLogEntity>> list() {
+        return Result.success(payLogService.list());
     }
 
 
@@ -119,8 +119,8 @@ public class EleLogController {
     @Parameters(value = {
             @Parameter(name = "id", description = "", required = true)
     })
-    public Result<EleLogEntity> getInfo(@PathVariable Serializable id) {
-        return Result.success(eleLogService.getById(id));
+    public Result<PayLogEntity> getInfo(@PathVariable Serializable id) {
+        return Result.success(payLogService.getById(id));
     }
 
 
@@ -136,7 +136,7 @@ public class EleLogController {
             @Parameter(name = "pageNumber", description = "页码", required = true),
             @Parameter(name = "pageSize", description = "每页大小", required = true)
     })
-    public Result<Page<EleLogEntity>> page(Page<EleLogEntity> page) {
-        return Result.success(eleLogService.page(page));
+    public Result<Page<PayLogEntity>> page(Page<PayLogEntity> page) {
+        return Result.success(payLogService.page(page));
     }
 }

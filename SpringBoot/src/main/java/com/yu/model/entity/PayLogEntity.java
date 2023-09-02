@@ -1,19 +1,16 @@
 package com.yu.model.entity;
 
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Builder;
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.lang.Long;
 import java.sql.Timestamp;
-import java.lang.Boolean;
-import java.lang.Integer;
 
 /**
  * 电费日志 实体类。
@@ -27,7 +24,7 @@ import java.lang.Integer;
 @AllArgsConstructor
 @Schema(name = "电费日志")
 @TableName(value = "ele_log")
-public class EleLogEntity {
+public class PayLogEntity {
 
     @TableId(type = IdType.AUTO)
     private Long id;
@@ -37,35 +34,46 @@ public class EleLogEntity {
      */
     @Schema(description = "宿舍id")
     @TableField(value = "dormitory_id")
-    private Integer dormitoryId;
+    private Long dormitoryId;
 
     /**
      * 缴费金额
      */
     @Schema(description = "缴费金额")
     @TableField(value = "amount")
-    private Integer amount;
+    private Double amount;
 
     /**
      * 缴费者id
      */
     @Schema(description = "缴费者id")
     @TableField(value = "user_id")
-    private Integer userId;
+    private Long userId;
+
+    /**
+     * 创建时间
+     */
+    @Schema(description = "创建时间")
+    @TableField(value = "create_time")
+    private Timestamp createTime;
 
     /**
      * 缴费时间
      */
     @Schema(description = "缴费时间")
-    @TableField(value = "create_time")
-    private Timestamp createTime;
+    @TableField(value = "update_time")
+    private Timestamp updateTime;
 
     /**
      * 订单状态 0 未支付，1完成
      */
     @Schema(description = "订单状态 0 未支付，1完成")
     @TableField(value = "status")
-    private Boolean status;
+    private Integer status;
+
+    @Schema(description = "类型")
+    @TableField(value = "type")
+    private Integer type;
 
 
 }

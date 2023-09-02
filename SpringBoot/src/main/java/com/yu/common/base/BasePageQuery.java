@@ -1,6 +1,7 @@
 package com.yu.common.base;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -19,4 +20,8 @@ public class BasePageQuery {
 
     @Schema(description = "每页记录数", example = "10", required = true)
     private int pageSize = 10;
+
+    public <T> Page<T> getPage(){
+        return new Page<>(pageNum, pageSize);
+    }
 }
