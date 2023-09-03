@@ -113,16 +113,22 @@
               <i-ep-edit />
               编辑
             </el-button>
-            <el-button
-              v-hasPerm="['sys:dormitory:delete']"
-              link
-              size="small"
-              type="primary"
-              @click.stop="handleDelete(scope.row.id)"
+            <el-popconfirm
+              title="确定删除吗?"
+              @confirm.stop="handleDelete(scope.row.id)"
             >
-              <i-ep-delete />
-              删除
-            </el-button>
+              <template #reference>
+                <el-button
+                  v-hasPerm="['sys:dormitory:delete']"
+                  link
+                  size="small"
+                  type="primary"
+                >
+                  <i-ep-delete />
+                  删除
+                </el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -196,10 +202,10 @@
 </template>
 
 <script lang="ts" setup>
-import {Building} from "@/api/build/types";
-import {addBuild, deleteBuild, getBuildList} from "@/api/build";
-import {getDictOptions} from "@/api/dict";
-import {BmMark, RefType} from "@/types/utils";
+import { Building } from "@/api/build/types";
+import { addBuild, deleteBuild, getBuildList } from "@/api/build";
+import { getDictOptions } from "@/api/dict";
+import { BmMark, RefType } from "@/types/utils";
 
 const dataFormRef = ref<RefType>(ElForm);
 const queryFormRef = ref<RefType>(ElForm);

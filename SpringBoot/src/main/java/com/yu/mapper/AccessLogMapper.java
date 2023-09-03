@@ -1,7 +1,10 @@
 package com.yu.mapper;
 
-import com.yu.model.entity.AccessLogEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yu.model.entity.AccessLogEntity;
+import com.yu.model.query.PassLogPageQuery;
+import com.yu.model.vo.PassPageVo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -14,4 +17,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface AccessLogMapper extends BaseMapper<AccessLogEntity> {
 
 
+    Page<PassPageVo> getPageQuery(Page<PassPageVo> page,
+                                  Boolean s,
+                                  Boolean o,
+                                  PassLogPageQuery q);
 }

@@ -56,5 +56,9 @@ public class AccessLogEntity {
     @TableField(value = "a_type")
     private Integer aType;
 
+    @Schema(description = "逻辑删除 0 未删除 1 已删除")
+    @TableField(value = "deleted")
+    private Boolean deleted;
+
 
 }

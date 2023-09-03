@@ -1,4 +1,4 @@
-import axios, { InternalAxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { useUserStoreHook } from "@/store/modules/user";
 
 // 创建 axios 实例
@@ -11,6 +11,13 @@ const service = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    // 检查请求参数中的时间类型
+    if (config.params && typeof config.params === "object") {
+      config.params = convertTime(config.params);
+    }
+    if (config.data && typeof config.data === "object") {
+      config.data = convertTime(config.data);
+    }
     const userStore = useUserStoreHook();
     if (userStore.token) {
       config.headers.Authorization = userStore.token;
@@ -38,6 +45,7 @@ service.interceptors.response.use(
     return Promise.reject(new Error(msg || "Error"));
   },
   (error: any) => {
+    console.log(error);
     if (error.response.data) {
       const { code, msg } = error.response.data;
       // token 过期,重新登录
@@ -56,6 +64,23 @@ service.interceptors.response.use(
     return Promise.reject(error.message);
   }
 );
+
+function convertTime(data: any): any {
+  if (Array.isArray(data)) {
+    return data.map((item) => convertTime(item));
+  } else if (typeof data === "object") {
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        if (data[key] instanceof Date) {
+          data[key] = data[key].toLocaleString();
+        } else if (Array.isArray(data[key]) || typeof data[key] === "object") {
+          data[key] = convertTime(data[key]);
+        }
+      }
+    }
+  }
+  return data;
+}
 
 // 导出 axios 实例
 export default service;

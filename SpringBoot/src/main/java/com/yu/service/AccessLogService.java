@@ -1,7 +1,10 @@
 package com.yu.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yu.model.entity.AccessLogEntity;
+import com.yu.model.query.PassLogPageQuery;
+import com.yu.model.vo.PassPageVo;
 
 /**
 * @author zay
@@ -10,4 +13,5 @@ import com.yu.model.entity.AccessLogEntity;
 */
 public interface AccessLogService extends IService<AccessLogEntity> {
 
+    Page<PassPageVo> getPageQuery(PassLogPageQuery query);
 }

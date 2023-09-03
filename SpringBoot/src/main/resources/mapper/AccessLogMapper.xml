@@ -12,5 +12,30 @@
     <sql id="Base_Column_List">
         `id`, `user_id`, `create_time`, `a_type`
     </sql>
+    <select id="getPageQuery" resultType="com.yu.model.vo.PassPageVo">
+        <if test="s">
+            select log.id,log.a_type,log.create_time,s.student_name as name,s.phone,d.dormitory_number as dormitory
+            from access_log log
+            left join tb_student s on log.user_id = s.id
+            left join tb_dormitory d on s.dormitory_id = d.id
+            where (a_type = 1 or a_type = 0) and log.deleted = 0
+            <if test="q.startTime != null">
+                and log.create_time between #{q.startTime} and #{q.endTime}
+            </if>
+            <if test="o">
+                union
+            </if>
+        </if>
+        <if test="o">
+            select log.id,log.a_type,log.create_time,u.name as name,u.phone,"其他人员" as dormitory
+            from access_log log
+            left join tb_user u on log.user_id = u.id
+            where (a_type = 2 or a_type = 3) and log.deleted = 0
+            <if test="q.startTime != null">
+                and log.create_time between #{q.startTime} and #{q.endTime}
+            </if>
+        </if>
+        order by create_time desc
+    </select>
 
 </mapper>

@@ -38,7 +38,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Tag(name = "02.系统用户接口")
 @RestController
@@ -60,12 +59,12 @@ public class SysUserController {
     @Transactional
     public Result<Object> saveStudent(@Parameter(description = "邮箱验证码", example = "admin/zh@qq.com") @RequestParam("emailCode") String emailCode,
                                       @RequestBody StudentUser studentUser) {
-        var s =switch (emailUtils.verify(studentUser.email,emailCode, EmailType.REGISTER)){
+        var s = switch (emailUtils.verify(studentUser.email, emailCode, EmailType.REGISTER)) {
             case FAIL -> Result.failed("邮箱验证码错误");
             case OVERDUE -> Result.failed("邮箱验证码已过期");
             default -> null;
         };
-        if (s!=null)
+        if (s != null)
             return s;
         SysUser student = new SysUser();
         BeanUtils.copyProperties(studentUser, student);
@@ -122,7 +121,7 @@ public class SysUserController {
     @GetMapping("page")
     @Operation(summary = "用户分页列表", security = {@SecurityRequirement(name = "Authorization")})
     public PageResult<UserPageVO> page(@ParameterObject UserPageQuery queryParams) {
-        IPage<UserPageVO> result  = userService.getUserPage(queryParams);
+        IPage<UserPageVO> result = userService.getUserPage(queryParams);
         return PageResult.success(result);
     }
 
@@ -130,23 +129,25 @@ public class SysUserController {
     @Operation(description = "根据用户名获取用户")
     public Result<Boolean> getByName(@Parameter(description = "用户名", example = "admin") @RequestParam("name") String name) {
         SysUser user = userService.getOne(Wrappers.lambdaQuery(SysUser.class).select(SysUser::getId).eq(SysUser::getName, name));
-        return Result.success(user==null);
+        return Result.success(user == null);
     }
 
     @PatchMapping("resetPassword")
     @Operation(description = "重置密码")
-    public Result<String> resetPassword(@Parameter(description = "email", example = "1647@qq.com") String email,
-                                        @Parameter(description = "邮箱验证码", example = "123asd") String code,
-                                        @Parameter(description = "新密码", example = "123456") String password) {
-        Result<String> s = switch (emailUtils.verify(email, code, EmailType.RESET_PASSWORD)){
+    public Result<String> resetPassword(@Parameter(description = "email", example = "1647@qq.com")@RequestParam String email,
+                                        @Parameter(description = "邮箱验证码", example = "123asd")@RequestParam String verifyCode,
+                                        @Parameter(description = "新密码", example = "123456")@RequestParam String password,
+                                        @Parameter(description = "用户名", example = "zhou")@RequestParam String username
+    ) {
+        Result<String> s = switch (emailUtils.verify(email, verifyCode, EmailType.RESET_PASSWORD)) {
             case FAIL -> Result.failed("邮箱验证码错误");
             case OVERDUE -> Result.failed("邮箱验证码已过期");
             default -> null;
         };
-        if (s!=null)
+        if (s != null)
             return s;
 
-        SysUser user = userService.getOne(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getEmail, email));
+        SysUser user = userService.lambdaQuery().eq(SysUser::getName,username).eq(SysUser::getEmail, email).one();
         if (Objects.isNull(user)) return Result.failed("用户不存在");
         String encode = passwordEncoder.encode(password);
         user.setPassword(encode);
@@ -157,9 +158,9 @@ public class SysUserController {
     @Operation(description = "获取邮箱验证码验证")
     @GetMapping("getEmailVerifyCode")
     public Result<String> getEmailVerifyCode(@Parameter(description = "注册的邮箱", example = "164702@qq.com") String email,
-                                             @Parameter(description = "发送邮箱的类型",example = "REGISTER")@RequestParam("type") EmailType type){
+                                             @Parameter(description = "发送邮箱的类型", example = "REGISTER") @RequestParam("type") EmailType type) {
         try {
-            emailUtils.sendMailCode(email,type);
+            emailUtils.sendMailCode(email, type);
             return Result.success();
         } catch (Exception e) {
             return Result.failed("发送验证码失败");
@@ -205,8 +206,7 @@ public class SysUserController {
             @Schema(description = "邮箱", example = "") String email,
             @Schema(description = "用户状态(1:正常;0:禁用)", example = "1") Integer status,
             @Schema(description = "绑定id", example = "1") Long userId,
-            @Schema(description = "绑定角色ID" ,example = "[1,2,3]") List<Long> roleIds
-
-    ){
+            @Schema(description = "绑定角色ID", example = "[1,2,3]") List<Long> roleIds
+    ) {
     }
 }

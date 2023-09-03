@@ -2,11 +2,17 @@ package com.yu.controller;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.jwt.Claims;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.toolkit.Db;
 import com.yu.common.constant.SecurityConstants;
+import com.yu.common.enums.ViolationTypeEnum;
+import com.yu.common.result.PageResult;
 import com.yu.common.result.Result;
+import com.yu.config.SystemConfig;
 import com.yu.model.entity.AccessLogEntity;
 import com.yu.model.entity.SysUser;
+import com.yu.model.entity.ViolationLog;
+import com.yu.model.query.PassLogPageQuery;
+import com.yu.model.vo.PassPageVo;
 import com.yu.security.JwtTokenManager;
 import com.yu.security.userdetails.SysUserDetails;
 import com.yu.service.AccessLogService;
@@ -18,6 +24,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.CollectionUtils;
@@ -25,8 +32,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -54,6 +62,41 @@ public class AccessController {
     private IUserService iUserService;
 
 
+    @Operation(summary = "获取晚归时间")
+    @GetMapping("accessTime")
+    public Result<String> getTime(){
+        return Result.success(SystemConfig.getTime());
+    }
+
+    @Operation(summary = "修改晚归时间")
+    @PutMapping("modifyTime")
+    public Result<Boolean> modifyTime(String time){
+        SystemConfig.AccessControlTime = LocalTime.parse(time);
+        return Result.success();
+    }
+
+    @DeleteMapping
+    @Operation(summary = "批量删除记录")
+    public Result<Boolean> delete(String ids){
+        return Result.success(accessLogService.removeBatchByIds(StrUtil.split(ids,',')));
+    }
+
+    /**
+     * 分页查询进入记录
+     *
+     * @param query 分页查询对象
+     * @return 分页查询对象
+     */
+    @GetMapping("pageQuery")
+    @Operation(summary = "分页查询进入记录")
+    public PageResult<PassPageVo> pageQuery(@ParameterObject PassLogPageQuery query){
+        return PageResult.success(accessLogService.getPageQuery(query));
+    }
+    /**
+     * 二维码验证
+     * @param token 通行token
+     * @return {@code true} 验证成功，{@code false} 验证失败
+     */
     @PostMapping("authentication")
     @Operation(summary = "二维码验证")
     public Result<String> authentication(@Parameter(description = "通行token")@RequestBody String token) {
@@ -82,6 +125,9 @@ public class AccessController {
 
         String name = null;
         if (roles!=null && roles.contains("STUDENT")) {
+            if (SystemConfig.isAccessControlTime()){
+                Db.save(ViolationLog.of(null,userId, ViolationTypeEnum.WANGUI,0,1,"晚归,时间"+LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH时mm分ss秒"))));
+            }
             name = studentService.getById(userId).getStudentName();
             AccessLogEntity log = AccessLogEntity.builder()
                     .userId(userId)
@@ -156,19 +202,6 @@ public class AccessController {
         return Result.success(accessLogService.updateById(accessLog));
     }
 
-
-    /**
-     * 查询所有进入记录
-     *
-     * @return 所有数据
-     */
-    @GetMapping("/list")
-    @Operation(summary = "查询所有进入记录")
-    public Result<List<AccessLogEntity>> list() {
-        return Result.success(accessLogService.list());
-    }
-
-
     /**
      * 根据进入记录主键获取详细信息。
      *
@@ -182,22 +215,5 @@ public class AccessController {
     })
     public Result<AccessLogEntity> getInfo(@PathVariable Serializable id) {
         return Result.success(accessLogService.getById(id));
-    }
-
-
-    /**
-     * 分页查询进入记录
-     *
-     * @param page 分页对象
-     * @return 分页对象
-     */
-    @GetMapping("/page")
-    @Operation(summary = "分页查询进入记录")
-    @Parameters(value = {
-            @Parameter(name = "pageNumber", description = "页码", required = true),
-            @Parameter(name = "pageSize", description = "每页大小", required = true)
-    })
-    public Result<Page<AccessLogEntity>> page(Page<AccessLogEntity> page) {
-        return Result.success(accessLogService.page(page));
     }
 }

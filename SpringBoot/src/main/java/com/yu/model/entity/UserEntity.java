@@ -1,5 +1,6 @@
 package com.yu.model.entity;
 
+import com.yu.common.enums.UsetTypeEnum;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -42,6 +43,13 @@ public class UserEntity {
     @Schema(description = "宿管名字")
     @TableField(value = "name")
     private String name;
+    /*角色*/
+    @TableField(value = "role")
+    private Long role;
+
+    /*类型id*/
+    @TableField(value = "type_id")
+    private UsetTypeEnum typeId;
 
     /**
      * 性别0 男 1女

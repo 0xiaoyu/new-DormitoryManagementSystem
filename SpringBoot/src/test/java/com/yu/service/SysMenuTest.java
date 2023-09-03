@@ -1,4 +1,4 @@
-package com.yu.ServiceTest;
+package com.yu.service;
 
 import com.yu.service.SysMenuService;
 import org.junit.jupiter.api.Test;

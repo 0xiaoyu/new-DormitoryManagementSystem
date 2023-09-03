@@ -181,7 +181,7 @@
               :value="item.value"
             />
           </el-select>
-<!--          <el-input v-model="formData.buildingId" placeholder="请输入姓名" />-->
+          <!--          <el-input v-model="formData.buildingId" placeholder="请输入姓名" />-->
         </el-form-item>
         <el-form-item label="宿舍号" prop="dormitoryNumber">
           <el-input
@@ -282,6 +282,9 @@ const type = {
   3: "info",
 };
 
+function handleSelectionChange(selection: any) {
+  ids.value = selection.map((item: any) => item.id);
+}
 function openDialog(id?: number) {
   dialog.visible = true;
   if (id) {

@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 /**
  * Check if an element has a class
  * @param {HTMLElement} ele
@@ -36,4 +38,9 @@ export function removeClass(ele: HTMLElement, cls: string) {
 export function isExternal(path: string) {
   const isExternal = /^(https?:|http?:|mailto:|tel:)/.test(path);
   return isExternal;
+}
+
+export function formatLocalTime(date: Date | undefined) {
+  if (!date) return;
+  return dayjs(date).format("YYYY-MM-DD HH:mm:ss");
 }

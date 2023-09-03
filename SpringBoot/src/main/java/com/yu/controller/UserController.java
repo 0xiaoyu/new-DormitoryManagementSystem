@@ -3,16 +3,20 @@ package com.yu.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yu.common.result.Result;
 import com.yu.model.entity.UserEntity;
+import com.yu.model.query.TbUserPageQuery;
+import com.yu.model.vo.DormitoryPageVo;
 import com.yu.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 人员表 控制层。
@@ -123,6 +127,17 @@ public class UserController {
         return Result.success(userService.getById(id));
     }
 
+    @GetMapping("/page/dormitory")
+    @Operation(summary = "分页查询宿管")
+    @Parameters(value = {
+            @Parameter(name = "pageNumber", description = "页码", required = true),
+            @Parameter(name = "pageSize", description = "每页大小", required = true),
+            @Parameter(name = "name", description = "名字"),
+            @Parameter(name = "typeId", description = "人员类型id")
+    })
+    public Result<Page<DormitoryPageVo>> pageDormitory(TbUserPageQuery page) {
+        return Result.success(userService.pageDormitory(page));
+    }
 
     /**
      * 分页查询人员表
@@ -134,9 +149,15 @@ public class UserController {
     @Operation(summary = "分页查询人员表")
     @Parameters(value = {
             @Parameter(name = "pageNumber", description = "页码", required = true),
-            @Parameter(name = "pageSize", description = "每页大小", required = true)
+            @Parameter(name = "pageSize", description = "每页大小", required = true),
+            @Parameter(name = "name", description = "名字"),
+            @Parameter(name = "typeId", description = "人员类型id")
     })
-    public Result<Page<UserEntity>> page(Page<UserEntity> page) {
-        return Result.success(userService.page(page));
+    public Result<Page<UserEntity>> page(TbUserPageQuery page) {
+        Page<UserEntity> result = userService.lambdaQuery()
+                .like(StringUtils.hasText(page.getName()),UserEntity::getName, page.getName())
+                .eq(!Objects.isNull(page.getTypeId()),UserEntity::getTypeId, page.getTypeId()).
+                page(page.getPage());
+        return Result.success(result);
     }
 }
