@@ -38,3 +38,10 @@ export function deleteStudent(ids: string) {
     method: "delete",
   });
 }
+
+export function getStudentCount(){
+  return request({
+    url: `${baseUrl}/count`,
+    method: "get",
+  })
+}

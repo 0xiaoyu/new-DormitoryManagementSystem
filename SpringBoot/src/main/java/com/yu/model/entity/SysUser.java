@@ -15,6 +15,8 @@ import lombok.EqualsAndHashCode;
 @TableName(value ="sys_user")
 @Data
 public class SysUser extends BaseEntity {
+
+
     /**
      * 用户id
      */

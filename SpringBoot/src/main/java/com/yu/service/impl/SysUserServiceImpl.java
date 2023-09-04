@@ -1,5 +1,6 @@
 package com.yu.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -16,7 +17,6 @@ import com.yu.model.vo.UserPageVO;
 import com.yu.service.SysMenuService;
 import com.yu.service.SysUserService;
 import jakarta.annotation.Resource;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -53,11 +53,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
 
     @Override
     public UserInfoVO getUserLoginInfo() {
-        SysUser user = this.getOne(new LambdaQueryWrapper<SysUser>()
-                .eq(SysUser::getName, Objects.requireNonNull(SecurityUtils.getUser()).getUsername())
-                .select(SysUser::getId, SysUser::getAvatar));
+        SysUser user = getOne(new LambdaQueryWrapper<SysUser>()
+                .eq(SysUser::getName, Objects.requireNonNull(SecurityUtils.getUser()).getUsername()));
         UserInfoVO info = new UserInfoVO();
-        BeanUtils.copyProperties(user, info);
+        BeanUtil.copyProperties(user, info);
+        info.setNickname(user.getName());
         info.setRoles(SecurityUtils.getRoles());
         info.setPerms(redisTemplate.opsForValue().get(SecurityConstants.USER_PERMS_CACHE_PREFIX+ user.getId()));
         return info;

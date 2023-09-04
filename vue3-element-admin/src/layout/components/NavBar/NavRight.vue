@@ -16,7 +16,7 @@
   <!-- 用户头像 -->
   <el-dropdown trigger="click">
     <div class="avatar-container">
-      <img :src="userStore.avatar + '?imageView2/1/w/80/h/80'" />
+      <img :src="userStore.avatar" />
       <i-ep-caret-bottom class="w-3 h-3" />
     </div>
     <template #dropdown>
@@ -24,17 +24,14 @@
         <router-link to="/">
           <el-dropdown-item>{{ $t("navbar.dashboard") }}</el-dropdown-item>
         </router-link>
+        <router-link to="/">
+          <el-dropdown-item>个人中心</el-dropdown-item>
+        </router-link>
         <a
           target="_blank"
-          href="https://github.com/youlaitech/vue3-element-admin"
+          href="https://github.com/0xiaoyu/new-DormitoryManagementSystem"
         >
           <el-dropdown-item>Github</el-dropdown-item>
-        </a>
-        <a target="_blank" href="https://gitee.com/haoxr">
-          <el-dropdown-item>{{ $t("navbar.gitee") }}</el-dropdown-item>
-        </a>
-        <a target="_blank" href="https://juejin.cn/post/7228990409909108793">
-          <el-dropdown-item>{{ $t("navbar.document") }}</el-dropdown-item>
         </a>
         <el-dropdown-item divided @click="logout">
           {{ $t("navbar.logout") }}

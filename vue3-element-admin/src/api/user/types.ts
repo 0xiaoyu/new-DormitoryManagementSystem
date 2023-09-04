@@ -2,6 +2,7 @@
  * 登录用户信息
  */
 export interface UserInfo {
+  id:number
   userId: number;
   nickname: string;
   avatar: string;
@@ -111,4 +112,24 @@ export interface RegistrationData {
   userId: string;
   /** 手机号 */
   phone: string;
+}
+
+export interface SysUser{
+  /** 用户id */
+  id?: number;
+  /** 用户名 */
+  name?: string;
+  /** 密码 */
+  password?: string;
+  /** 邮箱 */
+  email?: string;
+  /** 头像地址 */
+  avatar?: string;
+  /** 绑定id */
+  userId?: string;
+  /**
+   * 验证码
+   */
+  code?: string;
+
 }

@@ -37,6 +37,12 @@ public class StudentController {
     @Resource
     private StudentService studentService;
 
+    @GetMapping("count")
+    @Operation(summary = "学生总数", security = {@SecurityRequirement(name = "Authorization")})
+    public Result<Long> count() {
+        return Result.success(studentService.count());
+    }
+
     @GetMapping("/page")
     @Operation(summary = "学生分页列表", security = {@SecurityRequirement(name = "Authorization")})
     public PageResult<StudentPageVo> page(@ParameterObject StudentPageQuery queryParams) {

@@ -22,6 +22,6 @@ public class BasePageQuery {
     private int pageSize = 10;
 
     public <T> Page<T> getPage(){
-        return new Page<>(pageNum, pageSize);
+        return Page.of(pageNum, pageSize);
     }
 }

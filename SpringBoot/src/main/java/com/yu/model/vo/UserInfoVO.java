@@ -1,6 +1,8 @@
 package com.yu.model.vo;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -14,7 +16,13 @@ import java.util.Set;
  */
 @Schema(description ="当前登录用户视图对象")
 @Data
-public class UserInfoVO {
+public class    UserInfoVO {
+
+    /**
+     * 系统id
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
     @Schema(description="用户ID")
     private Long userId;

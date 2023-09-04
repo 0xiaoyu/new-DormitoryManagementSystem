@@ -27,6 +27,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +50,30 @@ public class SysUserController {
     private final PasswordEncoder passwordEncoder;
     private final SysUserRoleService userRoleService;
     private final EmailUtils emailUtils;
+    /**
+     * 存储桶名称
+     */
+    @Value("${oss.aliyun.bucket-name}")
+    private String bucketName;
+    /**
+     * 服务Endpoint
+     */
+    @Value("${oss.aliyun.endpoint}")
+    private String endpoint;
 
+    @Operation(summary = "修改用户信息", security = {@SecurityRequirement(name = "Authorization")})
+    @PutMapping("modifyInfo")
+    public Result<Boolean> modifyByMe(@RequestBody SysUser user,@RequestParam(required = false) String code,@RequestParam(required = false) String email) {
+        if (StrUtil.isNotBlank(user.getEmail()+user.getPassword())){
+            EmailType type = emailUtils.verify(email, code, EmailType.RESET_PASSWORD);
+            if (type == EmailType.FAIL){
+                return Result.failed("邮箱验证码错误");
+            }
+        }
+        String fileHost = "https://" + bucketName + "." + endpoint; // 文件主机域名
+        user.setAvatar(user.getAvatar().substring(fileHost.length() + 1));
+        return Result.judge(userService.updateById(user));
+    }
 
     @PostMapping("saveStudent")
     @Operation(description = "注册学生用户")

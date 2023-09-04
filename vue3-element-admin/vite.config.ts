@@ -58,7 +58,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
             ), // 替换 /dev-api 为 target 接口地址
         },
         '/ws': {
-          target: 'https://apis.map.qq.com',
+          target: 'ws://localhost:8080',
         }
       },
     },

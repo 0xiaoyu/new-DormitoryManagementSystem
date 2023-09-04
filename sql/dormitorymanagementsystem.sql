@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : yu
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80027 (8.0.27)
+ Source Server Version : 80033
  Source Host           : localhost:3306
- Source Schema         : dormitorymanagementsystem
+ Source Schema         : yu
 
  Target Server Type    : MySQL
- Target Server Version : 80027 (8.0.27)
+ Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 04/09/2023 07:33:53
+ Date: 04/09/2023 20:09:48
 */
 
 SET NAMES utf8mb4;
@@ -96,7 +96,7 @@ CREATE TABLE `receive_notice_msg`  (
   `receive_id` int NOT NULL COMMENT '接收者id',
   `r_status` tinyint NOT NULL COMMENT '接收状态,0未读，1已读',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `receive_notice_msg_列_name_receive_id_uindex`(`notice_id` ASC, `receive_id` ASC) USING BTREE
+  UNIQUE INDEX `receive_notice_msg_列_name_receive_id_uindex`(`notice_id`, `receive_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '接收通知' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -255,7 +255,7 @@ CREATE TABLE `sys_dict_type`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `type_code`(`code` ASC) USING BTREE
+  UNIQUE INDEX `type_code`(`code`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 97 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典类型表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -359,7 +359,7 @@ CREATE TABLE `sys_role`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `name`(`name` ASC) USING BTREE
+  UNIQUE INDEX `name`(`name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -407,7 +407,7 @@ CREATE TABLE `sys_user`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户id',
   `name` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户名',
   `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码,最多30字符',
-  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户头像',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '/defalut.gif' COMMENT '用户头像',
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '邮箱',
   `status` tinyint(1) NULL DEFAULT 1 COMMENT '用户状态(1:正常;0:禁用)',
   `user_id` bigint NULL DEFAULT NULL COMMENT '绑定id',
@@ -415,16 +415,16 @@ CREATE TABLE `sys_user`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `login_name`(`name` ASC) USING BTREE
+  UNIQUE INDEX `login_name`(`name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'admin', '$2a$10$xVWsNOhHrCxh5UbpCE7/HuJ.PAOKcYAqRxD2CO2nVnJS.IAXkr5aq', '/img/default.gif', NULL, 1, NULL, 0, '2023-08-20 20:20:19', '2023-08-20 20:20:20');
-INSERT INTO `sys_user` VALUES (2, 'root', '1', NULL, NULL, 1, 0, 0, '2023-08-26 13:47:37', NULL);
-INSERT INTO `sys_user` VALUES (5, '张三', '$2a$10$h7kEg3K.iaXGVwRl4HqMQuv4h.XXQ9CTImN5GpaKx3A1swcZCetp2', '/img/default.gif', '1621@qq.com', 1, 1, 0, '2023-08-23 00:15:04', '2023-08-23 00:15:04');
-INSERT INTO `sys_user` VALUES (6, 'yu', '$2a$10$h7kEg3K.iaXGVwRl4HqMQuv4h.XXQ9CTImN5GpaKx3A1swcZCetp2', NULL, '1647022985@qq.com', 1, 12, 0, '2023-09-02 22:01:53', '2023-09-02 22:01:58');
+INSERT INTO `sys_user` VALUES (1, 'admin', '$2a$10$xVWsNOhHrCxh5UbpCE7/HuJ.PAOKcYAqRxD2CO2nVnJS.IAXkr5aq', '/defalut.gif', NULL, 1, NULL, 0, '2023-08-20 20:20:19', '2023-08-20 20:20:20');
+INSERT INTO `sys_user` VALUES (2, 'root', '1', '/defalut.gif', NULL, 1, 0, 0, '2023-08-26 13:47:37', '2023-09-04 17:26:27');
+INSERT INTO `sys_user` VALUES (5, '张小三', '$2a$10$h7kEg3K.iaXGVwRl4HqMQuv4h.XXQ9CTImN5GpaKx3A1swcZCetp2', '/yAvatar/f7a16960bbbf457fae6efb1c194494e5.jpg', '', 1, 1, 0, '2023-08-23 00:15:04', '2023-09-04 19:44:57');
+INSERT INTO `sys_user` VALUES (6, 'yu', '$2a$10$h7kEg3K.iaXGVwRl4HqMQuv4h.XXQ9CTImN5GpaKx3A1swcZCetp2', '/defalut.gif', '1647022985@qq.com', 1, 12, 0, '2023-09-02 22:01:53', '2023-09-02 22:01:58');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -456,7 +456,7 @@ CREATE TABLE `tb_dormitory`  (
   `e_status` tinyint NOT NULL DEFAULT 0 COMMENT '电的状态(0-正常；1-停用;2-送水)',
   `w_status` tinyint NOT NULL DEFAULT 0 COMMENT '水状态(0-正常;1-停用;2-送水)',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `tb_dormitory_building_id_dormitory_number_uindex`(`building_id` ASC, `dormitory_number` ASC) USING BTREE
+  UNIQUE INDEX `tb_dormitory_building_id_dormitory_number_uindex`(`building_id`, `dormitory_number`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 463 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------

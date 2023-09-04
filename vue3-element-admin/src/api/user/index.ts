@@ -1,7 +1,7 @@
 import request from "@/utils/request";
-import { AxiosPromise } from "axios";
-import { UserForm, UserInfo, UserPageVO, UserQuery } from "./types";
-import { LoginData } from "@/api/auth/types";
+import {AxiosPromise} from "axios";
+import {SysUser, UserForm, UserInfo, UserPageVO, UserQuery} from "./types";
+import {LoginData} from "@/api/auth/types";
 
 const baseUrl = "/api/v1/users";
 
@@ -9,10 +9,10 @@ const baseUrl = "/api/v1/users";
  * 登录成功后获取用户信息（昵称、头像、权限集合和角色集合）
  */
 export function getUserInfo(): AxiosPromise<UserInfo> {
-  return request({
-    url: baseUrl + "/me",
-    method: "get",
-  });
+    return request({
+        url: baseUrl + "/me",
+        method: "get",
+    });
 }
 
 /**
@@ -21,13 +21,13 @@ export function getUserInfo(): AxiosPromise<UserInfo> {
  * @param queryParams
  */
 export function getUserPage(
-  queryParams: UserQuery
+    queryParams: UserQuery
 ): AxiosPromise<PageResult<UserPageVO[]>> {
-  return request({
-    url: baseUrl + "/page",
-    method: "get",
-    params: queryParams,
-  });
+    return request({
+        url: baseUrl + "/page",
+        method: "get",
+        params: queryParams,
+    });
 }
 
 /**
@@ -36,11 +36,11 @@ export function getUserPage(
  * @param data
  */
 export function addUser(data: any) {
-  return request({
-    url: baseUrl,
-    method: "post",
-    data: data,
-  });
+    return request({
+        url: baseUrl,
+        method: "post",
+        data: data,
+    });
 }
 
 /**
@@ -50,11 +50,11 @@ export function addUser(data: any) {
  * @param data
  */
 export function updateUser(id: number, data: UserForm) {
-  return request({
-    url: baseUrl + `/${id}`,
-    method: "put",
-    data: data,
-  });
+    return request({
+        url: baseUrl + `/${id}`,
+        method: "put",
+        data: data,
+    });
 }
 
 /**
@@ -64,11 +64,11 @@ export function updateUser(id: number, data: UserForm) {
  * @param status
  */
 export function updateUserStatus(id: number, status: number) {
-  return request({
-    url: baseUrl + `/${id}/status`,
-    method: "patch",
-    params: { status: status },
-  });
+    return request({
+        url: baseUrl + `/${id}/status`,
+        method: "patch",
+        params: {status: status},
+    });
 }
 
 /**
@@ -78,11 +78,11 @@ export function updateUserStatus(id: number, status: number) {
  * @param password
  */
 export function updateUserPassword(id: number, password: string) {
-  return request({
-    url: baseUrl + "/" + id + "/password",
-    method: "patch",
-    params: { password: password },
-  });
+    return request({
+        url: baseUrl + "/" + id + "/password",
+        method: "patch",
+        params: {password: password},
+    });
 }
 
 /**
@@ -91,10 +91,10 @@ export function updateUserPassword(id: number, password: string) {
  * @param ids
  */
 export function deleteUsers(ids: string) {
-  return request({
-    url: baseUrl + "/" + ids,
-    method: "delete",
-  });
+    return request({
+        url: baseUrl + "/" + ids,
+        method: "delete",
+    });
 }
 
 /**
@@ -103,11 +103,11 @@ export function deleteUsers(ids: string) {
  * @returns
  */
 export function downloadTemplateApi() {
-  return request({
-    url: baseUrl + "/template",
-    method: "get",
-    responseType: "arraybuffer",
-  });
+    return request({
+        url: baseUrl + "/template",
+        method: "get",
+        responseType: "arraybuffer",
+    });
 }
 
 /**
@@ -117,12 +117,12 @@ export function downloadTemplateApi() {
  * @returns
  */
 export function exportUser(queryParams: UserQuery) {
-  return request({
-    url: baseUrl + "/_export",
-    method: "get",
-    params: queryParams,
-    responseType: "arraybuffer",
-  });
+    return request({
+        url: baseUrl + "/_export",
+        method: "get",
+        params: queryParams,
+        responseType: "arraybuffer",
+    });
 }
 
 /**
@@ -131,54 +131,63 @@ export function exportUser(queryParams: UserQuery) {
  * @param file
  */
 export function importUser(file: File) {
-  const formData = new FormData();
-  formData.append("file", file);
-  return request({
-    url: baseUrl + "/_import",
-    method: "post",
-    data: formData,
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+    const formData = new FormData();
+    formData.append("file", file);
+    return request({
+        url: baseUrl + "/_import",
+        method: "post",
+        data: formData,
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
 }
 
 export function getEmailCode(email: string, type: string) {
-  return request({
-    url: baseUrl + "/getEmailVerifyCode",
-    method: "get",
-    params: { email, type },
-  });
+    return request({
+        url: baseUrl + "/getEmailVerifyCode",
+        method: "get",
+        params: {email, type},
+    });
 }
 
 export function saveStudent(student: LoginData, emailCode: string) {
-  return request({
-    url: baseUrl + "/saveStudent",
-    method: "post",
-    params: { emailCode: emailCode },
-    data: student,
-  });
+    return request({
+        url: baseUrl + "/saveStudent",
+        method: "post",
+        params: {emailCode: emailCode},
+        data: student,
+    });
 }
 
 export function getByName(name: String) {
-  return request({
-    url: baseUrl + "/getByName",
-    method: "get",
-    params: { name: name },
-  });
+    return request({
+        url: baseUrl + "/getByName",
+        method: "get",
+        params: {name: name},
+    });
 }
 
 export function getRolesByUserId(userId: number) {
-  return request({
-    url: baseUrl + `/roles/${userId}`,
-    method: "get",
-  });
+    return request({
+        url: baseUrl + `/roles/${userId}`,
+        method: "get",
+    });
 }
 
 export function resetPassword(params: LoginData | undefined) {
-  return request({
-    url: baseUrl + "/resetPassword",
-    method: "patch",
-    params,
-  });
+    return request({
+        url: baseUrl + "/resetPassword",
+        method: "patch",
+        params,
+    });
+}
+
+export function modifyInfo(params:any, data:SysUser) {
+    return request({
+        url: baseUrl + "/modifyInfo",
+        method: "put",
+        params,
+        data
+    });
 }

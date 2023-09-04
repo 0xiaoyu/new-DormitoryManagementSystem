@@ -603,6 +603,7 @@ function getEmail(type: string) {
   getEmailCode(email, type).then(() => {
     ElMessage.success("验证码已发送");
     isDisposed.value = true;
+    sessionStorage.setItem("startTimeLogin", String(new Date().getTime()));
     handleTimeChange();
   });
 }
