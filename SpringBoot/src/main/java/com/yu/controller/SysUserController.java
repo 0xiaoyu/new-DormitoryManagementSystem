@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,16 +42,13 @@ import java.util.Objects;
 @Tag(name = "02.系统用户接口")
 @RestController
 @RequestMapping("/api/v1/users")
+@RequiredArgsConstructor
 public class SysUserController {
 
-    @Resource
-    private SysUserService userService;
-    @Resource
-    private PasswordEncoder passwordEncoder;
-    @Resource
-    private SysUserRoleService userRoleService;
-    @Resource
-    private EmailUtils emailUtils;
+    private final SysUserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final SysUserRoleService userRoleService;
+    private final EmailUtils emailUtils;
 
 
     @PostMapping("saveStudent")

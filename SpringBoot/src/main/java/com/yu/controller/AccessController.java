@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -47,19 +47,15 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("api/v1/accessLog")
+@RequiredArgsConstructor
 @Tag(name = "进入记录控制层")
 public class AccessController {
 
-    @Resource
-    private AccessLogService accessLogService;
-    @Resource
-    private JwtTokenManager jwtTokenManager;
-    @Resource
-    private SysUserService userService;
-    @Resource
-    private StudentService studentService;
-    @Resource
-    private IUserService iUserService;
+    private final AccessLogService accessLogService;
+    private final JwtTokenManager jwtTokenManager;
+    private final SysUserService userService;
+    private final StudentService studentService;
+    private final IUserService iUserService;
 
 
     @Operation(summary = "获取晚归时间")

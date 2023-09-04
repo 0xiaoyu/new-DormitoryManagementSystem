@@ -1,6 +1,7 @@
 package com.yu.common.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -13,6 +14,7 @@ public enum UsetTypeEnum {
     // 干部
     CADRE(4, "干部");
     @EnumValue
-    private Integer code;
-    private String name;
+    private final Integer code;
+    @JsonValue
+    private final String name;
 }

@@ -1,6 +1,7 @@
 package com.yu.common.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.yu.common.base.IBaseEnum;
 import lombok.Getter;
 
@@ -21,10 +22,10 @@ public enum MenuTypeEnum implements IBaseEnum<Integer> {
     BUTTON(4, "按钮");
 
     @EnumValue //  Mybatis-Plus 提供注解表示插入数据库时插入该值
-    private Integer value;
+    private final Integer value;
 
-    // @JsonValue //  表示对枚举序列化时返回此字段
-    private String label;
+    @JsonValue //  表示对枚举序列化时返回此字段
+    private final String label;
 
     MenuTypeEnum(Integer value, String label) {
         this.value = value;

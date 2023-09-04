@@ -15,22 +15,20 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/dormitory")
+@RequiredArgsConstructor
 @Tag(name = "08.宿舍楼接口", description = "宿舍楼相关接口")
 public class DormitoryController {
 
-    @Resource
-    private DormitoryService dormitoryService;
-    @Resource
-    private PayLogService payLogService;
-    @Resource
-    private SysDictService dictService;
+    private final DormitoryService dormitoryService;
+    private final PayLogService payLogService;
+    private final SysDictService dictService;
 
     @GetMapping("/page")
     @Operation(summary = "宿舍楼分页", security = {@SecurityRequirement(name = "Authorization")})

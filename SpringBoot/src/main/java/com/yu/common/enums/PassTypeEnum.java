@@ -1,6 +1,7 @@
 package com.yu.common.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -16,5 +17,6 @@ public enum PassTypeEnum {
     @EnumValue
     final Integer code;
 
+    @JsonValue
     final String desc;
 }

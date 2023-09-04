@@ -6,7 +6,6 @@ import com.yu.common.model.Option;
 import com.yu.common.result.Result;
 import com.yu.model.entity.Building;
 import com.yu.service.BuildingService;
-import com.yu.service.SysDictService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,8 +24,6 @@ public class BuildingController {
 
     @Resource
     private BuildingService service;
-    @Resource
-    private SysDictService sysDictService;
 
     @GetMapping("/option")
     @Operation(summary = "楼栋下拉列表", security = {@SecurityRequirement(name = "Authorization")})
