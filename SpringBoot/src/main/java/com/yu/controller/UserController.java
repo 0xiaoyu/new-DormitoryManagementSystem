@@ -1,14 +1,16 @@
 package com.yu.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yu.common.result.PageResult;
 import com.yu.common.result.Result;
 import com.yu.model.entity.UserEntity;
 import com.yu.model.query.TbUserPageQuery;
-import com.yu.model.vo.DormitoryPageVo;
+import com.yu.model.vo.TbUserPageVo;
 import com.yu.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.util.StringUtils;
@@ -25,8 +27,8 @@ import java.util.Objects;
  * @since 2.0
  */
 @RestController
-@RequestMapping("/user")
-@Tag(name = "人员表控制层")
+@RequestMapping("/api/v1/user")
+@Tag(name = "10.人员表控制层")
 public class UserController {
 
     @Resource
@@ -106,7 +108,7 @@ public class UserController {
      * @return 所有数据
      */
     @GetMapping("/list")
-    @Operation(summary = "查询所有人员表")
+    @Operation(summary = "查询所有人员表",security = {@SecurityRequirement(name = "Authorization")})
     public Result<List<UserEntity>> list() {
         return Result.success(userService.list());
     }
@@ -119,7 +121,7 @@ public class UserController {
      * @return 人员表详情
      */
     @GetMapping("/getInfo/{id}")
-    @Operation(summary = "根据人员表主键获取详细信息")
+    @Operation(summary = "根据人员表主键获取详细信息",security = {@SecurityRequirement(name = "Authorization")})
     @Parameters(value = {
             @Parameter(name = "id", description = "人员id", required = true)
     })
@@ -127,16 +129,26 @@ public class UserController {
         return Result.success(userService.getById(id));
     }
 
-    @GetMapping("/page/dormitory")
+    @GetMapping("/page/housemaster")
     @Operation(summary = "分页查询宿管")
     @Parameters(value = {
             @Parameter(name = "pageNumber", description = "页码", required = true),
             @Parameter(name = "pageSize", description = "每页大小", required = true),
-            @Parameter(name = "name", description = "名字"),
-            @Parameter(name = "typeId", description = "人员类型id")
+            @Parameter(name = "name", description = "名字")
     })
-    public Result<Page<DormitoryPageVo>> pageDormitory(TbUserPageQuery page) {
-        return Result.success(userService.pageDormitory(page));
+    public PageResult<TbUserPageVo> pageDormitory(TbUserPageQuery page) {
+        return PageResult.success(userService.pageDormitory(page));
+    }
+
+    @GetMapping("/page/repair")
+    @Operation(summary = "分页查询维修人员",security = {@SecurityRequirement(name = "Authorization")})
+    @Parameters(value = {
+            @Parameter(name = "pageNumber", description = "页码", required = true),
+            @Parameter(name = "pageSize", description = "每页大小", required = true),
+            @Parameter(name = "name", description = "名字")
+    })
+    public PageResult<TbUserPageVo> pageRepair(TbUserPageQuery page) {
+        return PageResult.success(userService.pageRepair(page));
     }
 
     /**

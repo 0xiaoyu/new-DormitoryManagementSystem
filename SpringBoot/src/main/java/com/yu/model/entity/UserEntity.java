@@ -1,20 +1,16 @@
 package com.yu.model.entity;
 
-import com.yu.common.enums.UsetTypeEnum;
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Builder;
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.lang.Long;
-import java.lang.Boolean;
-import java.lang.String;
-import java.lang.Integer;
+import com.yu.common.enums.GenderEnum;
+import com.yu.common.enums.UsetTypeEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 人员表 实体类。
@@ -56,7 +52,7 @@ public class UserEntity {
      */
     @Schema(description = "性别0 男 1女")
     @TableField(value = "gender")
-    private Boolean gender;
+    private GenderEnum gender;
 
     /**
      * 手机号

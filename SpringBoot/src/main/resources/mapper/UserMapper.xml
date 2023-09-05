@@ -14,14 +14,14 @@
     <sql id="Base_Column_List">
         `id`, `name`, `gender`, `phone`, `age`, `deleted`
     </sql>
-    <select id="pageDormitory" resultType="com.yu.model.vo.DormitoryPageVo">
-        select tb_user.*,d.build_name
+    <select id="pageDormitory" resultType="com.yu.model.vo.TbUserPageVo">
+        select tb_user.*,d.build_name as type
         from tb_user
-        left join d_building d on tb_user.type_id = d.id
+        join d_building d on tb_user.type_id = d.id
         ${ew.customSqlSegment}
     </select>
-    <select id="pageRepair" resultType="com.yu.model.vo.DormitoryPageVo">
-        select tb_user.*, sys_dict.name
+    <select id="pageRepair" resultType="com.yu.model.vo.TbUserPageVo">
+        select tb_user.*, sys_dict.name as type
         from tb_user
                  left join sys_dict on type_code = 'maintain' and value = tb_user.type_id
         ${ew.customSqlSegment}

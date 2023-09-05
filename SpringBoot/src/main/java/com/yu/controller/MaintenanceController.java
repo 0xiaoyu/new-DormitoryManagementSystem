@@ -1,6 +1,8 @@
 package com.yu.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yu.common.enums.MaintenStatusEnum;
+import com.yu.common.result.PageResult;
 import com.yu.common.result.Result;
 import com.yu.model.entity.MaintenanceEntity;
 import com.yu.service.MaintenanceService;
@@ -35,26 +37,35 @@ public class MaintenanceController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("/save")
-    @Operation(summary = "添加维修人员表")
+    @Operation(summary = "添加维修单子")
     @Parameters(value = {
-            @Parameter(name = "id", description = "维修id"),
-
             @Parameter(name = "dormitoryId", description = "宿舍号"),
-
             @Parameter(name = "detail", description = "维修详情"),
-
-            @Parameter(name = "createTime", description = "创建时间"),
-
             @Parameter(name = "student", description = "请求的学生,通过学生获取电话"),
-
             @Parameter(name = "status", description = "维修状态，0待支付，1待维修，2完成，3异常"),
-
-            @Parameter(name = "maintenancePersonId", description = "维修人员id,通过维修人员表获取电话"),
-
             @Parameter(name = "typeId", description = "维修的类型id")
     })
     public Result<Boolean> save(@RequestBody MaintenanceEntity tbMaintenance) {
         return Result.success(tbMaintenanceService.save(tbMaintenance));
+    }
+
+    @GetMapping("/type/{typeId}")
+    @Operation(summary = "根据维修类型id/状态，查询维修单子")
+    @Parameters(value = {
+            @Parameter(name = "typeId", description = "维修类型id"),
+            @Parameter(name = "status", description = "维修状态，0待支付，1待维修，2完成，3异常"),
+            @Parameter(name = "pageNumber", description = "页码"),
+            @Parameter(name = "pageSize", description = "每页大小")
+    })
+    public PageResult<MaintenanceEntity> getByTypeId(@PathVariable Integer typeId,
+                                                           @RequestParam(required = false) MaintenStatusEnum status,
+                                                           @RequestParam(defaultValue = "1",required = false) Integer pageNumber,
+                                                           @RequestParam(defaultValue = "10",required = false) Integer pageSize) {
+        Page<MaintenanceEntity> page = new Page<>(pageNumber, pageSize);
+        return PageResult.success(tbMaintenanceService.lambdaQuery()
+                .eq(MaintenanceEntity::getTypeId, typeId)
+                .eq(status!=null,MaintenanceEntity::getStatus,status)
+                .page(page));
     }
 
 

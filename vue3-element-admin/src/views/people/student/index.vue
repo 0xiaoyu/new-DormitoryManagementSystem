@@ -47,7 +47,7 @@
         <div class="flex justify-between">
           <div>
             <el-button
-              v-hasPerm="['sys:dict_type:add']"
+              v-hasPerm="['sys:student:add']"
               type="success"
               @click="openDialog()"
             >
@@ -56,6 +56,7 @@
             </el-button>
             <el-button
               type="danger"
+              v-hasPerm="['sys:student:delete']"
               :disabled="ids.length === 0"
               @click="handleDelete()"
             >
@@ -155,6 +156,9 @@
         :rules="rules"
         label-width="80px"
       >
+        <el-form-item label="学号" prop="id">
+          <el-input v-model="formData.id" disabled />
+        </el-form-item>
         <el-form-item label="学生名称" prop="studentName">
           <el-input v-model="formData.studentName" placeholder="请输入姓名" />
         </el-form-item>
@@ -253,6 +257,9 @@ function handleSelectionChange(selection: any) {
   ids.value = selection.map((item: any) => item.id);
 }
 
+/**
+ * 查询
+ */
 function handleQuery() {
   loading.value = true;
   getStudentPage(queryParams)
@@ -296,7 +303,7 @@ const handleSubmit = useThrottleFn(() => {
       loading.value = true;
       addOrUpdateStudent(formData)
         .then(() => {
-          ElMessage.success("新增用户成功");
+          ElMessage.success("新增/更新学生成功");
           closeDialog();
           resetQuery();
         })

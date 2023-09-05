@@ -6,6 +6,6 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DormitoryPageVo extends UserEntity {
-    private String buildingName;
+public class TbUserPageVo extends UserEntity {
+    private String type;
 }

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yu.model.entity.UserEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yu.model.query.TbUserPageQuery;
-import com.yu.model.vo.DormitoryPageVo;
+import com.yu.model.vo.TbUserPageVo;
 
 /**
  * 人员表 服务层。
@@ -15,6 +15,6 @@ import com.yu.model.vo.DormitoryPageVo;
  */
 public interface IUserService extends IService<UserEntity> {
 
-    Page<DormitoryPageVo> pageDormitory(TbUserPageQuery page);
-    Page<DormitoryPageVo> pageRepair(TbUserPageQuery page);
+    Page<TbUserPageVo> pageDormitory(TbUserPageQuery page);
+    Page<TbUserPageVo> pageRepair(TbUserPageQuery page);
 }
