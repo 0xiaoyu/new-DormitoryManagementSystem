@@ -12,6 +12,7 @@ import com.yu.listener.easyexcel.UserImportListener;
 import com.yu.model.entity.Student;
 import com.yu.model.query.StudentPageQuery;
 import com.yu.model.vo.StudentImportVO;
+import com.yu.model.vo.StudentInfoVo;
 import com.yu.model.vo.StudentPageVo;
 import com.yu.service.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,6 +43,15 @@ public class StudentController {
     public Result<Long> count() {
         return Result.success(studentService.count());
     }
+
+    @GetMapping("info")
+    @Operation(summary = "获取学生详细信息", security = {@SecurityRequirement(name = "Authorization")})
+    @PreAuthorize("@security.hasPerm('sys:student:info')")
+    public Result<StudentInfoVo> info(String id) {
+        StudentInfoVo student = studentService.getStudentInfo(id);
+        return Result.success(student);
+    }
+
 
     @GetMapping("/page")
     @Operation(summary = "学生分页列表", security = {@SecurityRequirement(name = "Authorization")})

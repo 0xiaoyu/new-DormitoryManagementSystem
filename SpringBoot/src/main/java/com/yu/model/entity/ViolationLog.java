@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.yu.common.base.BaseEntity;
 import com.yu.common.enums.ViolationTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -18,9 +20,10 @@ import java.io.Serializable;
  */
 @TableName(value ="violation_log")
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor(staticName = "of")
-public class ViolationLog implements Serializable {
+@NoArgsConstructor
+public class ViolationLog extends BaseEntity implements Serializable {
     /**
      * 
      */

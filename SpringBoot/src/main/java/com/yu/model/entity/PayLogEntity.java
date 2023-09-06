@@ -23,7 +23,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(name = "电费日志")
-@TableName(value = "ele_log")
+@TableName(value = "pay_log")
 public class PayLogEntity {
 
     @TableId(type = IdType.AUTO)

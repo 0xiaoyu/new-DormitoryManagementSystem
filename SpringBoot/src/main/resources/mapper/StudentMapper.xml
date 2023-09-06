@@ -48,4 +48,26 @@
         </if>
         order by s.id
     </select>
+
+    <resultMap id="StudentInfoMap" type="com.yu.model.vo.StudentInfoVo">
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="dormitory" column="dormitory_name" jdbcType="VARCHAR" />
+        <result property="electricity" column="electricity" jdbcType="DOUBLE"/>
+        <result property="water" column="water" jdbcType="DOUBLE"/>
+        <collection property="violationLogs" ofType="com.yu.model.entity.ViolationLog" javaType="list">
+            <result property="type" column="type" />
+            <result property="detail" column="detail"/>
+        </collection>
+    </resultMap>
+
+    <select id="getStudentInfoAndV" resultMap="StudentInfoMap" parameterType="java.lang.String">
+        select s.student_name as name, d.electricity, d.water,
+               concat(b.build_name,'--',d.dormitory_number) as dormitory_name, v.type as type,v.detail as detail
+        from tb_student s
+                 left join tb_dormitory d on s.dormitory_id = d.id
+                 left join d_building b on d.building_id = b.id
+                 left join violation_log v on s.id = v.student_id
+        where s.id = #{id}
+    </select>
+
 </mapper>

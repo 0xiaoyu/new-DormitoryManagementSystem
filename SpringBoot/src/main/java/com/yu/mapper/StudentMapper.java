@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yu.model.entity.Student;
 import com.yu.model.query.StudentPageQuery;
+import com.yu.model.vo.StudentInfoVo;
 import com.yu.model.vo.StudentPageVo;
 
 /**
@@ -17,6 +18,7 @@ public interface StudentMapper extends BaseMapper<Student> {
 
     IPage<StudentPageVo> getPage(Page<StudentPageVo> page, StudentPageQuery queryParams);
 
+    StudentInfoVo getStudentInfoAndV(String id);
 }
 
 

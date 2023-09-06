@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yu.model.entity.Student;
 import com.yu.model.query.StudentPageQuery;
+import com.yu.model.vo.StudentInfoVo;
 import com.yu.model.vo.StudentPageVo;
 
 /**
@@ -17,4 +18,5 @@ public interface StudentService extends IService<Student> {
     Boolean saveOrUpdateStudent(StudentPageVo student);
 
 
+    StudentInfoVo getStudentInfo(String id);
 }
