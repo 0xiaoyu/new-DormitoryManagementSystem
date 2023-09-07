@@ -1,10 +1,14 @@
 package com.yu.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.toolkit.Db;
 import com.yu.common.enums.MaintenStatusEnum;
 import com.yu.common.result.PageResult;
 import com.yu.common.result.Result;
 import com.yu.model.entity.MaintenanceEntity;
+import com.yu.model.entity.Student;
+import com.yu.model.query.MaintenPageQuery;
+import com.yu.model.vo.MaintenPageVo;
 import com.yu.service.MaintenanceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,7 +27,7 @@ import java.util.List;
  * @since 1.0
  */
 @RestController
-@RequestMapping("/tbMaintenance")
+@RequestMapping("/api/v1/tbMaintenance")
 @Tag(name = "维修人员表控制层")
 public class MaintenanceController {
 
@@ -36,7 +40,7 @@ public class MaintenanceController {
      * @param tbMaintenance 维修人员表
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
-    @PostMapping("/save")
+    @PostMapping
     @Operation(summary = "添加维修单子")
     @Parameters(value = {
             @Parameter(name = "dormitoryId", description = "宿舍号"),
@@ -46,6 +50,10 @@ public class MaintenanceController {
             @Parameter(name = "typeId", description = "维修的类型id")
     })
     public Result<Boolean> save(@RequestBody MaintenanceEntity tbMaintenance) {
+        Integer student = tbMaintenance.getStudent();
+        Student studentEntity = Db.getById(student, Student.class);
+        tbMaintenance.setDormitoryId(studentEntity.getDormitoryId());
+        tbMaintenance.setStatus(MaintenStatusEnum.WAIT_MAINTEN);
         return Result.success(tbMaintenanceService.save(tbMaintenance));
     }
 
@@ -66,6 +74,12 @@ public class MaintenanceController {
                 .eq(MaintenanceEntity::getTypeId, typeId)
                 .eq(status!=null,MaintenanceEntity::getStatus,status)
                 .page(page));
+    }
+
+    @PostMapping("/page/condition")
+    @Operation(summary = "根据条件分页查询维修单子")
+    public PageResult<MaintenPageVo> getPageByCondition(@RequestBody MaintenPageQuery query){
+        return PageResult.success(tbMaintenanceService.getPageByCondition(query));
     }
 
 
@@ -121,7 +135,7 @@ public class MaintenanceController {
      * @return 所有数据
      */
     @GetMapping("/list")
-    @Operation(summary = "查询所有维修人员表")
+    @Operation(summary = "查询所有维修表")
     public Result<List<MaintenanceEntity>> list() {
         return Result.success(tbMaintenanceService.list());
     }
@@ -134,7 +148,7 @@ public class MaintenanceController {
      * @return 维修人员表详情
      */
     @GetMapping("/getInfo/{id}")
-    @Operation(summary = "根据维修人员表主键获取详细信息")
+    @Operation(summary = "根据维修表主键获取详细信息")
     @Parameters(value = {
             @Parameter(name = "id", description = "维修id", required = true)
     })

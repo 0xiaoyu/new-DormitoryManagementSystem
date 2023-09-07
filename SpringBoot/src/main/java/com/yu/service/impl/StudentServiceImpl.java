@@ -68,7 +68,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     @Override
     public StudentInfoVo getStudentInfo(String id) {
         StudentInfoVo studentInfo = baseMapper.getStudentInfoAndV(id);
-        studentInfo.setPaymentLogs(Db.lambdaQuery(PayLogEntity.class).eq(PayLogEntity::getUserId,id).list());
+        studentInfo.setPayLogs(Db.lambdaQuery(PayLogEntity.class).eq(PayLogEntity::getUserId,id)
+                .orderByDesc(PayLogEntity::getCreateTime).last("limit 25").list());
         return studentInfo;
     }
 }

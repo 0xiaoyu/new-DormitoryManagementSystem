@@ -1,3 +1,6 @@
+import {PayLog} from "@/api/Pay/types";
+import {violationLog} from "@/api/violationLog/types";
+
 export interface StudentQuery extends PageQuery {
   /** 学生姓名 */
   name?: string;
@@ -12,9 +15,9 @@ export interface StudentQuery extends PageQuery {
 }
 
 export interface Student {
-  /** 学生姓名 */
-  id: number;
   /** 学生id */
+  id: number;
+  /** 学生姓名 */
   studentName: string;
   /**性别*/
   gender: number;
@@ -28,4 +31,14 @@ export interface Student {
   buildName: string;
   // 宿舍号
   dormitoryNumber: string;
+}
+export interface StudentInfo{
+  /** 学生姓名 */
+  name: string;
+  /** 宿舍 */
+  dormitory: string;
+  electricity: number;
+  water: number;
+  payLogs: Array<PayLog>;
+  violationLogs: Array<violationLog>;
 }

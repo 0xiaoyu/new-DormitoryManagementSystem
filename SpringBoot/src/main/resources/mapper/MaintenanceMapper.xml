@@ -16,5 +16,28 @@
     <sql id="Base_Column_List">
         `id`, `dormitory_id`, `detail`, `create_time`, `student`, `status`, `maintenance_person_id`, `type_id`
     </sql>
+    <select id="getPageByCondition" resultType="com.yu.model.vo.MaintenPageVo">
+        select t.id,t.dormitory_id,t.type_id,t.status,t.update_time,t.create_time,t.detail
+             ,s.student_name,s.phone as studentPhone , u.name as repair_name,u.phone as repairPhone,d.building_id,d.dormitory_number
+        from tb_maintenance t
+        left join tb_student s on t.student = s.id
+        left join (select * from tb_user where type_id = 2)
+        u ON t.maintenance_person_id = u.id
+        left join tb_dormitory d on t.dormitory_id = d.id
+        <where>
+            <if test="query.dormitoryId != null">
+                and t.dormitory_id = #{query.dormitoryId}
+            </if>
+            <if test="query.status != null">
+                and `status` = #{query.status}
+            </if>
+            <if test="query.typeId != null">
+                and t.type_id = #{query.typeId}
+            </if>
+            <if test="query.maintenancePersonId != null">
+                and maintenance_person_id = #{query.maintenancePersonId}
+            </if>
+        </where>
+    </select>
 
 </mapper>

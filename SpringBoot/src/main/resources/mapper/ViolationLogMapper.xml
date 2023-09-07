@@ -21,5 +21,6 @@
         select v.*, ts.student_name as name
         from violation_log v
                  left join yu.tb_student ts on v.student_id = ts.id
+        where v.detail = 0 and ts.deleted = 0
     </select>
 </mapper>

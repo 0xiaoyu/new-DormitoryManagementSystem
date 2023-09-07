@@ -23,7 +23,7 @@ public class StudentInfoVo {
     private Double water;
 
     @Schema(description = "缴费记录")
-    private List<PayLogEntity> paymentLogs;
+    private List<PayLogEntity> payLogs;
 
     @Schema(description = "违规记录")
     private List<ViolationLog> violationLogs;

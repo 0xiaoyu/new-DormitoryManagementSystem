@@ -1,18 +1,13 @@
 package com.yu.model.entity;
 
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Builder;
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.lang.Long;
-import java.sql.Timestamp;
-import java.lang.Integer;
+import com.yu.common.base.BaseEntity;
+import com.yu.common.enums.MaintenStatusEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
 
 /**
  * 维修详情表 实体类。
@@ -20,13 +15,14 @@ import java.lang.Integer;
  * @author yu
  * @since 1.0
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(name = "维修人员表")
 @TableName(value = "tb_maintenance")
-public class MaintenanceEntity {
+public class MaintenanceEntity  extends BaseEntity {
 
     /**
      * 维修id
@@ -40,7 +36,7 @@ public class MaintenanceEntity {
      */
     @Schema(description = "宿舍号")
     @TableField(value = "dormitory_id")
-    private Integer dormitoryId;
+    private Long dormitoryId;
 
     /**
      * 维修详情
@@ -48,13 +44,6 @@ public class MaintenanceEntity {
     @Schema(description = "维修详情")
     @TableField(value = "detail")
     private String detail;
-
-    /**
-     * 创建时间
-     */
-    @Schema(description = "创建时间")
-    @TableField(value = "create_time")
-    private Timestamp createTime;
 
     /**
      * 请求的学生,通过学生获取电话
@@ -68,7 +57,7 @@ public class MaintenanceEntity {
      */
     @Schema(description = "维修状态，0待支付，1待维修，2完成，3异常")
     @TableField(value = "status")
-    private Integer status;
+    private MaintenStatusEnum status;
 
     /**
      * 维修人员id,通过维修人员表获取电话

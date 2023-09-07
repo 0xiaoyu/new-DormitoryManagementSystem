@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import {useUserStore} from "@/store/modules/user";
+import { useUserStore } from "@/store/modules/user";
 
-import admin from './admin.vue';
-import {SysUser} from "@/api/user/types";
-import type {UploadProps} from 'element-plus'
-import {getEmailCode, modifyInfo} from "@/api/user";
+import admin from "./admin.vue";
+import studentIofo from "@/views/student/dormitoryInfo/index.vue";
+import { SysUser } from "@/api/user/types";
+import type { UploadProps } from "element-plus";
+import { getEmailCode, modifyInfo } from "@/api/user";
 
 defineOptions({
   // eslint-disable-next-line
@@ -14,6 +15,7 @@ defineOptions({
 
 const userStore = useUserStore();
 const username = userStore.nickname;
+const roles = userStore.roles;
 const date: Date = new Date();
 const form = ref<SysUser>({
   name: userStore.nickname,
@@ -21,7 +23,7 @@ const form = ref<SysUser>({
   userId: userStore.userId,
   email: "",
   avatar: userStore.avatar,
-  code: ""
+  code: "",
 });
 
 const greetings = computed(() => {
@@ -39,17 +41,17 @@ const greetings = computed(() => {
   }
 });
 
-const dialogFormVisible = ref(false)
+const dialogFormVisible = ref(false);
 
 const headers = reactive({
   Authorization: userStore.token,
-})
+});
 
 const email = ref();
 const modifyE = ref(true);
 
 const emailTime = ref(60);
-const isDisposed = ref(false)
+const isDisposed = ref(false);
 
 function getEmail() {
   const regEmail = /[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+/;
@@ -67,7 +69,7 @@ function getEmail() {
     isDisposed.value = true;
     sessionStorage.setItem("startTimeLogin", String(new Date().getTime()));
     handleTimeChange();
-  })
+  });
 }
 
 function startTime() {
@@ -102,46 +104,53 @@ const handleTimeChange = () => {
   }
 };
 
-const handleAvatarSuccess: UploadProps['onSuccess'] = (
-    response,
-    uploadFile
+const handleAvatarSuccess: UploadProps["onSuccess"] = (
+  response,
+  uploadFile
 ) => {
-  form.value.avatar = response.data
-}
+  form.value.avatar = response.data;
+};
 
-const imageType = ['image/jpeg', 'image/png', 'image/gif']
-const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
+const imageType = ["image/jpeg", "image/png", "image/gif"];
+const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
   if (!rawFile.type) {
-    ElMessage.error('错误文件')
-    return false
+    ElMessage.error("错误文件");
+    return false;
   } else if (!imageType.includes(rawFile.type)) {
-    ElMessage.error('支支持jpeg/png/gif格式的图片')
-    return false
+    ElMessage.error("支支持jpeg/png/gif格式的图片");
+    return false;
   } else if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error('图片大小不能大于2MB')
-    return false
+    ElMessage.error("图片大小不能大于2MB");
+    return false;
   }
-  return true
-}
+  return true;
+};
 
-function modifyUser(){
+function modifyUser() {
   if (form.value.name === "") {
     ElMessage.error("用户名不能为空");
     return;
   }
-  if(!modifyE.value){
-    console.log(modifyE)
-    if (form.value.email !== "" &&  form.value.password !== "" && form.value.code === "") {
+  if (!modifyE.value) {
+    console.log(modifyE);
+    if (
+      form.value.email !== "" &&
+      form.value.password !== "" &&
+      form.value.code === ""
+    ) {
       ElMessage.error("验证码不能为空");
       return;
     }
   }
-  modifyInfo({email:email.value,code:form.value.code},form.value).then(() => {
-    ElMessage.success("修改成功");
-    dialogFormVisible.value = false;
-    userStore.logout()
-  })
+  modifyInfo({ email: email.value, code: form.value.code }, form.value).then(
+    () => {
+      ElMessage.success("修改成功");
+      dialogFormVisible.value = false;
+      userStore.logout();
+    }
+  );
 }
+
 onMounted(() => {
   startTime();
   handleTimeChange();
@@ -151,17 +160,14 @@ onMounted(() => {
 <template>
   <div class="dashboard-container">
     <!-- github角标 -->
-<!--    <github-corner class="github-corner"/>-->
+    <!--    <github-corner class="github-corner"/>-->
 
     <!-- 用户信息 -->
     <el-row class="mb-8">
       <el-card class="w-full">
         <div class="flex justify-between flex-wrap">
           <div class="flex items-center">
-            <img
-                :src="userStore.avatar"
-                class="user-avatar"
-            />
+            <img :src="userStore.avatar" class="user-avatar"  alt=""/>
             <span class="ml-[10px] text-[16px]">
               {{ userStore.nickname }}
             </span>
@@ -178,14 +184,14 @@ onMounted(() => {
                           href="https://blog.csdn.net/u013737132/article/details/130191394"
                           >💥官方从零到一文档</el-link
                         >-->
-            <el-divider direction="vertical"/>
+            <el-divider direction="vertical" />
             <el-link
-                target="_blank"
-                type="success"
-                @click="dialogFormVisible = true"
-            >修改个人信息
+              target="_blank"
+              type="success"
+              @click="dialogFormVisible = true"
+              >修改个人信息
             </el-link>
-            <el-divider direction="vertical"/>
+            <el-divider direction="vertical" />
             <!--            <el-link
                           target="_blank"
                           type="primary"
@@ -201,53 +207,68 @@ onMounted(() => {
       <el-form :model="form">
         <el-form-item label="修改头像">
           <el-upload
-              :before-upload="beforeAvatarUpload"
-              :headers="headers"
-              :on-success="handleAvatarSuccess"
-              :show-file-list="false"
-              action="http://localhost:8080/api/v1/files/avatar"
-              class="avatar-uploader"
+            :before-upload="beforeAvatarUpload"
+            :headers="headers"
+            :on-success="handleAvatarSuccess"
+            :show-file-list="false"
+            action="http://localhost:8080/api/v1/files/avatar"
+            class="avatar-uploader"
           >
-            <img :src="form.avatar" class="avatar"/>
+            <img :src="form.avatar" class="avatar" />
           </el-upload>
         </el-form-item>
         <el-form-item label="用户名：">
-          <el-input v-model="form.name" autocomplete="off"/>
+          <el-input v-model="form.name" autocomplete="off" />
         </el-form-item>
         修改邮箱：
         <el-form-item label="原邮箱： ">
-          <el-row style="width: 100%;">
+          <el-row style="width: 100%">
             <el-col :span="21">
-              <el-input v-model="email" autocomplete="off"/>
+              <el-input v-model="email" autocomplete="off" />
             </el-col>
             <el-col :span="2">
-              <el-button :disabled="isDisposed" type="primary" @click="getEmail">
+              <el-button
+                :disabled="isDisposed"
+                type="primary"
+                @click="getEmail"
+              >
                 {{ isDisposed ? `${emailTime}s后重新获取` : "获取验证码" }}
               </el-button>
             </el-col>
           </el-row>
         </el-form-item>
         <el-form-item label="验证码：">
-          <el-input v-model="form.code" autocomplete="off" :disabled="modifyE"/>
+          <el-input
+            v-model="form.code"
+            :disabled="modifyE"
+            autocomplete="off"
+          />
         </el-form-item>
         <el-form-item label="修改邮箱：">
-          <el-input v-model="form.email" autocomplete="off" :disabled="modifyE"/>
+          <el-input
+            v-model="form.email"
+            :disabled="modifyE"
+            autocomplete="off"
+          />
         </el-form-item>
         <el-form-item label="修改密码： ">
-          <el-input v-model="form.password" autocomplete="off" :disabled="modifyE"/>
+          <el-input
+            v-model="form.password"
+            :disabled="modifyE"
+            autocomplete="off"
+          />
         </el-form-item>
       </el-form>
       <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="modifyUser">
-          确定修改
-        </el-button>
-      </span>
+        <span class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取消</el-button>
+          <el-button type="primary" @click="modifyUser"> 确定修改 </el-button>
+        </span>
       </template>
     </el-dialog>
 
-  <admin/>
+    <admin v-if="roles.includes('ROOT')" />
+    <studentIofo v-if="roles.includes('STUDENT')" />
   </div>
 </template>
 
@@ -269,6 +290,7 @@ onMounted(() => {
     z-index: 99;
     border: 0;
   }
+
   .svg-icon {
     fill: currentcolor !important;
   }

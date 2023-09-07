@@ -21,7 +21,7 @@ import java.util.List;
  * @since 1.0
  */
 @RestController
-@RequestMapping("/eleLog")
+@RequestMapping("/api/v1/payLog")
 @Tag(name = "电费日志控制层")
 public class PayLogController {
 

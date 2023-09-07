@@ -2,6 +2,7 @@ package com.yu.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.yu.common.enums.PayTypeEnum;
 import com.yu.common.result.PageResult;
 import com.yu.common.result.Result;
 import com.yu.model.entity.Dormitory;
@@ -86,7 +87,7 @@ public class DormitoryController {
         if (!b)
             return Result.failed("缴费失败，请联系管理员");
         payLogService.save(PayLogEntity.builder()
-                .dormitoryId(id).amount(money).userId(userId).type(1).status(1)
+                .dormitoryId(id).amount(money).userId(userId).type(PayTypeEnum.ELECTRICITY).status(1)
                 .build());
         return Result.success();
     }

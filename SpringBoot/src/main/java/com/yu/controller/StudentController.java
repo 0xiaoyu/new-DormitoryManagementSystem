@@ -44,10 +44,10 @@ public class StudentController {
         return Result.success(studentService.count());
     }
 
-    @GetMapping("info")
+    @GetMapping("info/{id}")
     @Operation(summary = "获取学生详细信息", security = {@SecurityRequirement(name = "Authorization")})
     @PreAuthorize("@security.hasPerm('sys:student:info')")
-    public Result<StudentInfoVo> info(String id) {
+    public Result<StudentInfoVo> info(@PathVariable String id) {
         StudentInfoVo student = studentService.getStudentInfo(id);
         return Result.success(student);
     }

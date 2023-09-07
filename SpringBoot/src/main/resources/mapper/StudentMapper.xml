@@ -56,18 +56,21 @@
         <result property="water" column="water" jdbcType="DOUBLE"/>
         <collection property="violationLogs" ofType="com.yu.model.entity.ViolationLog" javaType="list">
             <result property="type" column="type" />
+            <result property="createTime" column="time" javaType="java.time.LocalDateTime" />
             <result property="detail" column="detail"/>
         </collection>
     </resultMap>
 
     <select id="getStudentInfoAndV" resultMap="StudentInfoMap" parameterType="java.lang.String">
         select s.student_name as name, d.electricity, d.water,
-               concat(b.build_name,'--',d.dormitory_number) as dormitory_name, v.type as type,v.detail as detail
+               concat(b.build_name,'--',d.dormitory_number) as dormitory_name, v.type as type,v.detail as detail,v.create_time as time
         from tb_student s
                  left join tb_dormitory d on s.dormitory_id = d.id
                  left join d_building b on d.building_id = b.id
                  left join violation_log v on s.id = v.student_id
         where s.id = #{id}
+        order by v.create_time desc
+        limit 25
     </select>
 
 </mapper>

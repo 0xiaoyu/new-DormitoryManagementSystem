@@ -1,5 +1,6 @@
 import request from "@/utils/request";
-import { Student, StudentQuery } from "@/api/student/types";
+import {Student, StudentInfo, StudentQuery} from "@/api/student/types";
+import {Axios} from "axios";
 
 const baseUrl = "/api/v1/student";
 
@@ -42,6 +43,17 @@ export function deleteStudent(ids: string) {
 export function getStudentCount(){
   return request({
     url: `${baseUrl}/count`,
+    method: "get",
+  })
+}
+
+/**
+ * 查询学生详情
+ * @param id 学生id
+ */
+export function getStudentInfo(id:number){
+  return request({
+    url: `${baseUrl}/info/${id}`,
     method: "get",
   })
 }

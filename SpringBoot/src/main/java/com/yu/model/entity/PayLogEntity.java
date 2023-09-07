@@ -4,13 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.yu.common.base.BaseEntity;
+import com.yu.common.enums.PayTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.sql.Timestamp;
+import lombok.*;
 
 /**
  * 电费日志 实体类。
@@ -18,13 +15,14 @@ import java.sql.Timestamp;
  * @author yu
  * @since 1.0
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(name = "电费日志")
 @TableName(value = "pay_log")
-public class PayLogEntity {
+public class PayLogEntity extends BaseEntity {
 
     @TableId(type = IdType.AUTO)
     private Long id;
@@ -50,19 +48,6 @@ public class PayLogEntity {
     @TableField(value = "user_id")
     private Long userId;
 
-    /**
-     * 创建时间
-     */
-    @Schema(description = "创建时间")
-    @TableField(value = "create_time")
-    private Timestamp createTime;
-
-    /**
-     * 缴费时间
-     */
-    @Schema(description = "缴费时间")
-    @TableField(value = "update_time")
-    private Timestamp updateTime;
 
     /**
      * 订单状态 0 未支付，1完成
@@ -73,7 +58,7 @@ public class PayLogEntity {
 
     @Schema(description = "类型")
     @TableField(value = "type")
-    private Integer type;
+    private PayTypeEnum type;
 
 
 }

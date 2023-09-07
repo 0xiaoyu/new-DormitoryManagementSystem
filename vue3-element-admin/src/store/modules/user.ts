@@ -9,6 +9,7 @@ import {LoginData} from "@/api/auth/types";
 import {UserInfo} from "@/api/user/types";
 
 import {useStorage} from "@vueuse/core";
+import {useStudentStore} from "@/store/modules/student";
 
 export const useUserStore = defineStore("user", () => {
     // state
@@ -57,6 +58,9 @@ export const useUserStore = defineStore("user", () => {
                     avatar.value = 'https://yu-dormitory-avatar.oss-cn-beijing.aliyuncs.com/' + data.avatar;
                     roles.value = data.roles;
                     perms.value = data.perms;
+                    if (roles.value.includes('STUDENT')) {
+                      useStudentStore().getSInfo()
+                    }
                     resolve(data);
                 })
                 .catch((error) => {

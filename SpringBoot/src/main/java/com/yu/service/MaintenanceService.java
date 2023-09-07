@@ -1,8 +1,11 @@
 package com.yu.service;
 
 
-import com.yu.model.entity.MaintenanceEntity;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yu.model.entity.MaintenanceEntity;
+import com.yu.model.query.MaintenPageQuery;
+import com.yu.model.vo.MaintenPageVo;
 
 /**
  * 维修人员表 服务层。
@@ -12,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface MaintenanceService extends IService<MaintenanceEntity> {
 
+    Page<MaintenPageVo> getPageByCondition(MaintenPageQuery query);
 }
