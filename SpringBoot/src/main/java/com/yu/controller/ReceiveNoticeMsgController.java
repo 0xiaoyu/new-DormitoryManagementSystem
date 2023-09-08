@@ -1,26 +1,20 @@
 package com.yu.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import jakarta.annotation.Resource;
-import com.yu.service.ReceiveNoticeMsgService;
-import com.yu.model.entity.ReceiveNoticeMsgEntity;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.io.Serializable;
-import java.util.List;
-
 import com.yu.common.result.Result;
+import com.yu.model.entity.ReceiveNoticeMsgEntity;
+import com.yu.service.ReceiveNoticeMsgService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * 接收通知 控制层。
@@ -29,12 +23,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * @since 1.0
  */
 @RestController
-@RequestMapping("/receiveNoticeMsg")
+@RequestMapping("/api/v1/receiveNoticeMsg")
+@RequiredArgsConstructor
 @Tag(name = "接收通知控制层")
 public class ReceiveNoticeMsgController {
 
-    @Resource
-    private ReceiveNoticeMsgService receiveNoticeMsgService;
+
+    private final ReceiveNoticeMsgService receiveNoticeMsgService;
+
 
     /**
      * 添加 接收通知

@@ -11,7 +11,7 @@
  Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 07/09/2023 19:49:00
+ Date: 08/09/2023 17:55:47
 */
 
 SET NAMES utf8mb4;
@@ -94,7 +94,7 @@ DROP TABLE IF EXISTS `receive_notice_msg`;
 CREATE TABLE `receive_notice_msg`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '接收通知id',
   `notice_id` bigint NOT NULL COMMENT '接收的通知id',
-  `receive_id` int NOT NULL COMMENT '接收者id',
+  `receive_id` bigint NOT NULL COMMENT '接收者id',
   `r_status` tinyint NOT NULL COMMENT '接收状态,0未读，1已读',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `receive_notice_msg_列_name_receive_id_uindex`(`notice_id`, `receive_id`) USING BTREE
@@ -133,7 +133,7 @@ INSERT INTO `schedule_setting` VALUES (9, 'taskDemo', 'taskNoParams', NULL, '0/1
 DROP TABLE IF EXISTS `sender_notice_msg`;
 CREATE TABLE `sender_notice_msg`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '通知id',
-  `sender_id` int NOT NULL COMMENT '发送者id，在tb_user表内的id',
+  `sender_id` bigint NOT NULL COMMENT '发送者id，在tb_user表内的id',
   `n_msg` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '通知内容',
   `n_type` tinyint NOT NULL COMMENT '通知类型',
   PRIMARY KEY (`id`) USING BTREE

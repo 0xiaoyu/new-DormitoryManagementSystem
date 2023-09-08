@@ -43,7 +43,7 @@ interface DefaultSettings {
 
 
 const defaultSettings: DefaultSettings = {
-  title: "vue3-element-admin",
+  title: "宿舍管理系统",
   showSettings: true,
   tagsView: true,
   fixedHeader: false,

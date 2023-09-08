@@ -1,18 +1,15 @@
 package com.yu.model.entity;
 
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Builder;
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.lang.Long;
-import java.lang.String;
-import java.lang.Integer;
+import com.yu.common.enums.NoticeEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 通知消息 实体类。
@@ -40,7 +37,7 @@ public class SenderNoticeMsgEntity {
      */
     @Schema(description = "发送者id，在tb_user表内的id")
     @TableField(value = "sender_id")
-    private Integer senderId;
+    private Long senderId;
 
     /**
      * 通知内容
@@ -54,7 +51,7 @@ public class SenderNoticeMsgEntity {
      */
     @Schema(description = "通知类型")
     @TableField(value = "n_type")
-    private Integer nType;
+    private NoticeEnum nType;
 
 
 }

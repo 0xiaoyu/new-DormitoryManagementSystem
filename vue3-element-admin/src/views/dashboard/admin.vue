@@ -29,7 +29,7 @@ const messageCountOutput = useTransition(messageCount, {
   duration: duration,
   transition: TransitionPresets.easeOutExpo,
 });
-messageCount.value = 2000;
+messageCount.value = 106;
 
 // 订单数
 const orderCount = ref(0);
@@ -37,7 +37,7 @@ const orderCountOutput = useTransition(orderCount, {
   duration: duration,
   transition: TransitionPresets.easeOutExpo,
 });
-orderCount.value = 2000;
+orderCount.value = 135;
 </script>
 
 <template>
@@ -91,7 +91,7 @@ orderCount.value = 2000;
         </div>
       </div>
     </el-col>
-    <el-col :lg="6" :sm="12" :xs="24" class="mb-2">
+   <el-col :lg="6" :sm="12" :xs="24" class="mb-2">
       <div class="data-box">
         <div
             class="text-[#34bfa3] hover:!text-white hover:bg-[#34bfa3] p-3 rounded"
@@ -99,21 +99,21 @@ orderCount.value = 2000;
           <svg-icon icon-class="shopping" size="3em"/>
         </div>
         <div class="flex flex-col space-y-3">
-          <div class="text-[var(--el-text-color-secondary)]">订单数</div>
+          <div class="text-[var(&#45;&#45;el-text-color-secondary)]">缴费记录</div>
           <div class="text-lg text-right">
             {{ Math.round(orderCountOutput) }}
           </div>
         </div>
       </div>
     </el-col>
-  </el-row>
+    </el-row>
 
-  <!-- Echarts 图表 -->
+<!--  &lt;!&ndash; Echarts 图表 &ndash;&gt;
   <el-row :gutter="40">
     <el-col :lg="8" :sm="24" class="mb-2">
       <BarChart
           id="barChart"
-          class="bg-[var(--el-bg-color-overlay)]"
+          class="bg-[var(&#45;&#45;el-bg-color-overlay)]"
           height="400px"
           width="100%"
       />
@@ -122,7 +122,7 @@ orderCount.value = 2000;
     <el-col :lg="8" :sm="12" :xs="24" class="mb-2">
       <PieChart
           id="pieChart"
-          class="bg-[var(--el-bg-color-overlay)]"
+          class="bg-[var(&#45;&#45;el-bg-color-overlay)]"
           height="400px"
           width="100%"
       />
@@ -131,12 +131,12 @@ orderCount.value = 2000;
     <el-col :lg="8" :sm="12" :xs="24" class="mb-2">
       <RadarChart
           id="radarChart"
-          class="bg-[var(--el-bg-color-overlay)]"
+          class="bg-[var(&#45;&#45;el-bg-color-overlay)]"
           height="400px"
           width="100%"
       />
-    </el-col>
-  </el-row>
+    </el-col>-->
+<!--  </el-row>-->
 </template>
 
 <style scoped>

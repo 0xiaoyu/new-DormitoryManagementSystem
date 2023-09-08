@@ -331,8 +331,8 @@ const loginFormRef = ref<RefType>(ElForm);
 const resetFormRef = ref<RefType>(ElForm);
 
 const loginData = ref<LoginData>({
-  username: "admin",
-  password: "123456",
+  username: "",
+  password: "",
 });
 
 const studentVerifyFormRef = ref<RefType>(ElForm); // 用户表单

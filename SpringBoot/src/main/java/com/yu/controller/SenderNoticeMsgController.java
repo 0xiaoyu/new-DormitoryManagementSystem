@@ -8,7 +8,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -23,10 +24,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/senderNoticeMsg")
 @Tag(name = "通知消息控制层")
+@RequiredArgsConstructor
 public class SenderNoticeMsgController {
 
-    @Resource
-    private SenderNoticeMsgService senderNoticeMsgService;
+    private final SenderNoticeMsgService service;
+    private final SimpMessagingTemplate messagingTemplate;
+
+
+    public record NoticeStudent(Long sendId,Long studentId,Long buildId,String content){}
+    @PostMapping("/student")
+    @Operation(summary = "发送通知给学生")
+    public Result<Boolean> sendToStudent(@RequestBody NoticeStudent student) {
+        if (student.studentId!=null){
+            messagingTemplate.convertAndSendToUser(String.valueOf(student.studentId), "/message", student.content);
+            service.save(SenderNoticeMsgEntity.builder()
+                    .senderId(student.sendId).nMsg(student.content)
+                    .nType(1).build());
+        }
+        return Result.success(receiveNoticeMsgService.sendToStudent(receiveNoticeMsg));
+    }
 
     /**
      * 添加 通知消息
@@ -46,7 +62,7 @@ public class SenderNoticeMsgController {
             @Parameter(name = "nType", description = "通知类型")
     })
     public Result<Boolean> save(@RequestBody SenderNoticeMsgEntity senderNoticeMsg) {
-        return Result.success(senderNoticeMsgService.save(senderNoticeMsg));
+        return Result.success(service.save(senderNoticeMsg));
     }
 
 
@@ -62,7 +78,7 @@ public class SenderNoticeMsgController {
             @Parameter(name = "id", description = "通知id", required = true)
     })
     public Result<Boolean> remove(@PathVariable Serializable id) {
-        return Result.success(senderNoticeMsgService.removeById(id));
+        return Result.success(service.removeById(id));
     }
 
 
@@ -84,7 +100,7 @@ public class SenderNoticeMsgController {
             @Parameter(name = "nType", description = "通知类型")
     })
     public Result<Boolean> update(@RequestBody SenderNoticeMsgEntity senderNoticeMsg) {
-        return Result.success(senderNoticeMsgService.updateById(senderNoticeMsg));
+        return Result.success(service.updateById(senderNoticeMsg));
     }
 
 
@@ -96,7 +112,7 @@ public class SenderNoticeMsgController {
     @GetMapping("/list")
     @Operation(summary = "查询所有通知消息")
     public Result<List<SenderNoticeMsgEntity>> list() {
-        return Result.success(senderNoticeMsgService.list());
+        return Result.success(service.list());
     }
 
 
@@ -112,7 +128,7 @@ public class SenderNoticeMsgController {
             @Parameter(name = "id", description = "通知id", required = true)
     })
     public Result<SenderNoticeMsgEntity> getInfo(@PathVariable Serializable id) {
-        return Result.success(senderNoticeMsgService.getById(id));
+        return Result.success(service.getById(id));
     }
 
 
@@ -129,6 +145,6 @@ public class SenderNoticeMsgController {
             @Parameter(name = "pageSize", description = "每页大小", required = true)
     })
     public Result<Page<SenderNoticeMsgEntity>> page(Page<SenderNoticeMsgEntity> page) {
-        return Result.success(senderNoticeMsgService.page(page));
+        return Result.success(service.page(page));
     }
 }

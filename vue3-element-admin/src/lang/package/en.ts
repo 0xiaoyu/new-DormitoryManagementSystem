@@ -6,7 +6,7 @@ export default {
   },
   // 登录页面国际化
   login: {
-    title: "vue3-element-admin",
+    title: "Dormitory management system",
     username: "Username",
     password: "Password",
     login: "Login",
