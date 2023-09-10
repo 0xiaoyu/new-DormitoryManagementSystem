@@ -5,9 +5,10 @@ import { StudentInfo } from "@/api/student/types";
 import { PayLog } from "@/api/Pay/types";
 import { violationLog } from "@/api/violationLog/types";
 import { useStudentStore } from "@/store/modules/student";
+import { getNoReadNotice, getNotice } from "@/api/recevieNotice";
 
 const user = useUserStore();
-const activeNames = ref(["1", "2"]);
+const activeNames = ref(["2"]);
 
 const student = useStudentStore();
 const studentInfo = ref<Array<StudentInfo>>();
@@ -18,6 +19,20 @@ function getSInfo() {
   getStudentInfo(user.userId).then((res) => {
     const data: StudentInfo = res.data;
     studentInfo.value = [data];
+  });
+}
+
+const noRead = ref<Number>(1);
+
+function getNoRead() {
+  getNoReadNotice(user.userId).then(({ data }) => {
+    noRead.value = data;
+    if (data !== 0) {
+      getNotice(user.userId).then((res) => {
+        const data = res.data;
+        console.log(data);
+      });
+    }
   });
 }
 
@@ -33,7 +48,31 @@ getSInfo();
       </div>
     </template>
     <el-collapse v-model="activeNames">
-      <el-collapse-item name="1" title="宿舍通知"> </el-collapse-item>
+      <el-collapse-item name="1">
+        <el-card>
+          <template #header>
+            <div
+              class="card-header"
+              style="background-color: #97b4cb; border-radius: 10px"
+            >
+              <span>通知</span>
+            </div>
+          </template>
+          <div>今天9-10点停水</div>
+        </el-card>
+        <template #title>
+          <el-badge :value="noRead" class="item">
+            <el-button>未读消息</el-button>
+          </el-badge>
+        </template>
+        <el-card>
+          <template #header>
+            <div class="card-header">
+              <span>通知</span>
+            </div> </template
+          >测试通知
+        </el-card>
+      </el-collapse-item>
       <el-collapse-item name="2" title="宿舍详情">
         <el-table :data="studentInfo">
           <el-table-column label="宿舍" prop="dormitory" />

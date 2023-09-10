@@ -1,78 +1,50 @@
 <!-- websocket 示例 -->
 <script setup lang="ts">
-import { sendToAll, sendToUser } from "@/api/websocket"; // 点对点消息列表
-
+import { sendToUser } from "@/api/websocket"; // 点对点消息列表
 import { useUserStore } from "@/store/modules/user";
 
-import { useWebSocket } from "@vueuse/core";
+//  import SockJS from "sockjs-client"; // 报错 global is not defined 换成下面的引入
+import SockJS from "sockjs-client/dist/sockjs.min.js";
+import Stomp from "stompjs";
 
 const inputVal = ref("初始内容");
 
 const topicMsgs = ref<string[]>(["接收到一条主题消息"]); // 主题消息列表
 const p2pMsgs = ref<string[]>(["接收到一条点对线消息"]);
 
-const userId = useUserStore().userId;
-
-const { data, status, close, send, open } = useWebSocket(
-  "ws://localhost:8989/ws",
-  {
-    onConnected(ws) {
-      console.log("订阅主题");
-      // 连接建立后发送订阅消息
-      ws.send(JSON.stringify({ type: "subscribe", topic: "/topic/all" }));
-    },
-    onMessage(ws, event) {
-      // 获取接收到的消息内容
-      const message = event.data;
-
-      // 处理消息内容
-      console.log("Received message:", message);
-    },
-  }
-);
-
-// 监听 WebSocket 连接状态变化
-watch(status, (newStatus) => {
-  if (newStatus === "OPEN") {
-    // 连接已打开，订阅主题
-    console.log(" 连接已打开，订阅主题");
-    const subscribeMessage = {
-      type: "subscribe",
-      channel: "/topic/all",
-    };
-    send(JSON.stringify(subscribeMessage));
-  } else if (newStatus === "CLOSED") {
-    // 连接已关闭，执行相应的清理操作
-    // ...
-  }
-});
-
-// 监听 WebSocket 接收到的消息
-watch(data, (newData) => {
-  console.log("Received data:", newData);
-
-  // 解析消息体
-  const message = JSON.parse(newData);
-
-  // 判断消息主题并处理
-  if (message.topic === "topic1") {
-    // 处理来自 topic1 的消息
-    console.log("Received message from topic1:", message);
-  } else if (message.topic === "topic2") {
-    // 处理来自 topic2 的消息
-    console.log("Received message from topic2:", message);
-  }
-  // 可以根据需要添加更多的判断逻辑来处理其他主题的消息
-});
+const userId = useUserStore().id;
 
 function handleSendToAll() {
-  sendToAll(inputVal.value);
+  // sendToAll(inputVal.value);
+
+  stompClient.send("/app/sendToAll", {}, inputVal.value);
 }
 
 function handleSendToUser() {
   sendToUser(userId, inputVal.value);
 }
-onMounted(() => {});
+
+let stompClient: Stomp.Client;
+
+function initWebSocket() {
+  let socket = new SockJS("http://localhost:8080/ws");
+
+  stompClient = Stomp.over(socket);
+
+  stompClient.connect({}, () => {
+    console.log("连接成功");
+
+    stompClient.subscribe("/topic/all", (res) => {
+      console.log("订阅响应");
+      console.log(res);
+      topicMsgs.value.push(res.body);
+    });
+  });
+}
+
+onMounted(() => {
+  initWebSocket();
+});
 </script>
 
 <template>

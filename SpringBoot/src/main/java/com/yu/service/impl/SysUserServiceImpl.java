@@ -20,6 +20,7 @@ import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -67,6 +68,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
     public IPage<UserPageVO> getUserPage(UserPageQuery queryParams) {
         Page<UserPageVO> page = new Page<>(queryParams.getPageNum(), queryParams.getPageSize());
         return this.baseMapper.getUserPage(page, queryParams);
+    }
+
+    @Override
+    public List<Long> getAllStudentSysUserId() {
+        return baseMapper.getAllStudentSysUserId();
+    }
+
+    @Override
+    public List<Long> getAllSysUserIdByStudentIds(String[] ids) {
+        return baseMapper.getAllSysUserIdByStudentIds(ids);
     }
 
 

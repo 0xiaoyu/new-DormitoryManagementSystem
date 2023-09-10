@@ -77,4 +77,14 @@
         </where>
         GROUP BY u.id
     </select>
+    <select id="getAllSysUserIdByStudentIds" resultType="java.lang.Long">
+        select id
+        from sys_user,
+             sys_user_role
+        where role_id = 3
+          and sys_user.user_id in
+              <foreach collection="ids" item="item" open="(" separator="," close=")">
+                  #{item}
+                </foreach>
+    </select>
 </mapper>

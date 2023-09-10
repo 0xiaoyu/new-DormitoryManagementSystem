@@ -46,7 +46,7 @@ public class ReceiveNoticeMsgEntity {
      */
     @Schema(description = "接收者id")
     @TableField(value = "receive_id")
-    private Integer receiveId;
+    private Long receiveId;
 
     /**
      * 接收状态,0未读，1已读

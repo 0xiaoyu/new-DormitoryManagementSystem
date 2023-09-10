@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yu.model.entity.AccessLogEntity;
 import com.yu.model.query.PassLogPageQuery;
 import com.yu.model.vo.PassPageVo;
-import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 进入记录 映射层。
@@ -13,7 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @author yu
  * @since 1.0
  */
-@Mapper
+
 public interface AccessLogMapper extends BaseMapper<AccessLogEntity> {
 
 

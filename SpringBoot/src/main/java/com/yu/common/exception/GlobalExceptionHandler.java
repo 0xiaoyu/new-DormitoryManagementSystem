@@ -1,5 +1,6 @@
 package com.yu.common.exception;
 
+import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yu.common.result.Result;
@@ -38,6 +39,13 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ValidateException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public <T> Result<T> processException(ValidateException e) {
+        log.error("ValidateException:{}", e.getMessage());
+        return Result.failed(ResultCode.TOKEN_INVALID, e.getMessage());
+    }
 
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

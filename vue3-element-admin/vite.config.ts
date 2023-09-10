@@ -1,6 +1,6 @@
 import vue from "@vitejs/plugin-vue";
 
-import { UserConfig, ConfigEnv, loadEnv, defineConfig } from "vite";
+import { ConfigEnv, defineConfig, loadEnv, UserConfig } from "vite";
 
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
@@ -57,9 +57,9 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
               env.VITE_APP_TARGET_BASE_API
             ), // 替换 /dev-api 为 target 接口地址
         },
-        '/ws': {
-          target: 'ws://localhost:8080',
-        }
+        "/ws": {
+          target: "ws://localhost:8080",
+        },
       },
     },
     plugins: [

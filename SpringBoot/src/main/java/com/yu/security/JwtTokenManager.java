@@ -4,11 +4,9 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.jwt.Claims;
-import cn.hutool.jwt.JWT;
-import cn.hutool.jwt.JWTPayload;
-import cn.hutool.jwt.JWTUtil;
+import cn.hutool.jwt.*;
 import com.yu.common.constant.SecurityConstants;
 import com.yu.security.userdetails.SysUserDetails;
 import jakarta.annotation.Resource;
@@ -56,7 +54,7 @@ public class JwtTokenManager {
     private byte[] secretKeyBytes;
 
     @Resource
-    private RedisTemplate<String,Set<String>> redisTemplate;
+    private RedisTemplate<String, Set<String>> redisTemplate;
 
     /**
      * 创建token
@@ -134,6 +132,7 @@ public class JwtTokenManager {
     public Claims getTokenClaims(String token) {
         JWT jwt = JWTUtil.parseToken(token);
         boolean b = jwt.setKey(getSecretKeyBytes()).verify();
+        JWTValidator.of(token).validateDate(DateUtil.date());
         return b ? jwt.getPayload() : null;
     }
 
@@ -143,6 +142,6 @@ public class JwtTokenManager {
     }
 
     public <T> T getClaim(Claims claims, String key, Type tClass) {
-        return Convert.convertQuietly(tClass,claims.getClaim(key));
+        return Convert.convertQuietly(tClass, claims.getClaim(key));
     }
 }

@@ -9,6 +9,8 @@ import com.yu.model.query.DormitoryPageQuery;
 import com.yu.service.DormitoryService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author za'y
  * @description 针对表【tb_dormitory】的数据库操作Service实现
@@ -22,6 +24,11 @@ public class DormitoryServiceImpl extends ServiceImpl<DormitoryMapper, Dormitory
     public IPage<Dormitory> getPage(DormitoryPageQuery queryParams) {
         Page<Dormitory> page = queryParams.getPage();
         return this.baseMapper.floorPage(page, queryParams);
+    }
+
+    @Override
+    public List<Long> getSysIdsByBuildingId(String buildingId) {
+        return baseMapper.getSysIdsByBuildingId(buildingId.split(","));
     }
 }
 

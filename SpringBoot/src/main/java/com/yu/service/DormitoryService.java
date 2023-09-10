@@ -5,6 +5,8 @@ import com.yu.model.entity.Dormitory;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yu.model.query.DormitoryPageQuery;
 
+import java.util.List;
+
 /**
 * @author za'y
 * @description 针对表【tb_dormitory】的数据库操作Service
@@ -13,4 +15,6 @@ import com.yu.model.query.DormitoryPageQuery;
 public interface DormitoryService extends IService<Dormitory> {
 
     IPage<Dormitory> getPage(DormitoryPageQuery queryParams);
+
+    List<Long> getSysIdsByBuildingId(String buildingId);
 }

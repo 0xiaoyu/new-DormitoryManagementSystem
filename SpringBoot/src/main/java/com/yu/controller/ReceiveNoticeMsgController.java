@@ -1,6 +1,8 @@
 package com.yu.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yu.common.base.BasePageQuery;
+import com.yu.common.result.PageResult;
 import com.yu.common.result.Result;
 import com.yu.model.entity.ReceiveNoticeMsgEntity;
 import com.yu.service.ReceiveNoticeMsgService;
@@ -8,9 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -29,7 +29,34 @@ import java.util.List;
 public class ReceiveNoticeMsgController {
 
 
-    private final ReceiveNoticeMsgService receiveNoticeMsgService;
+    private final ReceiveNoticeMsgService service;
+
+
+    @GetMapping("/{id}")
+    @Operation(summary = "根据用户id获取接收通知")
+    @Parameters(value = {
+            @Parameter(name = "id", description = "用户id", required = true)
+    })
+    public PageResult<ReceiveNoticeMsgEntity> getByUserId(
+            @PathVariable Long id, BasePageQuery query) {
+        Page<ReceiveNoticeMsgEntity> page = service.lambdaQuery().eq(ReceiveNoticeMsgEntity::getReceiveId, id)
+                .page(query.getPage());
+        List<ReceiveNoticeMsgEntity> list = page.getRecords().stream().map(item->
+            ReceiveNoticeMsgEntity.builder().id(item.getId()).rStatus(1).build()
+        ).toList();
+        service.updateBatchById(list);
+        return PageResult.success(page);
+    }
+
+    @GetMapping("count/noRead/{id}")
+    @Operation(summary = "根据用户id获取未读通知数量")
+    @Parameters(value = {
+            @Parameter(name = "id", description = "用户id", required = true)
+    })
+    public Result<Long> getNoReadCount(@PathVariable Long id) {
+        return Result.success(service.lambdaQuery().eq(ReceiveNoticeMsgEntity::getReceiveId, id)
+                .eq(ReceiveNoticeMsgEntity::getRStatus, 0).count());
+    }
 
 
     /**
@@ -50,7 +77,7 @@ public class ReceiveNoticeMsgController {
             @Parameter(name = "rStatus", description = "接收状态,0未读，1已读")
     })
     public Result<Boolean> save(@RequestBody ReceiveNoticeMsgEntity receiveNoticeMsg) {
-        return Result.success(receiveNoticeMsgService.save(receiveNoticeMsg));
+        return Result.success(service.save(receiveNoticeMsg));
     }
 
 
@@ -66,7 +93,7 @@ public class ReceiveNoticeMsgController {
             @Parameter(name = "id", description = "接收通知id", required = true)
     })
     public Result<Boolean> remove(@PathVariable Serializable id) {
-        return Result.success(receiveNoticeMsgService.removeById(id));
+        return Result.success(service.removeById(id));
     }
 
 
@@ -88,7 +115,7 @@ public class ReceiveNoticeMsgController {
             @Parameter(name = "rStatus", description = "接收状态,0未读，1已读")
     })
     public Result<Boolean> update(@RequestBody ReceiveNoticeMsgEntity receiveNoticeMsg) {
-        return Result.success(receiveNoticeMsgService.updateById(receiveNoticeMsg));
+        return Result.success(service.updateById(receiveNoticeMsg));
     }
 
 
@@ -100,7 +127,7 @@ public class ReceiveNoticeMsgController {
     @GetMapping("/list")
     @Operation(summary = "查询所有接收通知")
     public Result<List<ReceiveNoticeMsgEntity>> list() {
-        return Result.success(receiveNoticeMsgService.list());
+        return Result.success(service.list());
     }
 
 
@@ -116,7 +143,7 @@ public class ReceiveNoticeMsgController {
             @Parameter(name = "id", description = "接收通知id", required = true)
     })
     public Result<ReceiveNoticeMsgEntity> getInfo(@PathVariable Serializable id) {
-        return Result.success(receiveNoticeMsgService.getById(id));
+        return Result.success(service.getById(id));
     }
 
 
@@ -133,6 +160,6 @@ public class ReceiveNoticeMsgController {
             @Parameter(name = "pageSize", description = "每页大小", required = true)
     })
     public Result<Page<ReceiveNoticeMsgEntity>> page(Page<ReceiveNoticeMsgEntity> page) {
-        return Result.success(receiveNoticeMsgService.page(page));
+        return Result.success(service.page(page));
     }
 }

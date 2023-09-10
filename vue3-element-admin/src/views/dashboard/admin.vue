@@ -1,8 +1,8 @@
 <script setup lang="ts">
-
 // 收入金额
-import {TransitionPresets, useTransition} from "@vueuse/core";
-import {getStudentCount} from "@/api/student";
+import { TransitionPresets, useTransition } from "@vueuse/core";
+import { getStudentCount } from "@/api/student";
+import Sender from "@/views/notice/sender.vue";
 
 const amount = ref(0);
 const amountOutput = useTransition(amount, {
@@ -18,9 +18,9 @@ const visitCountOutput = useTransition(visitCount, {
   transition: TransitionPresets.easeOutExpo,
 });
 
-getStudentCount().then(({data}) => {
-  visitCount.value = data
-})
+getStudentCount().then(({ data }) => {
+  visitCount.value = data;
+});
 
 const duration = 5000;
 //消息数
@@ -46,9 +46,9 @@ orderCount.value = 135;
     <el-col :lg="6" :sm="12" :xs="24" class="mb-4">
       <div class="data-box">
         <div
-            class="text-[#40c9c6] hover:!text-white hover:bg-[#40c9c6] p-3 rounded"
+          class="text-[#40c9c6] hover:!text-white hover:bg-[#40c9c6] p-3 rounded"
         >
-          <svg-icon icon-class="uv" size="3em"/>
+          <svg-icon icon-class="uv" size="3em" />
         </div>
         <div class="flex flex-col space-y-3">
           <div class="text-[var(--el-text-color-secondary)]">学生人数</div>
@@ -63,9 +63,9 @@ orderCount.value = 135;
     <el-col :lg="6" :sm="12" :xs="24" class="mb-4">
       <div class="data-box">
         <div
-            class="text-[#36a3f7] hover:!text-white hover:bg-[#36a3f7] p-3 rounded"
+          class="text-[#36a3f7] hover:!text-white hover:bg-[#36a3f7] p-3 rounded"
         >
-          <svg-icon icon-class="message" size="3em"/>
+          <svg-icon icon-class="message" size="3em" />
         </div>
         <div class="flex flex-col space-y-3">
           <div class="text-[var(--el-text-color-secondary)]">消息数</div>
@@ -79,9 +79,9 @@ orderCount.value = 135;
     <el-col :lg="6" :sm="12" :xs="24" class="mb-4">
       <div class="data-box">
         <div
-            class="text-[#f4516c] hover:!text-white hover:bg-[#f4516c] p-3 rounded"
+          class="text-[#f4516c] hover:!text-white hover:bg-[#f4516c] p-3 rounded"
         >
-          <svg-icon icon-class="money" size="3em"/>
+          <svg-icon icon-class="money" size="3em" />
         </div>
         <div class="flex flex-col space-y-3">
           <div class="text-[var(--el-text-color-secondary)]">收入金额</div>
@@ -91,24 +91,27 @@ orderCount.value = 135;
         </div>
       </div>
     </el-col>
-   <el-col :lg="6" :sm="12" :xs="24" class="mb-2">
+    <el-col :lg="6" :sm="12" :xs="24" class="mb-2">
       <div class="data-box">
         <div
-            class="text-[#34bfa3] hover:!text-white hover:bg-[#34bfa3] p-3 rounded"
+          class="text-[#34bfa3] hover:!text-white hover:bg-[#34bfa3] p-3 rounded"
         >
-          <svg-icon icon-class="shopping" size="3em"/>
+          <svg-icon icon-class="shopping" size="3em" />
         </div>
         <div class="flex flex-col space-y-3">
-          <div class="text-[var(&#45;&#45;el-text-color-secondary)]">缴费记录</div>
+          <div class="text-[var(&#45;&#45;el-text-color-secondary)]">
+            缴费记录
+          </div>
           <div class="text-lg text-right">
             {{ Math.round(orderCountOutput) }}
           </div>
         </div>
       </div>
     </el-col>
-    </el-row>
+  </el-row>
+  <sender />
 
-<!--  &lt;!&ndash; Echarts 图表 &ndash;&gt;
+  <!--  &lt;!&ndash; Echarts 图表 &ndash;&gt;
   <el-row :gutter="40">
     <el-col :lg="8" :sm="24" class="mb-2">
       <BarChart
@@ -136,7 +139,7 @@ orderCount.value = 135;
           width="100%"
       />
     </el-col>-->
-<!--  </el-row>-->
+  <!--  </el-row>-->
 </template>
 
 <style scoped>

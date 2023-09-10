@@ -44,4 +44,19 @@
             </if>
         </where>
     </select>
+    <select id="getSysIdsByBuildingId" resultType="java.lang.Long" parameterType="java.lang.Long">
+        select u.id
+        from sys_user_role sur,sys_user u,(
+        select s.id
+        from (
+        select id from tb_dormitory where building_id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ) as tdi,tb_student s
+        where tdi.id = s.dormitory_id
+        ) as student
+        where sur.role_id = 3 and student.id = u.user_id
+
+    </select>
 </mapper>
