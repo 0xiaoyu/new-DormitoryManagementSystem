@@ -10,8 +10,8 @@ import lombok.Data;
 /**
  * 字典类型实体
  *
- * @author haoxr
- * @since 2022/12/17
+ * @author zay
+ * @since 2023/8/25
  */
 @Data
 @Schema(description = "字典类型")

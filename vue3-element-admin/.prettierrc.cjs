@@ -7,6 +7,14 @@ module.exports = {
   bracketSpacing: true,
   // 是否格式化一些文件中被嵌入的代码片段的风格(auto|off;默认auto)
   embeddedLanguageFormatting: "auto",
+  overrides: [
+    {
+      files: "*.html",
+      options: {
+        parser: "html",
+      },
+    },
+  ],
   // 指定 HTML 文件的空格敏感度 (css|strict|ignore;默认css)
   htmlWhitespaceSensitivity: "css",
   // 当文件已经被 Prettier 格式化之后，是否会在文件顶部插入一个特殊的 @format 标记，默认false

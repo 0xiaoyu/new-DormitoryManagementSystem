@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * 角色菜单持久层
  *
- * @author haoxr
- * @since 2022/6/4
+ * @author zay
+ * @since 2023/8/25
  */
 @Mapper
 public interface SysRoleMenuMapper extends BaseMapper<SysRoleMenu> {

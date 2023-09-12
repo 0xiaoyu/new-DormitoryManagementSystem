@@ -7,8 +7,8 @@ import java.util.List;
 /**
  * user表单持久化对象
  *
- * @author haoxr
- * @since 2022/6/10
+ * @author zay
+ * @since 2023/8/25
  */
 @Data
 public class UserFormBO {

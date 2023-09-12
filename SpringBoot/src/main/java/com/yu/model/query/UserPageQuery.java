@@ -7,8 +7,8 @@ import lombok.Data;
 /**
  * 用户分页查询对象
  *
- * @author haoxr
- * @since 2022/1/14
+ * @author zay
+ * @since 2023/8/25
  */
 @Schema(description = "用户分页查询对象")
 @Data

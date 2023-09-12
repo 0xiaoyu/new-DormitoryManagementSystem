@@ -9,8 +9,8 @@ import java.util.Date;
 /**
  * 用户分页视图对象
  *
- * @author haoxr
- * @since 2022/1/15 9:41
+ * @author zay
+ * @since 2023/8/25
  */
 @Schema(description ="用户分页对象")
 @Data

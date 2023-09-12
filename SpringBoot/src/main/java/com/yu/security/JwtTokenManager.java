@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
 /**
  * JWT token 管理器
  *
- * @author haoxr
- * @since 2022/10/22
+ * @author zay
+ * @since 2023/8/25
  */
 @Component
 public class JwtTokenManager {

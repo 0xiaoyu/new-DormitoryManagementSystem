@@ -2,7 +2,7 @@ package com.yu.security.exception;
 
 
 import com.yu.common.result.ResultCode;
-import com.yu.common.util.ResponseUtils;
+import com.yu.util.ResponseUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.AccessDeniedException;
@@ -14,8 +14,8 @@ import java.io.IOException;
 /**
  * Spring Security访问异常处理器
  *
- * @author haoxr
- * @since 2022/10/18
+ * @author zay
+ * @since 2023/8/25
  */
 @Component
 public class MyAccessDeniedHandler implements AccessDeniedHandler {

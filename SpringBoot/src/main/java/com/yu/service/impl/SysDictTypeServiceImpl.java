@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
 /**
  * 数据字典类型业务实现类
  *
- * @author haoxr
- * @since 2022/10/12
+ * @author zay
+ * @since 2023/8/25
  */
 @Service
 @RequiredArgsConstructor

@@ -11,8 +11,8 @@ import java.util.List;
 /**
  * 数据字典类型业务接口
  *
- * @author haoxr
- * @since 2022/10/12
+ * @author zay
+ * @since 2023/8/25
  */
 public interface SysDictTypeService extends IService<SysDictType> {
 

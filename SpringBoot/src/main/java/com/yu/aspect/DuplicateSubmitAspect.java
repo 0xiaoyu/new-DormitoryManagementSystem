@@ -2,9 +2,9 @@ package com.yu.aspect;
 
 import cn.hutool.core.util.StrUtil;
 import com.yu.common.annotation.PreventDuplicateSubmit;
-import com.yu.common.exception.BusinessException;
+import com.yu.exception.BusinessException;
 import com.yu.common.result.ResultCode;
-import com.yu.common.util.RequestUtils;
+import com.yu.util.RequestUtils;
 import com.yu.security.JwtTokenManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 处理重复提交的切面
  *
- * @author haoxr
+ * @author zay
  * @since 2023/05/09
  */
 @Aspect

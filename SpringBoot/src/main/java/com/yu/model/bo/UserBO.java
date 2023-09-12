@@ -8,8 +8,8 @@ import java.util.Date;
 /**
  * 用户持久化对象
  *
- * @author haoxr
- * @since 2022/6/10
+ * @author zay
+ * @since 2023/8/25
  */
 @Data
 public class UserBO {

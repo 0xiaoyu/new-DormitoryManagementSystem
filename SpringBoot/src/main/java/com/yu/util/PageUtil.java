@@ -1,4 +1,4 @@
-package com.yu.common.util;
+package com.yu.util;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yu.common.base.BasePageQuery;

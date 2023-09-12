@@ -3,12 +3,10 @@ package com.yu.UtilsTest;
 import cn.hutool.core.util.RandomUtil;
 import com.yu.common.constant.SecurityConstants;
 import com.yu.common.enums.EmailType;
-import com.yu.common.util.EmailUtils;
-import jakarta.annotation.Resource;
+import com.yu.util.EmailUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.web.PortResolverImpl;
 
 @SpringBootTest
 public class EmailUtilTest {

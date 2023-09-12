@@ -1,4 +1,4 @@
-package com.yu.common.util;
+package com.yu.util;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;

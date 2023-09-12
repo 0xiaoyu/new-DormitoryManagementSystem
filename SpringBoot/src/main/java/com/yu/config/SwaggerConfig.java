@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * <p>
  * Spring Doc FAQ: https://springdoc.org/#faq
  *
- * @author haoxr
+ * @author zay
  * @since 2023/2/17
  */
 @Configuration

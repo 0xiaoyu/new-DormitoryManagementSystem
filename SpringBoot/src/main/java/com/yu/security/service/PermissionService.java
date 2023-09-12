@@ -3,7 +3,7 @@ package com.yu.security.service;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.yu.common.constant.SecurityConstants;
-import com.yu.common.util.SecurityUtils;
+import com.yu.util.SecurityUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,8 +15,8 @@ import java.util.Set;
 /**
  * SpringSecurity 权限校验
  *
- * @author haoxr
- * @since 2022/2/22
+ * @author zay
+ * @since 2023/8/25
  */
 @Component("security")
 @Slf4j

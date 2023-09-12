@@ -11,8 +11,8 @@ import java.util.List;
 /**
  * 用户表单对象
  *
- * @author haoxr
- * @since 2022/4/12 11:04
+ * @author zay
+ * @since 2023/8/25
  */
 @Schema(description = "用户表单对象")
 @Data

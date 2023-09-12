@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 字典接口
  *
- * @author haoxr
+ * @author zay
  * @since 2023/3/4
  */
 public interface SysDictService extends IService<SysDict> {

@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yu.common.annotation.PreventDuplicateSubmit;
 import com.yu.common.result.PageResult;
 import com.yu.common.result.Result;
-import com.yu.common.util.CommonUtil;
+import com.yu.util.CommonUtil;
 import com.yu.listener.easyexcel.UserImportListener;
 import com.yu.model.entity.Student;
 import com.yu.model.query.StudentPageQuery;

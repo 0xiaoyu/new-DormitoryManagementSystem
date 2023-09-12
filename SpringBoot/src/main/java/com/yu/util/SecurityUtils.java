@@ -1,4 +1,4 @@
-package com.yu.common.util;
+package com.yu.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.yu.common.constant.SecurityConstants;

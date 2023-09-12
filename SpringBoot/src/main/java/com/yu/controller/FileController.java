@@ -2,7 +2,7 @@ package com.yu.controller;
 
 
 import com.yu.common.result.Result;
-import com.yu.common.util.AliyunOssUtil;
+import com.yu.util.AliyunOssUtil;
 import com.yu.model.dto.FileInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

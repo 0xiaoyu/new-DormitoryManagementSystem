@@ -10,8 +10,8 @@ import java.util.List;
 /**
  * 下拉选项对象
  *
- * @author haoxr
- * @since 2022/1/22
+ * @author zay
+ * @since 2023/8/25
  */
 @Schema(description ="下拉选项对象")
 @Data

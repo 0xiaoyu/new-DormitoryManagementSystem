@@ -1,4 +1,4 @@
-package com.yu.common.exception;
+package com.yu.exception;
 
 
 import com.yu.common.result.IResultCode;
@@ -7,8 +7,8 @@ import lombok.Getter;
 /**
  * 自定义业务异常
  *
- * @author haoxr
- * @since 2022/7/31
+ * @author zay
+ * @since 2023/8/25
  */
 @Getter
 public class BusinessException extends RuntimeException {

@@ -25,8 +25,6 @@
 
         <java-jwt.version>4.2.1</java-jwt.version>
         <easyexcel.version>3.2.1</easyexcel.version>
-        <easy-captcha.version>1.6.2</easy-captcha.version>
-        <nashorn.version>15.4</nashorn.version>
         <redisson.version>3.21.0</redisson.version>
         <knife4j.version>4.1.0</knife4j.version>
 
@@ -93,12 +91,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-        <!-- Java8 之后JavaScript引擎nashorn被移除导致验证码解析报错-->
-        <dependency>
-            <groupId>org.openjdk.nashorn</groupId>
-            <artifactId>nashorn-core</artifactId>
-            <version>${nashorn.version}</version>
-        </dependency>
         <!--swagger-->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
@@ -147,12 +139,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
             <version>${easyexcel.version}</version>
-        </dependency>
-        <!-- 验证码 -->
-        <dependency>
-            <groupId>com.github.whvcse</groupId>
-            <artifactId>easy-captcha</artifactId>
-            <version>${easy-captcha.version}</version>
         </dependency>
 
 

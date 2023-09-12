@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yu.common.constant.SystemConstants;
 import com.yu.common.model.Option;
-import com.yu.common.util.SecurityUtils;
+import com.yu.util.SecurityUtils;
 import com.yu.mapper.SysRoleMapper;
 import com.yu.model.entity.SysRole;
 import com.yu.model.entity.SysRoleMenu;
@@ -29,8 +29,8 @@ import java.util.stream.Collectors;
 /**
  * 角色业务实现类
  *
- * @author haoxr
- * @since 2022/6/3
+ * @author zay
+ * @since 2023/8/25
  */
 @Service
 @RequiredArgsConstructor

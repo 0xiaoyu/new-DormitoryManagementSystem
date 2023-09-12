@@ -1,4 +1,4 @@
-package com.yu.common.util;
+package com.yu.util;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 /**
  * Aliyun 对象存储服务类
  *
- * @author haoxr
+ * @author zay
  * @since 2.3.0
  */
 @Component

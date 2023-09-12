@@ -9,8 +9,8 @@ import lombok.Getter;
 /**
  * 性别枚举
  *
- * @author haoxr
- * @since 2022/10/14
+ * @author zay
+ * @since 2023/8/25
  */
 @Getter
 @Schema(enumAsRef = true)

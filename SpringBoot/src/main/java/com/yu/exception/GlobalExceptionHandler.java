@@ -1,4 +1,4 @@
-package com.yu.common.exception;
+package com.yu.exception;
 
 import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.util.StrUtil;
@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
  * 调整异常处理的HTTP状态码，丰富异常处理类型
  *
  * @author Gadfly
- * @since 2020-02-25 13:54
+ * * @since 2023/8/15
  **/
 @RestControllerAdvice
 @Slf4j

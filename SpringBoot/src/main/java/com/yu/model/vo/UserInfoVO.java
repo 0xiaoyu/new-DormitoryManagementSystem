@@ -11,8 +11,8 @@ import java.util.Set;
 /**
  * 用户登录视图对象
  *
- * @author haoxr
- * @since 2022/1/14
+ * @author zay
+ * @since 2023/8/25
  */
 @Schema(description ="当前登录用户视图对象")
 @Data

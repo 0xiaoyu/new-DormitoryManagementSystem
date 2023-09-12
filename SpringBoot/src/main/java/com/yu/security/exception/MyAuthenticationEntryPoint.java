@@ -2,7 +2,7 @@ package com.yu.security.exception;
 
 
 import com.yu.common.result.ResultCode;
-import com.yu.common.util.ResponseUtils;
+import com.yu.util.ResponseUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,8 +15,8 @@ import java.io.IOException;
 /**
  * 认证异常处理
  *
- * @author haoxr
- * @since 2022/10/18
+ * @author zay
+ * @since 2023/8/25
  */
 @Component
 public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {

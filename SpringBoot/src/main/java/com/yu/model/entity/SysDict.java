@@ -12,8 +12,8 @@ import java.io.Serializable;
 /**
  * 字典数据表
  *
- * @author haoxr
- * @since 2022/12/17
+ * @author zay
+ * @since 2023/8/25
  */
 @Data
 @TableName(value ="sys_dict")

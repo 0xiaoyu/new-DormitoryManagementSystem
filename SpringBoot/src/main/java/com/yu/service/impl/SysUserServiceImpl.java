@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yu.common.constant.SecurityConstants;
-import com.yu.common.util.SecurityUtils;
+import com.yu.util.SecurityUtils;
 import com.yu.mapper.SysUserMapper;
 import com.yu.model.dto.UserAuthInfo;
 import com.yu.model.entity.SysUser;

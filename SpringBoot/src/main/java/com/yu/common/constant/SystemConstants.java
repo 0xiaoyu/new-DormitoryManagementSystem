@@ -3,7 +3,7 @@ package com.yu.common.constant;
 /**
  * 系统常量
  *
- * @author haoxr
+ * @author zay
  * @since  2022/10/22
  */
 public interface SystemConstants {

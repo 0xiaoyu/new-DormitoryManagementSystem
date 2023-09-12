@@ -1,4 +1,4 @@
-package com.yu.common.util;
+package com.yu.util;
 
 import com.alibaba.excel.EasyExcel;
 import com.yu.listener.easyexcel.MyAnalysisEventListener;

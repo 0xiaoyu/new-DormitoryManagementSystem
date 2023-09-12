@@ -1,4 +1,4 @@
-package com.yu.common.util;
+package com.yu.util;
 
 import cn.hutool.json.JSONObject;
 import com.yu.common.result.Result;

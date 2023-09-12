@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
 /**
  * 数据字典项业务实现类
  *
- * @author haoxr
- * @since 2022/10/12
+ * @author zay
+ * @since 2023/8/25
  */
 @Service
 public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> implements SysDictService {

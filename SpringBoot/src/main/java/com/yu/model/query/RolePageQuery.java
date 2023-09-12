@@ -8,8 +8,8 @@ import lombok.EqualsAndHashCode;
 /**
  * 角色分页查询实体
  *
- * @author haoxr
- * @since 2022/6/3
+ * @author zay
+ * @since 2023/8/25
  *
  */
 @EqualsAndHashCode(callSuper = true)

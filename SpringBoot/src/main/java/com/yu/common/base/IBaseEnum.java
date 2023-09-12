@@ -9,8 +9,8 @@ import java.util.Objects;
 /**
  * 枚举通用接口
  *
- * @author haoxr
- * @since 2022/3/27 12:06
+ * @author zay
+ * @since 2023/8/25
  */
 public interface IBaseEnum<T> {
 

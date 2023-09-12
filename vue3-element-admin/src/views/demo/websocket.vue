@@ -1,27 +1,21 @@
 <!-- websocket 示例 -->
 <script setup lang="ts">
-import { sendToUser } from "@/api/websocket"; // 点对点消息列表
-import { useUserStore } from "@/store/modules/user";
-
-//  import SockJS from "sockjs-client"; // 报错 global is not defined 换成下面的引入
-import SockJS from "sockjs-client/dist/sockjs.min.js";
+// https://github.com/sockjs/sockjs-client/issues/547  报错 global is not defined 换成下面的引入
+import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import { useUserStore } from "@/store/modules/user";
 
 const inputVal = ref("初始内容");
 
 const topicMsgs = ref<string[]>(["接收到一条主题消息"]); // 主题消息列表
 const p2pMsgs = ref<string[]>(["接收到一条点对线消息"]);
 
-const userId = useUserStore().id;
-
 function handleSendToAll() {
-  // sendToAll(inputVal.value);
-
   stompClient.send("/app/sendToAll", {}, inputVal.value);
 }
 
 function handleSendToUser() {
-  sendToUser(userId, inputVal.value);
+  stompClient.send("/app/sendToUser/admin", {}, inputVal.value);
 }
 
 let stompClient: Stomp.Client;
@@ -31,14 +25,21 @@ function initWebSocket() {
 
   stompClient = Stomp.over(socket);
 
-  stompClient.connect({}, () => {
-    console.log("连接成功");
+  stompClient.connect({ Authorization: useUserStore().token }, () => {
+    console.log("连接就绪，订阅主题：", "/topic/all");
 
-    stompClient.subscribe("/topic/all", (res) => {
-      console.log("订阅响应");
-      console.log(res);
+    stompClient.subscribe("/topic/notice", (res) => {
+      console.log("广播消息接收", res);
       topicMsgs.value.push(res.body);
     });
+
+    stompClient.subscribe("/user/queue/greeting", (res) => {
+      console.log("点对点消息接收", res);
+      p2pMsgs.value.push(res.body);
+    });
+    stompClient.onclose = () => {
+      console.log("链接已关闭");
+    };
   });
 }
 
@@ -61,8 +62,8 @@ onMounted(() => {
       <div class="search-container">
         <el-form :inline="true">
           <el-form-item> <el-input v-model="inputVal" /></el-form-item>
-          <el-form-item
-            ><el-button @click="handleSendToUser">发送点对点消息</el-button>
+          <el-form-item>
+            <el-button @click="handleSendToUser">发送点对点消息</el-button>
             <el-button @click="handleSendToAll">发送广播消息</el-button>
           </el-form-item>
         </el-form>

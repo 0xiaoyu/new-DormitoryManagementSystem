@@ -2,7 +2,7 @@ package com.yu.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yu.common.util.PageUtil;
+import com.yu.util.PageUtil;
 import com.yu.model.entity.ViolationLog;
 import com.yu.model.query.ViolationLogPageQuery;
 import com.yu.model.vo.ViolationLogPageVo;
