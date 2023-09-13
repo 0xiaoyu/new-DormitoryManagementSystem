@@ -8,9 +8,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum NoticeEnum {
-    GROUP_NOTICE(1, "群通知"),
-    PRIVATE_NOTICE(2, "私聊通知"),
-    SYSTEM_NOTICE(3, "系统通知"),
+    SYSTEM_NOTICE(0, "系统通知"),
+    GROUP_NOTICE(1, "全体通知"),
+    DORMITORY_NOTICE(2, "宿舍通知"),
+    PRIVATE_NOTICE(3, "私信"),
     ;
     @EnumValue
     private final Integer code;

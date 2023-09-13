@@ -12,4 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface SenderNoticeMsgService extends IService<SenderNoticeMsgEntity> {
 
+    Boolean sysNotice(String msg,Long id);
 }

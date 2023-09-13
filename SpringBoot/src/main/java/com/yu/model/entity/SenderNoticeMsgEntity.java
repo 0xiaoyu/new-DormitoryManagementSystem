@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.yu.common.base.BaseEntity;
 import com.yu.common.enums.NoticeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * 通知消息 实体类。
@@ -17,13 +15,14 @@ import lombok.NoArgsConstructor;
  * @author yu
  * @since 1.0
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(name = "通知消息")
 @TableName(value = "sender_notice_msg")
-public class SenderNoticeMsgEntity {
+public class SenderNoticeMsgEntity extends BaseEntity {
 
     /**
      * 通知id
@@ -44,14 +43,14 @@ public class SenderNoticeMsgEntity {
      */
     @Schema(description = "通知内容")
     @TableField(value = "n_msg")
-    private String nMsg;
+    private String msg;
 
     /**
      * 通知类型
      */
     @Schema(description = "通知类型")
     @TableField(value = "n_type")
-    private NoticeEnum nType;
+    private NoticeEnum type;
 
 
 }

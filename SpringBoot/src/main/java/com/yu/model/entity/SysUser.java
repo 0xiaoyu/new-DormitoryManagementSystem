@@ -8,6 +8,8 @@ import com.yu.common.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
+
 /**
  * 系统表
  */
@@ -52,6 +54,9 @@ public class SysUser extends BaseEntity {
      */
     @TableField(value = "status")
     private Integer status;
+
+    @TableField(value = "notice_time")
+    private LocalDateTime noticeTime;
 
     /**
      * 绑定id

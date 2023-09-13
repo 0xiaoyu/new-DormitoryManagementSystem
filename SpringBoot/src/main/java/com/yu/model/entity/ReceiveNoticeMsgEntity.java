@@ -1,17 +1,14 @@
 package com.yu.model.entity;
 
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Builder;
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.lang.Long;
-import java.lang.Integer;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 接收通知 实体类。
@@ -47,13 +44,4 @@ public class ReceiveNoticeMsgEntity {
     @Schema(description = "接收者id")
     @TableField(value = "receive_id")
     private Long receiveId;
-
-    /**
-     * 接收状态,0未读，1已读
-     */
-    @Schema(description = "接收状态,0未读，1已读")
-    @TableField(value = "r_status")
-    private Integer rStatus;
-
-
 }

@@ -7,10 +7,31 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="notice_id" jdbcType="BIGINT" property="noticeId"/>
         <result column="receive_id" jdbcType="INTEGER" property="receiveId"/>
-        <result column="r_status" jdbcType="TINYINT" property="rStatus"/>
     </resultMap>
     <sql id="Base_Column_List">
         `id`, `notice_id`, `receive_id`, `r_status`
     </sql>
+    <select id="getNoticeList" resultType="com.yu.model.vo.NoticeVo">
+        select n.msg,
+               n.type,
+               if((n.update_time > (select * from sys_user where id = #{id})), 0, 1) as isRead,
+               u.name
+        from receive_notice_msg r,
+             sender_notice_msg n
+                 left join sys_user u on r.receive_id = u.id
+        where r.receive_id = #{id}
+           or n.type = 1
+            and r.notice_id = n.id
+        order by n.update_time desc
+    </select>
+    <select id="getNoReadCount" resultType="java.lang.Long" parameterType="java.lang.Long">
+        select count(1)
+        from sender_notice_msg n, receive_notice_msg r
+        where r.receive_id = #{id}
+          and r.notice_id = n.id
+          and n.update_time > (select * from sys_user where id = #{id})
+          or n.type = 1
+        order by n.update_time desc
+    </select>
 
 </mapper>

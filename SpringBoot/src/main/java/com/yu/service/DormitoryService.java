@@ -16,5 +16,10 @@ public interface DormitoryService extends IService<Dormitory> {
 
     IPage<Dormitory> getPage(DormitoryPageQuery queryParams);
 
+    /**
+     * 依据楼栋id获取所有学生id
+     * @param buildingId 楼栋id
+     * @return 所有学生id
+     */
     List<Long> getSysIdsByBuildingId(String buildingId);
 }
